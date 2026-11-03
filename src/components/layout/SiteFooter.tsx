@@ -22,7 +22,7 @@ const social = [
 
 export function SiteFooter({ showCta = true }: { showCta?: boolean }) {
   return (
-    <footer className="relative bg-indigo text-white">
+    <footer className="relative mr-[calc(env(safe-area-inset-right)*-1)] ml-[calc(env(safe-area-inset-left)*-1)] bg-indigo pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] text-white">
       {showCta ? (
         <div className="bg-paper px-6 py-14 md:px-20">
           <div className="relative flex min-h-[360px] items-center overflow-hidden rounded-[40px] bg-indigo px-8 py-12 md:px-16">

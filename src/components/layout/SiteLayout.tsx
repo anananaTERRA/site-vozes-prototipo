@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader"
 export function SiteLayout() {
   const { pathname } = useLocation()
   return (
-    <div className="min-h-screen bg-paper text-indigo">
+    <div className="min-h-dvh bg-paper text-ink">
       <SiteHeader />
       <main>
         <Outlet />

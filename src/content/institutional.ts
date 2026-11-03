@@ -3,6 +3,10 @@ import vanessa from "@/assets/equipe-vanessa.png"
 import lais from "@/assets/equipe-lais.png"
 import ana from "@/assets/equipe-ana.png"
 import claudilene from "@/assets/equipe-claudilene.png"
+import lemann from "@/assets/partners/fundacao-lemann.svg"
+import reuna from "@/assets/partners/reuna.svg"
+import b3 from "@/assets/partners/b3-social.png"
+import mpb from "@/assets/partners/movimento-pela-base.png"
 import type { ThemeId } from "@/content/themes"
 
 export const servicesIntro = [
@@ -73,7 +77,12 @@ export const services = [
   },
 ] as const
 
-export const partners = ["Fundação Lemann", "Reúna", "B3 Social", "MpB", "Parceiro", "Instituto", "Rede"]
+export const partners = [
+  { name: "Fundação Lemann", src: lemann },
+  { name: "Reúna", src: reuna },
+  { name: "B3 Social", src: b3 },
+  { name: "Movimento pela Base", src: mpb, invertOnDark: true },
+] as const
 
 export const segments = [
   {

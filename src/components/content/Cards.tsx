@@ -89,7 +89,7 @@ export function PublicationCard({ item }: { item: Publication }) {
       <p className="text-[13px] font-extrabold tracking-[1.04px] text-violet uppercase">
         {item.type} · {item.year}
       </p>
-      <h3 className="font-display text-2xl leading-[30px] font-medium text-indigo group-hover:text-violet">
+      <h3 className="font-display text-2xl leading-[30px] font-medium text-ink group-hover:text-violet">
         {item.title}
       </h3>
       {item.themes[0] ? (

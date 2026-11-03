@@ -1,12 +1,13 @@
 import { Link } from "react-router"
 import photo from "@/assets/photo-servicos.png"
+import { PartnerStrip } from "@/components/content/PartnerStrip"
 import { ServiceIndex } from "@/components/content/ServiceIndex"
 import { PageHero } from "@/components/layout/PageHero"
-import { partners, segments } from "@/content/institutional"
+import { segments } from "@/content/institutional"
 
 export function OQueFazemosPage() {
   return (
-    <div className="bg-white">
+    <div className="bg-surface">
       <PageHero
         background="#153792"
         title="O que fazemos"
@@ -33,13 +34,8 @@ export function OQueFazemosPage() {
         </div>
       </section>
       <section className="overflow-hidden px-6 py-16 md:px-20">
-        <p className="mx-auto mb-6 w-full max-w-[1280px] text-[13px] font-extrabold tracking-[1.04px]">CLIENTES E PARCEIROS</p>
-        <div className="mx-auto flex w-full max-w-[1280px] flex-wrap gap-4">
-          {partners.map((name) => (
-            <span key={name} className="grid h-[72px] min-w-40 place-items-center rounded-2xl bg-paper px-6 text-sm font-extrabold tracking-[1px] uppercase">
-              {name}
-            </span>
-          ))}
+        <div className="mx-auto w-full max-w-[1280px]">
+          <PartnerStrip />
         </div>
         <div className="mx-auto mt-10 w-full max-w-[1280px]">
           <Link to="/contato" className="text-[19px] font-extrabold">

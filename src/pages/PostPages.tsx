@@ -9,7 +9,7 @@ export function PostNoticiaPage() {
   if (!article) return <Navigate to="/nao-encontrada" replace />
   const related = relatedNews(article.slug)
   return (
-    <div className="bg-white">
+    <div className="bg-surface">
       <PostArticle item={article} trail={{ to: "/vozes", label: "Vozes na mídia" }} />
       <section className="mx-auto w-full max-w-[1280px] px-6 pb-20 md:px-0">
         <h2 className="font-display text-[32px] leading-[38px]">Leia também</h2>
@@ -32,7 +32,7 @@ export function PostEventoPage() {
   if (!article) return <Navigate to="/nao-encontrada" replace />
   const related = relatedEvents(article.slug)
   return (
-    <div className="bg-white">
+    <div className="bg-surface">
       <PostArticle item={article} trail={{ to: "/vozes?tipo=eventos", label: "Vozes na mídia" }} ficha={article.ficha} />
       <section className="mx-auto w-full max-w-[1280px] px-6 pb-20 md:px-0">
         <h2 className="font-display text-[32px] leading-[38px]">Leia também</h2>

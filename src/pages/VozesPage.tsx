@@ -67,7 +67,7 @@ export function VozesPage() {
   const activeTheme = themes.find((item) => item.id === tema)
 
   return (
-    <div className="bg-white">
+    <div className="bg-surface">
       <PageHero
         background="#ff8327"
         title="Vozes na mídia"

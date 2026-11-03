@@ -12,8 +12,10 @@ import porque from "@/assets/photo-porque.png"
 import transicao from "@/assets/photo-transicao.png"
 import { BrandButton } from "@/components/brand/BrandButton"
 import { WordBalloon } from "@/components/brand/WordBalloon"
+import { ProcessScroll } from "@/components/home/ProcessScroll"
 import { NewsCard, PublicationCard } from "@/components/content/Cards"
-import { partners, segments, services, stats, testimonials } from "@/content/institutional"
+import { PartnerStrip } from "@/components/content/PartnerStrip"
+import { segments, services, stats, testimonials } from "@/content/institutional"
 import { noticias, publicacoes } from "@/content/posts"
 import {
   Carousel,
@@ -62,10 +64,10 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white">
+      <section className="bg-surface">
         <div className="mx-auto grid w-full max-w-[1440px] gap-8 px-6 py-14 sm:grid-cols-2 xl:grid-cols-4 md:px-20">
           {stats.map((item, index) => (
-            <div key={item.label} className={index > 0 ? "xl:border-l xl:border-indigo xl:pl-8" : ""}>
+            <div key={item.label} className={index > 0 ? "xl:border-l xl:border-indigo xl:pl-8 dark:xl:border-ink/30" : ""}>
               <p className="font-display text-6xl leading-none">
                 <span className="text-5xl font-bold">+</span>
                 {item.value}
@@ -90,6 +92,8 @@ export function HomePage() {
         </div>
       </section>
 
+      <ProcessScroll />
+
       <section className="bg-paper px-6 py-24 md:px-20">
         <div className="mx-auto flex w-full max-w-[1280px] flex-col items-center gap-14">
           <h2 className="max-w-[1040px] text-center font-display text-4xl leading-[54px] tracking-[-0.48px] md:text-5xl">
@@ -102,31 +106,17 @@ export function HomePage() {
             <Link to="/o-que-fazemos">Entenda nossos serviços</Link>
           </BrandButton>
         </div>
-        <div className="mx-auto mt-16 w-full max-w-[1280px] overflow-hidden">
-          <p className="mb-4 text-[13px] font-extrabold tracking-[1.04px]">CLIENTES E PARCEIROS</p>
-          <motion.div
-            className="flex w-max gap-6"
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-          >
-            {[...partners, ...partners].map((name, index) => (
-              <div
-                key={`${name}-${index}`}
-                className="grid h-[72px] min-w-40 place-items-center rounded-2xl bg-white px-6 text-sm font-extrabold tracking-[1px] text-indigo/80 uppercase"
-              >
-                {name}
-              </div>
-            ))}
-          </motion.div>
+        <div className="mx-auto mt-16 w-full max-w-[1280px]">
+          <PartnerStrip />
         </div>
         <div className="mx-auto mt-16 grid w-full max-w-[1280px] gap-8 md:grid-cols-3">
           {services.map((service, index) => (
             <Link
               key={service.id}
               to={`/o-que-fazemos#${service.id}`}
-              className="group flex h-60 flex-col justify-between rounded-[20px] bg-white p-6"
+              className="group flex h-60 flex-col justify-between rounded-[20px] bg-surface p-6"
             >
-              <img src={faces[index]} alt="" className="h-8 w-8 object-contain" />
+              <img src={faces[index]} alt="" className="h-8 w-8 object-contain dark:brightness-0 dark:invert" />
               <div>
                 <p className="hidden text-[15px] leading-[22px] font-medium group-hover:block">{service.text}</p>
                 <h3 className="font-display text-[32px] leading-[38px] font-medium">{service.title}</h3>
@@ -142,7 +132,7 @@ export function HomePage() {
           <CarouselContent>
             {testimonials.map((item) => (
               <CarouselItem key={item.quote}>
-                <figure className="rounded-3xl bg-white px-8 py-12 text-center md:px-20">
+                <figure className="rounded-3xl bg-surface px-8 py-12 text-center md:px-20">
                   <blockquote className="text-lg leading-[29px]">“{item.quote}”</blockquote>
                   <figcaption className="mt-8">
                     <p className="text-xl font-extrabold">{item.name}</p>
@@ -159,7 +149,7 @@ export function HomePage() {
         </Carousel>
       </section>
 
-      <section className="bg-white px-6 py-24 md:px-20">
+      <section className="bg-surface px-6 py-24 md:px-20">
         <div className="mx-auto w-full max-w-[1280px]">
           <h2 className="font-display text-5xl leading-[54px]">Com quem trabalhamos</h2>
           <div className="mt-10 grid overflow-hidden rounded-[20px] md:grid-cols-3">
@@ -217,7 +207,7 @@ export function HomePage() {
         </p>
       </section>
 
-      <section className="bg-white px-6 py-24 md:px-20">
+      <section className="bg-surface px-6 py-24 md:px-20">
         <div className="mx-auto w-full max-w-[1280px]">
           <div className="flex items-end justify-between gap-6">
             <h2 className="font-display text-5xl leading-[54px]">Publicações</h2>

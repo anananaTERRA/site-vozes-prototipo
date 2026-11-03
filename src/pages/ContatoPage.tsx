@@ -85,7 +85,7 @@ export function ContatoPage() {
             <img src={peca3} alt="" className="absolute top-24 right-0 w-24" />
             <img src={photo} alt="" className="absolute top-10 left-10 h-[440px] w-[320px] rounded-[20px] object-cover" />
           </div>
-          <div className="rounded-[28px] bg-white p-6 text-indigo">
+          <div className="rounded-[28px] bg-surface p-6 text-ink">
             {sent ? (
               <div className="flex min-h-[480px] flex-col justify-center">
                 <p className="text-[13px] font-extrabold tracking-[1.04px] text-violet uppercase">Mensagem enviada</p>
@@ -161,12 +161,12 @@ export function ContatoPage() {
       <section className="mx-auto grid w-full max-w-[1440px] gap-4 px-6 py-10 md:grid-cols-4 md:px-20">
         {routes.map((route) =>
           route.external ? (
-            <a key={route.title} href={route.href} target="_blank" rel="noreferrer" className="rounded-[20px] bg-white p-6">
+            <a key={route.title} href={route.href} target="_blank" rel="noreferrer" className="rounded-[20px] bg-surface p-6">
               <h2 className="font-display text-2xl font-medium">{route.title}</h2>
               <p className="mt-2 text-[15px] leading-[22px]">{route.text}</p>
             </a>
           ) : (
-            <Link key={route.title} to={route.href} className="rounded-[20px] bg-white p-6">
+            <Link key={route.title} to={route.href} className="rounded-[20px] bg-surface p-6">
               <h2 className="font-display text-2xl font-medium">{route.title}</h2>
               <p className="mt-2 text-[15px] leading-[22px]">{route.text}</p>
             </Link>

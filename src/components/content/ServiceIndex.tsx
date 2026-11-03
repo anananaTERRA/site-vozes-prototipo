@@ -34,7 +34,7 @@ export function ServiceIndex() {
   return (
     <section id="servicos" className="mx-auto grid w-full max-w-[1440px] items-start gap-10 px-6 py-16 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-8 lg:px-20 lg:py-24 xl:grid-cols-[405px_minmax(0,1fr)]">
       <div className="lg:sticky lg:top-28">
-        <h2 className="font-display text-4xl leading-[1.12] text-indigo md:text-5xl md:leading-[54px]">Nossos serviços</h2>
+        <h2 className="font-display text-4xl leading-[1.12] text-ink md:text-5xl md:leading-[54px]">Nossos serviços</h2>
         <div className="mt-6 flex flex-col gap-6 text-lg leading-7">
           {servicesIntro.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
@@ -65,17 +65,17 @@ export function ServiceIndex() {
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block font-display text-[26px] leading-8 font-medium text-indigo md:text-[32px] md:leading-10">
+                  <span className="block font-display text-[26px] leading-8 font-medium text-ink md:text-[32px] md:leading-10">
                     {service.title}
                   </span>
-                  <span className="mt-1 block text-base leading-6 font-normal text-indigo/85 md:text-lg md:leading-[26px]">
+                  <span className="mt-1 block text-base leading-6 font-normal text-ink/85 md:text-lg md:leading-[26px]">
                     {service.text}
                   </span>
                 </span>
-                <Plus aria-hidden className="mt-1 size-6 shrink-0 self-center text-indigo group-aria-expanded/accordion-trigger:hidden md:mt-0" />
-                <Minus aria-hidden className="mt-1 hidden size-6 shrink-0 self-center text-indigo group-aria-expanded/accordion-trigger:inline md:mt-0" />
+                <Plus aria-hidden className="mt-1 size-6 shrink-0 self-center text-ink group-aria-expanded/accordion-trigger:hidden md:mt-0" />
+                <Minus aria-hidden className="mt-1 hidden size-6 shrink-0 self-center text-ink group-aria-expanded/accordion-trigger:inline md:mt-0" />
               </AccordionTrigger>
-              <AccordionContent className="pt-4 pr-0 pb-1 pl-16 text-lg leading-7 text-indigo md:pt-5 md:pl-20">
+              <AccordionContent className="pt-4 pr-0 pb-1 pl-16 text-lg leading-7 text-ink md:pt-5 md:pl-20">
                 <p>{service.body}</p>
                 <dl className="mt-5 grid gap-3 text-[15px] leading-6">
                   <div>

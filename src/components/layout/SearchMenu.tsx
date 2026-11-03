@@ -42,7 +42,7 @@ export function SearchMenu({
       <Popover open={open} onOpenChange={onOpenChange}>
         <PopoverTrigger asChild>
           <button type="button" aria-label="Buscar no site" className="relative z-50 grid size-10 place-items-center">
-            <img src={searchIcon} alt="" className="size-6" />
+            <img src={searchIcon} alt="" className="size-6 dark:brightness-0 dark:invert" />
           </button>
         </PopoverTrigger>
         <PopoverContent
@@ -51,7 +51,7 @@ export function SearchMenu({
           className="z-50 w-[min(480px,calc(100vw-2rem))] rounded-[20px] border-none p-4 shadow-xl"
         >
           <div className="flex items-center gap-2 rounded-xl border border-line px-3">
-            <img src={searchIcon} alt="" className="size-4" />
+            <img src={searchIcon} alt="" className="size-4 dark:brightness-0 dark:invert" />
             <Input
               value={query}
               onChange={(event) => {
@@ -131,7 +131,7 @@ export function SearchMenu({
               {results.length > 6 && !expanded ? (
                 <button
                   type="button"
-                  className="mt-2 text-[15px] font-extrabold text-indigo"
+                  className="mt-2 text-[15px] font-extrabold text-ink"
                   onClick={() => setExpanded(true)}
                 >
                   Ver todos

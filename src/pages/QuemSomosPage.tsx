@@ -49,7 +49,7 @@ export function QuemSomosPage() {
   }
 
   return (
-    <div className="bg-white">
+    <div className="bg-surface">
       <PageHero
         background="#0d6353"
         title="Quem somos"
@@ -73,17 +73,17 @@ export function QuemSomosPage() {
           ))}
         </div>
         <div className="mt-6 flex items-center gap-4 text-[15px] font-medium text-violet">
-          <Button type="button" variant="outline" className="size-14 rounded-full border-2 border-indigo" onClick={() => setOpen((value) => (value + chapters.length - 1) % chapters.length)} aria-label="Capítulo anterior">
+          <Button type="button" variant="outline" className="size-14 rounded-full border-2 border-ink" onClick={() => setOpen((value) => (value + chapters.length - 1) % chapters.length)} aria-label="Capítulo anterior">
             ←
           </Button>
           Capítulo anterior · Próximo
-          <Button type="button" variant="outline" className="size-14 rounded-full border-2 border-indigo" onClick={() => setOpen((value) => (value + 1) % chapters.length)} aria-label="Próximo capítulo">
+          <Button type="button" variant="outline" className="size-14 rounded-full border-2 border-ink" onClick={() => setOpen((value) => (value + 1) % chapters.length)} aria-label="Próximo capítulo">
             →
           </Button>
         </div>
       </section>
 
-      <section id="equipe" className="bg-white px-6 py-24 md:px-20">
+      <section id="equipe" className="bg-surface px-6 py-24 md:px-20">
         <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-12">
           <div className="flex flex-col gap-4">
             <h2 className="font-display text-5xl leading-[54px] tracking-[-0.48px]">Nossa equipe</h2>
@@ -117,10 +117,10 @@ export function QuemSomosPage() {
           >
             {person ? (
               <div className="relative flex items-center justify-center">
-                <button type="button" className="absolute left-0 flex size-14 items-center justify-center rounded-full border-2 border-indigo bg-white text-2xl" onClick={() => step(-1)} aria-label="Pessoa anterior">
+                <button type="button" className="absolute left-0 flex size-14 items-center justify-center rounded-full border-2 border-ink bg-surface text-2xl" onClick={() => step(-1)} aria-label="Pessoa anterior">
                   ←
                 </button>
-                <div className="flex w-full max-w-[600px] flex-col items-center gap-4 rounded-[20px] bg-white px-10 pt-8 pb-10">
+                <div className="flex w-full max-w-[600px] flex-col items-center gap-4 rounded-[20px] bg-surface px-10 pt-8 pb-10">
                   <div className="flex w-full items-center">
                     <span className="size-10" />
                     <p className="flex-1 text-center text-[13px] font-medium text-violet">Mini bio</p>
@@ -132,9 +132,9 @@ export function QuemSomosPage() {
                   <Portrait src={person.photo} face={person.face} color={person.color} className="size-[120px]" />
                   <DialogTitle className="text-center font-display text-[28px] font-medium">{person.name}</DialogTitle>
                   <DialogDescription className="text-center text-base font-medium text-violet">{person.role}</DialogDescription>
-                  {person.bio ? <p className="text-[15px] leading-[1.5] text-indigo">{person.bio}</p> : null}
+                  {person.bio ? <p className="text-[15px] leading-[1.5] text-ink">{person.bio}</p> : null}
                 </div>
-                <button type="button" className="absolute right-0 flex size-14 items-center justify-center rounded-full border-2 border-indigo bg-white text-2xl" onClick={() => step(1)} aria-label="Próxima pessoa">
+                <button type="button" className="absolute right-0 flex size-14 items-center justify-center rounded-full border-2 border-ink bg-surface text-2xl" onClick={() => step(1)} aria-label="Próxima pessoa">
                   →
                 </button>
               </div>
@@ -143,7 +143,7 @@ export function QuemSomosPage() {
         </Dialog>
       </section>
 
-      <section id="como-trabalhamos" className="bg-white">
+      <section id="como-trabalhamos" className="bg-surface">
         <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-16 px-6 py-24 md:px-20">
           <div className="flex flex-col gap-12 lg:flex-row lg:items-center">
             <div className="h-[400px] w-full max-w-[480px] shrink-0 overflow-hidden rounded-[20px] bg-paper">
@@ -219,7 +219,7 @@ function ChapterRail({
       </div>
       <div
         aria-hidden={!open}
-        className={`absolute inset-y-0 left-0 overflow-hidden p-10 text-indigo transition-opacity ease-out motion-reduce:transition-none ${open ? "opacity-100 delay-150 duration-[450ms]" : "pointer-events-none opacity-0 duration-200"}`}
+        className={`absolute inset-y-0 left-0 overflow-hidden p-10 text-ink transition-opacity ease-out motion-reduce:transition-none ${open ? "opacity-100 delay-150 duration-[450ms]" : "pointer-events-none opacity-0 duration-200"}`}
         style={{ width: textWidth ? `${textWidth}px` : "100%" }}
       >
         <p className="text-[13px] font-extrabold tracking-[1.04px] text-violet">{item.year}</p>

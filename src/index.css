@@ -9,35 +9,37 @@
   --font-display: "Roboto Slab", ui-serif, Georgia, serif;
   --color-indigo: #493975;
   --color-orange: #ff8327;
-  --color-violet: #8146cb;
-  --color-paper: #f5f2eb;
-  --color-line: #e6e1d6;
+  --color-violet: var(--violet);
+  --color-paper: var(--paper);
+  --color-line: var(--line);
   --color-lime: #d0e770;
   --color-mint: #01c689;
   --color-green: #0d6353;
   --color-lavender: #9ca7ef;
   --color-blue: #1157f3;
-  --color-navy: #153792;
+  --color-navy: var(--navy);
   --color-pink-light: #faa4ff;
   --color-pink: #ef5ca1;
-  --color-background: #ffffff;
-  --color-foreground: #493975;
-  --color-card: #ffffff;
-  --color-card-foreground: #493975;
-  --color-popover: #ffffff;
-  --color-popover-foreground: #493975;
-  --color-primary: #ff8327;
-  --color-primary-foreground: #493975;
-  --color-secondary: #f5f2eb;
-  --color-secondary-foreground: #493975;
-  --color-muted: #f5f2eb;
-  --color-muted-foreground: #8146cb;
-  --color-accent: #f5f2eb;
-  --color-accent-foreground: #493975;
-  --color-destructive: #b42318;
-  --color-border: #e6e1d6;
-  --color-input: #e6e1d6;
-  --color-ring: #8146cb;
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
   --radius-sm: 8px;
   --radius-md: 20px;
   --radius-lg: 24px;
@@ -64,21 +66,25 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    background: var(--background);
+    min-height: 100vh;
+    min-height: 100dvh;
     @apply font-sans;
   }
 
   body {
     margin: 0;
-    background: var(--color-paper);
-    color: var(--color-indigo);
     font-family: var(--font-sans);
     font-size: 18px;
     line-height: 29px;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
     @apply bg-background text-foreground;
   }
 
   #root {
     min-height: 100vh;
+    min-height: 100dvh;
   }
 
   button,
@@ -93,7 +99,39 @@
   }
 }
 
+/* Beats layered utilities such as text-sm. iOS zooms any focused field under 16px, including landscape. */
+input:not([type="checkbox"], [type="radio"], [type="range"], [type="button"], [type="submit"], [type="reset"], [type="image"], [type="hidden"], [type="file"]),
+textarea,
+select {
+  font-size: max(16px, 1rem);
+}
+
+html.nav-open,
+html.nav-open body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.mobile-nav {
+  position: fixed;
+  z-index: 40;
+  right: 0;
+  left: 0;
+  top: var(--header-bar, 88px);
+  height: calc(100vh - var(--header-bar, 88px));
+  height: calc(100svh - var(--header-bar, 88px));
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  overscroll-behavior: contain;
+}
+
 :root {
+  color-scheme: light;
+  --paper: #f5f2eb;
+  --surface: #ffffff;
+  --ink: #493975;
+  --violet: #8146cb;
+  --navy: #153792;
+  --line: #e6e1d6;
   --background: #ffffff;
   --foreground: #493975;
   --card: #ffffff;
@@ -129,24 +167,31 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  color-scheme: dark;
+  --paper: #14101f;
+  --surface: #241c38;
+  --ink: #f6f1ff;
+  --violet: #d7c6ff;
+  --navy: #c9d4ff;
+  --line: #413858;
+  --background: #14101f;
+  --foreground: #f6f1ff;
+  --card: #241c38;
+  --card-foreground: #f6f1ff;
+  --popover: #2e2548;
+  --popover-foreground: #f6f1ff;
+  --primary: #ff8327;
+  --primary-foreground: #2a1848;
+  --secondary: #2e2548;
+  --secondary-foreground: #f6f1ff;
+  --muted: #2e2548;
+  --muted-foreground: #d7c6ff;
+  --accent: #2e2548;
+  --accent-foreground: #f6f1ff;
+  --destructive: #ff8d84;
+  --border: #413858;
+  --input: #4d4368;
+  --ring: #d7c6ff;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
