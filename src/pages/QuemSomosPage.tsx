@@ -5,16 +5,24 @@ import { chapters, steps, team } from "@/content/institutional"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 
 export function QuemSomosPage() {
   const [open, setOpen] = useState(0)
+  const [active, setActive] = useState<number | null>(null)
   const chapter = chapters[open]
+  const person = active === null ? null : team[active]
+
+  function step(delta: number) {
+    setActive((current) => {
+      const index = current ?? 0
+      return (index + delta + team.length) % team.length
+    })
+  }
 
   return (
     <div className="bg-white">
@@ -73,30 +81,71 @@ export function QuemSomosPage() {
         </div>
       </section>
 
-      <section id="equipe" className="bg-paper px-6 py-24 md:px-20">
-        <div className="mx-auto w-full max-w-[1280px]">
-          <h2 className="font-display text-5xl leading-[54px]">Equipe</h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {team.map((person) => (
-              <Dialog key={person.name}>
-                <DialogTrigger asChild>
-                  <button type="button" className="rounded-[20px] bg-white p-8 text-left">
-                    <p className="font-display text-[32px] leading-[38px] font-medium">{person.name}</p>
-                    <p className="mt-2 text-[15px] font-medium text-violet">{person.role}</p>
-                    <p className="mt-6 text-[13px] font-extrabold tracking-[1.04px] uppercase">Ler bio</p>
-                  </button>
-                </DialogTrigger>
-                <DialogContent className="max-w-lg">
-                  <DialogHeader>
-                    <DialogTitle className="font-display text-3xl">{person.name}</DialogTitle>
-                    <DialogDescription>{person.role}</DialogDescription>
-                  </DialogHeader>
-                  <p className="text-lg leading-[29px] text-indigo">{person.bio}</p>
-                </DialogContent>
-              </Dialog>
-            ))}
+      <section id="equipe" className="bg-white px-6 py-24 md:px-20">
+        <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-12">
+          <div className="flex flex-col gap-4">
+            <h2 className="font-display text-5xl leading-[54px] tracking-[-0.48px]">Nossa equipe</h2>
+            <p className="text-[22px] leading-[34px]">
+              Pessoas que vieram da sala de aula, da gestão pública e da pesquisa, unidas pela mesma escuta.
+            </p>
+          </div>
+          <div className="flex flex-col gap-10">
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-10">
+              {team.slice(0, 4).map((member, index) => (
+                <PersonCard key={member.name} person={member} onOpen={() => setActive(index)} />
+              ))}
+            </div>
+            <div className="flex">
+              {team.slice(4).map((member, index) => (
+                <PersonCard key={member.name} person={member} onOpen={() => setActive(index + 4)} />
+              ))}
+            </div>
           </div>
         </div>
+        <Dialog open={person !== null} onOpenChange={(next) => { if (!next) setActive(null) }}>
+          <DialogContent
+            showCloseButton={false}
+            overlayClassName="bg-black/50"
+            className="max-w-[760px] border-0 bg-transparent p-0 shadow-none ring-0 sm:max-w-[760px]"
+            onKeyDown={(event) => {
+              if (event.key === "ArrowRight") {
+                event.preventDefault()
+                step(1)
+              }
+              if (event.key === "ArrowLeft") {
+                event.preventDefault()
+                step(-1)
+              }
+            }}
+          >
+            {person ? (
+              <div className="relative flex items-center justify-center">
+                <button type="button" className="absolute left-0 flex size-14 items-center justify-center rounded-full border-2 border-indigo bg-white text-2xl" onClick={() => step(-1)} aria-label="Pessoa anterior">
+                  ←
+                </button>
+                <div className="flex w-full max-w-[600px] flex-col items-center gap-4 rounded-[20px] bg-white px-10 pt-8 pb-10">
+                  <div className="flex w-full items-center">
+                    <span className="size-10" />
+                    <p className="flex-1 text-center text-[13px] font-medium text-violet">Mini bio</p>
+                    <DialogClose className="flex size-10 items-center justify-center rounded-full bg-indigo text-2xl leading-none font-extrabold text-white">
+                      ×
+                      <span className="sr-only">Fechar</span>
+                    </DialogClose>
+                  </div>
+                  <span className="size-[120px] overflow-hidden rounded-full" style={{ backgroundColor: person.color }}>
+                    <img src={person.photo} alt="" className="size-full object-cover" />
+                  </span>
+                  <DialogTitle className="text-center font-display text-[28px] font-medium">{person.name}</DialogTitle>
+                  <DialogDescription className="text-center text-base font-medium text-violet">{person.role}</DialogDescription>
+                  {person.bio ? <p className="text-[15px] leading-[1.5] text-indigo">{person.bio}</p> : null}
+                </div>
+                <button type="button" className="absolute right-0 flex size-14 items-center justify-center rounded-full border-2 border-indigo bg-white text-2xl" onClick={() => step(1)} aria-label="Próxima pessoa">
+                  →
+                </button>
+              </div>
+            ) : null}
+          </DialogContent>
+        </Dialog>
       </section>
 
       <section id="como-trabalhamos" className="mx-auto w-full max-w-[1440px] px-6 py-24 md:px-20">
@@ -112,5 +161,17 @@ export function QuemSomosPage() {
         </div>
       </section>
     </div>
+  )
+}
+
+function PersonCard({ person, onOpen }: { person: (typeof team)[number]; onOpen: () => void }) {
+  return (
+    <button type="button" onClick={onOpen} className="flex w-[240px] flex-col items-center gap-3 text-center">
+      <span className="size-[240px] overflow-hidden rounded-full" style={{ backgroundColor: person.color }}>
+        <img src={person.photo} alt="" className="size-full object-cover" />
+      </span>
+      <span className="w-full font-display text-2xl leading-[30px] font-medium">{person.name}</span>
+      <span className="w-full text-[15px] leading-[22px] font-medium text-violet">{person.role}</span>
+    </button>
   )
 }

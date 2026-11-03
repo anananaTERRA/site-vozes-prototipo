@@ -1,3 +1,8 @@
+import carolina from "@/assets/equipe-carolina.png"
+import vanessa from "@/assets/equipe-vanessa.png"
+import lais from "@/assets/equipe-lais.png"
+import ana from "@/assets/equipe-ana.png"
+import claudilene from "@/assets/equipe-claudilene.png"
 import type { ThemeId } from "@/content/themes"
 
 export const services = [
@@ -125,13 +130,35 @@ export const chapters = [
 export const team = [
   {
     name: "Carolina Campos",
-    role: "Fundadora",
-    bio: "Depois de atuar como professora, gestora pública e formadora de educadores, Carolina Campos percebeu que muitas soluções em educação já estavam disponíveis — faltava conectá-las a quem vive a escola. Em 2019, fundou a Vozes da Educação.",
+    role: "Fundadora e diretora executiva",
+    photo: carolina,
+    color: "#9ca7ef",
+    bio: "Professora e advogada com mestrado em Políticas Públicas, estudou inovação educacional na escola de extensão da Universidade de Harvard. Foi Diretora Pedagógica da ESFAPEGE, a escola de formação de professores em Sobral/CE, além de Secretária Municipal de Educação de Gravatá/PE. Assessorou a Diretoria de Formação dos Profissionais da Educação da Secretaria de Educação Básica/MEC. É membro do Conselho do Movimento Mapa Educação e do Conselho Representativo da Fundação Lemann, além de pesquisadora associada do CPRE / Teachers College / Columbia University. Acredita que as escolas podem ser espaços melhores, mais humanos e afetivos para educadores e estudantes. Fora do Vozes: sou mãe de um rapaz e de 2 gatos, mosaiquista e tenho paixão por pipoca, discos de vinil e cultura brasileira!",
   },
   {
-    name: "Laís",
-    role: "Pesquisa",
-    bio: "Conduz os levantamentos e a leitura de evidências que orientam os projetos, do diagnóstico ao material que chega na escola.",
+    name: "Vanessa Terra",
+    role: "Coordenadora de projetos",
+    photo: vanessa,
+    color: "#d0e770",
+  },
+  {
+    name: "Laís Fonseca",
+    role: "Analista de Pesquisa e Inovação",
+    photo: lais,
+    color: "#9ca7ef",
+    bio: "Sou formada em Engenharia Civil pela USP, Licenciatura em Matemática e Pedagogia, e pós-graduada em Práticas da Educação Bilíngue. Atuei em escolas bilíngues com turmas do Ensino Fundamental, como professora autônoma com materiais didáticos autorais e como assistente administrativa em escola. Hoje, sou Analista de Pesquisa e Inovação no Vozes da Educação. Para mim, a educação é o que nos desperta como seres humanos e amplia nossas possibilidades. Fora do trabalho, sou apaixonada por música e gosto de aprender um pouco de cada instrumento.",
+  },
+  {
+    name: "Ana Terra Viana",
+    role: "Designer Gráfica",
+    photo: ana,
+    color: "#faa4ff",
+  },
+  {
+    name: "Claudilene Santos",
+    role: "Analista Financeiro",
+    photo: claudilene,
+    color: "#01c689",
   },
 ]
 
