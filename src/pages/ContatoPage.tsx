@@ -45,15 +45,18 @@ export function ContatoPage() {
       email: "",
       instituicao: "",
       whatsapp: "",
-      assunto: params.get("assunto") ?? "",
-      mensagem: "",
+      assunto: params.get("assunto") ?? (params.get("servico") ? "parceria" : ""),
+      mensagem: params.get("servico") ? `Quero conversar sobre ${params.get("servico")}.` : "",
       lgpd: false,
     },
   })
 
   useEffect(() => {
     const assunto = params.get("assunto")
+    const servico = params.get("servico")
     if (assunto) form.setValue("assunto", assunto)
+    else if (servico) form.setValue("assunto", "parceria")
+    if (servico) form.setValue("mensagem", `Quero conversar sobre ${servico}.`)
   }, [params, form])
 
   const mensagem = form.watch("mensagem")

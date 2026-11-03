@@ -5,42 +5,71 @@ import ana from "@/assets/equipe-ana.png"
 import claudilene from "@/assets/equipe-claudilene.png"
 import type { ThemeId } from "@/content/themes"
 
+export const servicesIntro = [
+  "Violência, bullying, racismo, emergências climáticas, saúde mental: gestores e educadores enfrentam questões complexas e precisam de ferramentas para respondê-las com eficiência, profundidade e segurança.",
+  "Atuamos em seis frentes complementares, que podem ser contratadas separadamente ou combinadas conforme a necessidade da sua escola, rede ou organização.",
+] as const
+
 export const services = [
   {
     id: "levantamentos",
     title: "Levantamentos",
     face: "carinha-1",
-    text: "Diagnósticos e leituras de contexto para decidir com evidência, a partir de quem vive a escola.",
+    accent: "#153792",
+    text: "Evidências nacionais e internacionais organizadas para apoiar decisões.",
+    body: "Os levantamentos reúnem, comparam e sistematizam o que redes de ensino no Brasil e em outros países já fizeram diante de um mesmo desafio. Partimos de uma dor ou pergunta concreta e, a partir dela, fazemos a curadoria de políticas, protocolos e resultados disponíveis. Ao final, a instituição recebe um relatório estruturado, com casos comparados, lições aprendidas e recomendações adaptadas à sua realidade, pronto para orientar decisões e apoiar o diálogo com equipes e parceiros institucionais.",
+    audience: "Redes de ensino, fundações, organizações do terceiro setor e mandatos parlamentares.",
+    delivery: "Relatório, painel de dados e oficina de devolutiva.",
   },
   {
     id: "facilitacao",
     title: "Facilitação",
     face: "carinha-2",
-    text: "Encontros que organizam a escuta e a decisão de quem vai implementar.",
+    accent: "#1157f3",
+    text: "Encontros e oficinas que transformam diferentes vozes em decisões compartilhadas.",
+    body: "A facilitação desenha e conduz encontros em que gestores, educadores e parceiros chegam a uma decisão compartilhada. A pauta nasce do desafio da instituição. Cuidamos da escuta entre vozes diferentes e devolvemos o que foi combinado em linguagem que a equipe consegue usar na sequência.",
+    audience: "Equipes de secretarias, redes e organizações que precisam decidir juntas.",
+    delivery: "Desenho do encontro, condução e registro das decisões.",
   },
   {
     id: "imersoes",
     title: "Imersões",
     face: "carinha-3",
-    text: "Jornadas presenciais para alinhar redes, equipes e lideranças em torno de um desafio.",
+    accent: "#493975",
+    text: "Experiências intensivas para conhecer de perto práticas que funcionam.",
+    body: "As imersões levam equipes a ver de perto uma prática que já funciona em outro contexto. O percurso junta visita, conversa com quem implementa e tempo para traduzir o que foi observado à realidade de quem volta para a própria rede, escola ou organização.",
+    audience: "Lideranças e equipes que precisam alinhar um desafio em comum.",
+    delivery: "Roteiro da imersão, mediação e síntese do que levar de volta.",
   },
   {
     id: "materiais",
     title: "Materiais Orientadores",
     face: "carinha-4",
-    text: "Documentos didáticos para quem está no chão da escola usar, e não só arquivar.",
+    accent: "#9ca7ef",
+    text: "Guias e protocolos que traduzem evidências em orientações práticas.",
+    body: "Os materiais orientadores traduzem evidências em guias e protocolos que cabem na rotina de quem implementa. O texto é didático, o formato é o que a equipe realmente abre, e o conteúdo parte do contexto de uso, não de um modelo genérico para arquivar.",
+    audience: "Educadores, equipes técnicas e quem implementa a política no dia a dia.",
+    delivery: "Guia, protocolo ou documento pronto para uso.",
   },
   {
     id: "consultorias",
     title: "Consultorias",
     face: "carinha-5",
-    text: "Acompanhamento sob medida, do desafio à implementação.",
+    accent: "#8146cb",
+    text: "Assessoria técnica para apoiar o desenho e a implementação de políticas.",
+    body: "A consultoria acompanha o desenho e a implementação de uma política ou programa. O trabalho começa pela escuta de quem vai executar e segue nas etapas em que a decisão precisa virar prática, com assessoria técnica ajustada à instituição.",
+    audience: "Gestores e equipes que estão desenhando ou implementando uma política.",
+    delivery: "Assessoria contínua, com entregas combinadas para cada etapa.",
   },
   {
     id: "cursos",
     title: "Cursos",
     face: "carinha-6",
-    text: "Formação para educadores e gestores, desenhada a partir do contexto.",
+    accent: "#01c689",
+    text: "Formações que conectam evidências à prática de educadores.",
+    body: "Os cursos formam educadores e gestores a partir do contexto em que eles trabalham. A evidência entra como ferramenta de aula e de gestão, conectada à prática, e não como leitura separada do dia a dia da escola.",
+    audience: "Educadores e gestores de escolas, redes e organizações.",
+    delivery: "Formação desenhada para o grupo, com materiais de apoio.",
   },
 ] as const
 
@@ -133,6 +162,7 @@ export const team = [
     role: "Fundadora e diretora executiva",
     photo: carolina,
     color: "#9ca7ef",
+    face: { x: 62.1, y: 46.8 },
     bio: "Professora e advogada com mestrado em Políticas Públicas, estudou inovação educacional na escola de extensão da Universidade de Harvard. Foi Diretora Pedagógica da ESFAPEGE, a escola de formação de professores em Sobral/CE, além de Secretária Municipal de Educação de Gravatá/PE. Assessorou a Diretoria de Formação dos Profissionais da Educação da Secretaria de Educação Básica/MEC. É membro do Conselho do Movimento Mapa Educação e do Conselho Representativo da Fundação Lemann, além de pesquisadora associada do CPRE / Teachers College / Columbia University. Acredita que as escolas podem ser espaços melhores, mais humanos e afetivos para educadores e estudantes. Fora do Vozes: sou mãe de um rapaz e de 2 gatos, mosaiquista e tenho paixão por pipoca, discos de vinil e cultura brasileira!",
   },
   {
@@ -140,12 +170,14 @@ export const team = [
     role: "Coordenadora de projetos",
     photo: vanessa,
     color: "#d0e770",
+    face: { x: 40.9, y: 40.4 },
   },
   {
     name: "Laís Fonseca",
     role: "Analista de Pesquisa e Inovação",
     photo: lais,
     color: "#9ca7ef",
+    face: { x: 59.4, y: 37.7 },
     bio: "Sou formada em Engenharia Civil pela USP, Licenciatura em Matemática e Pedagogia, e pós-graduada em Práticas da Educação Bilíngue. Atuei em escolas bilíngues com turmas do Ensino Fundamental, como professora autônoma com materiais didáticos autorais e como assistente administrativa em escola. Hoje, sou Analista de Pesquisa e Inovação no Vozes da Educação. Para mim, a educação é o que nos desperta como seres humanos e amplia nossas possibilidades. Fora do trabalho, sou apaixonada por música e gosto de aprender um pouco de cada instrumento.",
   },
   {
@@ -153,27 +185,37 @@ export const team = [
     role: "Designer Gráfica",
     photo: ana,
     color: "#faa4ff",
+    face: { x: 56.5, y: 55.7 },
   },
   {
     name: "Claudilene Santos",
     role: "Analista Financeiro",
     photo: claudilene,
     color: "#01c689",
+    face: { x: 54.1, y: 47.5 },
   },
 ]
 
-export const steps = [
+export const values = [
   {
-    title: "Escuta",
-    text: "Cada projeto começa pela escuta do contexto e dos desafios de quem vai implementar.",
+    title: "Antecipação",
+    text: "Estamos sempre um passo à frente, acompanhando o que há de mais atual e relevante no cenário da educação mundial.",
   },
   {
-    title: "Desenho",
-    text: "A solução vem depois, desenhada sob medida, com o que há de mais útil na evidência.",
+    title: "Tradução",
+    text: "Transformamos o que é complexo em linguagem acessível para todos que se envolvem com a educação.",
   },
   {
-    title: "Implementação",
-    text: "O material e o acompanhamento precisam caber na rotina de quem está no chão da escola.",
+    title: "Humanidade",
+    text: "Para nós, o cuidado com as pessoas é primordial. Cada projeto carrega afeto por quem está do outro lado.",
+  },
+  {
+    title: "Fundamentação",
+    text: "Produzimos soluções fundamentadas em conhecimento verificável, análise cuidadosa e aplicação prática.",
+  },
+  {
+    title: "Colaboração",
+    text: "Criamos parceria com instituições, gestores e educadores para encontrar, criar e disseminar o que há de melhor em educação.",
   },
 ]
 

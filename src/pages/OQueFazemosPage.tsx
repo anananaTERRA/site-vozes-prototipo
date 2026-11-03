@@ -1,15 +1,8 @@
 import { Link } from "react-router"
-import face1 from "@/assets/carinha-1.svg"
-import face2 from "@/assets/carinha-2.svg"
-import face3 from "@/assets/carinha-3.svg"
-import face4 from "@/assets/carinha-4.svg"
-import face5 from "@/assets/carinha-5.svg"
-import face6 from "@/assets/carinha-6.svg"
 import photo from "@/assets/photo-servicos.png"
+import { ServiceIndex } from "@/components/content/ServiceIndex"
 import { PageHero } from "@/components/layout/PageHero"
-import { partners, segments, services } from "@/content/institutional"
-
-const faces = [face1, face2, face3, face4, face5, face6]
+import { partners, segments } from "@/content/institutional"
 
 export function OQueFazemosPage() {
   return (
@@ -23,18 +16,7 @@ export function OQueFazemosPage() {
         image={photo}
         imageAlt="Ambiente escolar"
       />
-      <section id="servicos" className="mx-auto w-full max-w-[1440px] px-6 py-24 md:px-20">
-        <h2 className="font-display text-5xl leading-[54px]">Nossos serviços</h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {services.map((service, index) => (
-            <article id={service.id} key={service.id} className="scroll-mt-24 rounded-[20px] bg-paper p-8">
-              <img src={faces[index]} alt="" className="h-8 w-8 object-contain" />
-              <h3 className="mt-8 font-display text-[32px] leading-[38px] font-medium">{service.title}</h3>
-              <p className="mt-4 text-lg leading-[29px]">{service.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <ServiceIndex />
       <section className="bg-paper px-6 py-24 md:px-20">
         <div className="mx-auto w-full max-w-[1280px]">
           <h2 className="font-display text-5xl leading-[54px]">Com quem trabalhamos</h2>
