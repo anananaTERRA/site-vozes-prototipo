@@ -11,7 +11,7 @@ import { VozesPage } from "@/pages/VozesPage"
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, "")
 
-export const router = createBrowserRouter([
+export const appRoutes = [
   {
     element: <SiteLayout />,
     children: [
@@ -27,4 +27,6 @@ export const router = createBrowserRouter([
     ],
   },
   { path: "*", element: <NotFoundPage /> },
-], basename ? { basename } : undefined)
+]
+
+export const router = createBrowserRouter(appRoutes, basename ? { basename } : undefined)

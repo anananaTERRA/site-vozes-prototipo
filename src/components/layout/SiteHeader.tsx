@@ -10,15 +10,17 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle"
 import { cn } from "cn"
 
 const links = [
-  { to: "/quem-somos", label: "Quem somos" },
-  { to: "/o-que-fazemos", label: "O que fazemos" },
-  { to: "/vozes", label: "Vozes na mídia" },
-  { to: "/publicacoes", label: "Publicações" },
-]
+  { id: "inicio", to: "/", label: "Início" },
+  { id: "quem-somos", to: "/quem-somos", label: "Quem somos" },
+  { id: "o-que-fazemos", to: "/o-que-fazemos", label: "O que fazemos" },
+  { id: "vozes", to: "/vozes", label: "Vozes na mídia" },
+  { id: "publicacoes", to: "/publicacoes", label: "Publicações" },
+] as const
 
 type BarBox = { left: number; width: number }
 
 function isCurrent(pathname: string, to: string) {
+  if (to === "/") return pathname === "/"
   return pathname === to || pathname.startsWith(`${to}/`)
 }
 
@@ -53,10 +55,10 @@ export function SiteHeader() {
   const [boxes, setBoxes] = useState<Record<string, BarBox>>({})
   const [hovered, setHovered] = useState<string | null>(null)
 
-  const activeTo = links.find((item) => isCurrent(location.pathname, item.to))?.to ?? null
-  const activeBox = activeTo ? boxes[activeTo] : undefined
-  const hoverTo = hovered && hovered !== activeTo ? hovered : null
-  const hoverBox = hoverTo ? boxes[hoverTo] : undefined
+  const activeId = links.find((item) => isCurrent(location.pathname, item.to))?.id ?? null
+  const activeBox = activeId ? boxes[activeId] : undefined
+  const hoverId = hovered && hovered !== activeId ? hovered : null
+  const hoverBox = hoverId ? boxes[hoverId] : undefined
 
   useEffect(() => {
     const state = location.state as { openSearch?: boolean } | null
@@ -95,18 +97,18 @@ export function SiteHeader() {
       const navBox = nav.getBoundingClientRect()
       const next: Record<string, BarBox> = {}
       for (const item of links) {
-        const el = linkRefs.current[item.to]
+        const el = linkRefs.current[item.id]
         if (!el) continue
         const rect = el.getBoundingClientRect()
-        next[item.to] = {
+        next[item.id] = {
           left: Math.round((rect.left - navBox.left) * 10) / 10,
           width: Math.round(rect.width * 10) / 10,
         }
       }
       setBoxes((prev) => {
         const unchanged = links.every((item) => {
-          const before = prev[item.to]
-          const after = next[item.to]
+          const before = prev[item.id]
+          const after = next[item.id]
           if (!before || !after) return false
           return Math.abs(before.left - after.left) < 0.5 && Math.abs(before.width - after.width) < 0.5
         })
@@ -118,11 +120,11 @@ export function SiteHeader() {
     const observer = new ResizeObserver(measure)
     observer.observe(nav)
     for (const item of links) {
-      const el = linkRefs.current[item.to]
+      const el = linkRefs.current[item.id]
       if (el) observer.observe(el)
     }
     return () => observer.disconnect()
-  }, [])
+  }, [location.pathname])
 
   useEffect(() => {
     const root = document.documentElement
@@ -221,15 +223,16 @@ export function SiteHeader() {
             onMouseLeave={() => setHovered(null)}
           >
             {links.map((item) => {
-              const active = item.to === activeTo
+              const active = item.id === activeId
               return (
                 <NavLink
-                  key={item.to}
+                  key={item.id}
                   to={item.to}
+                  end={item.to === "/"}
                   ref={(node) => {
-                    linkRefs.current[item.to] = node
+                    linkRefs.current[item.id] = node
                   }}
-                  onMouseEnter={() => setHovered(active ? null : item.to)}
+                  onMouseEnter={() => setHovered(active ? null : item.id)}
                   className="text-[13px] font-extrabold tracking-[1.04px] text-ink uppercase"
                 >
                   {item.label}
@@ -237,9 +240,9 @@ export function SiteHeader() {
               )
             })}
             <AnimatePresence>
-              {hoverBox && hoverBox.width > 0 && (
+              {hoverBox && hoverBox.width > 0 && hoverId && (
                 <motion.span
-                  key={hoverTo}
+                  key={hoverId}
                   aria-hidden
                   className="pointer-events-none absolute bottom-0 z-0 h-0.5 bg-violet/35"
                   style={{ left: hoverBox.left, width: hoverBox.width }}
@@ -306,9 +309,10 @@ export function SiteHeader() {
             >
               <ul className="flex flex-col">
                 {links.map((item) => (
-                  <li key={item.to} className="border-b border-line">
+                  <li key={item.id} className="border-b border-line">
                     <NavLink
                       to={item.to}
+                      end={item.to === "/"}
                       onClick={() => setMenuOpen(false)}
                       className="flex min-h-14 items-center justify-between gap-4 py-3 text-base font-extrabold tracking-[1.04px] text-ink uppercase"
                     >

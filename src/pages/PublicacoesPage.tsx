@@ -214,7 +214,7 @@ export function PostPublicacaoPage() {
   return (
     <article className="bg-surface">
       <header className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-16 md:grid-cols-[400px_1fr] md:px-20">
-        <img src={item.image} alt="" className="aspect-[3/4] w-full rounded-[20px] object-cover" />
+        <img src={item.image} alt={item.title} className="aspect-[3/4] w-full rounded-[20px] object-cover" />
         <div className="self-center">
           <p className="text-[15px] font-medium text-violet">
             <Link to="/publicacoes">Publicações</Link>

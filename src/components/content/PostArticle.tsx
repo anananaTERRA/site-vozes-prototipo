@@ -114,7 +114,7 @@ export function PostArticle({
         </dl>
       ) : null}
       <figure className="mx-auto w-full max-w-[1440px] px-6 md:px-20">
-        <img src={item.image} alt="" className="aspect-video w-full rounded-[20px] object-cover" />
+        <img src={item.image} alt={item.title} className="aspect-video w-full rounded-[20px] object-cover" />
         <figcaption className="mt-3 text-[15px] leading-[22px] text-violet">{item.caption}</figcaption>
       </figure>
       <div className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-16 md:grid-cols-[160px_640px] md:justify-center md:px-20">

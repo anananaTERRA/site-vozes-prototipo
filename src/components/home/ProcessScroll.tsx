@@ -76,32 +76,37 @@ export function ProcessScroll() {
               style={{ width: progress }}
             />
             <motion.div
-              className="absolute top-1/2 z-10 flex w-[min(100%,300px)] flex-col items-center"
-              style={{ left: progress, x: "-50%", y: "-50%" }}
+              className="absolute top-1/2 z-10 w-[min(100%,300px)]"
+              style={{ left: progress, x: "-50%" }}
             >
-              <div className="relative mb-4 min-h-[4.5rem] w-full text-center">
+              <div className="relative">
+                <div className="absolute right-0 bottom-full left-0 mb-5 grid w-full justify-items-center text-center">
+                  <motion.div
+                    className="col-start-1 row-start-1 text-xl leading-8 font-light tracking-wide text-white md:text-2xl md:leading-9"
+                    style={{ opacity: firstOpacity, scale: textScale }}
+                  >
+                    {steps[0].map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </motion.div>
+                  <motion.div
+                    className="col-start-1 row-start-1 text-xl leading-8 font-light tracking-wide text-white md:text-2xl md:leading-9"
+                    style={{ opacity: secondOpacity, scale: textScale }}
+                  >
+                    {steps[1].map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </motion.div>
+                </div>
                 <motion.div
-                  className="absolute inset-x-0 text-xl leading-8 font-light tracking-wide text-white md:text-2xl md:leading-9"
-                  style={{ opacity: firstOpacity, scale: textScale }}
-                >
-                  {steps[0].map((line) => (
-                    <span key={line} className="block">
-                      {line}
-                    </span>
-                  ))}
-                </motion.div>
-                <motion.div
-                  className="absolute inset-x-0 text-xl leading-8 font-light tracking-wide text-white md:text-2xl md:leading-9"
-                  style={{ opacity: secondOpacity, scale: textScale }}
-                >
-                  {steps[1].map((line) => (
-                    <span key={line} className="block">
-                      {line}
-                    </span>
-                  ))}
-                </motion.div>
+                  className="relative left-1/2 size-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-lg"
+                  style={{ scale: dotScale }}
+                />
               </div>
-              <motion.div className="size-6 shrink-0 rounded-full bg-white shadow-lg" style={{ scale: dotScale }} />
             </motion.div>
           </div>
         </div>

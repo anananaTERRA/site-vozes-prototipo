@@ -1,17 +1,18 @@
-import fs from "node:fs"
+/// <reference types="vitest/config" />
 import path from "node:path"
 import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
 import { defineConfig, type Plugin, type ProxyOptions } from "vite"
-
 function spaFallback(): Plugin {
   return {
     name: "spa-fallback",
     apply: "build",
-    closeBundle() {
+    async closeBundle() {
       const dist = path.resolve(__dirname, "dist")
-      const index = path.join(dist, "index.html")
-      if (fs.existsSync(index)) fs.copyFileSync(index, path.join(dist, "404.html"))
+      const { generateSeoFiles } = await import("./scripts/generate-seo-files")
+      generateSeoFiles(dist)
+      const { injectAndPrerenderSocialHtml } = await import("./scripts/social-html")
+      injectAndPrerenderSocialHtml(dist)
     },
   }
 }
@@ -37,4 +38,15 @@ export default defineConfig({
   },
   server: { proxy: { "/sanity-api": sanityProxy } },
   preview: { proxy: { "/sanity-api": sanityProxy } },
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./src/test/setup.ts"],
+    globals: true,
+    css: true,
+    coverage: {
+      provider: "v8",
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: ["src/test/**", "src/**/*.test.{ts,tsx}", "src/main.tsx"],
+    },
+  },
 })
