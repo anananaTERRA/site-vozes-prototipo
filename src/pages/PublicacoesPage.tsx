@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import { Link, Navigate, useParams, useSearchParams } from "react-router"
+import { Navigate, useParams, useSearchParams } from "react-router"
 import photo from "@/assets/photo-impacto.png"
 import { BrandButton } from "@/components/brand/BrandButton"
 import { PublicationCard } from "@/components/content/Cards"
