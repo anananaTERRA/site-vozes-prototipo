@@ -1,9 +1,9 @@
 import { Link } from "react-router"
 import carinha from "@/assets/carinha-canto.svg"
+import facebook from "@/assets/icon-facebook.svg"
 import instagram from "@/assets/icon-instagram.svg"
 import linkedin from "@/assets/icon-linkedin.svg"
 import whatsapp from "@/assets/icon-whatsapp.svg"
-import youtube from "@/assets/icon-youtube.svg"
 import logo from "@/assets/logo.svg"
 import peca1 from "@/assets/peca-1.svg"
 import peca2 from "@/assets/peca-2.svg"
@@ -14,9 +14,9 @@ import { MorphPillButton } from "@/components/brand/MorphPillButton"
 import { footerColumns } from "@/content/institutional"
 
 const social = [
-  { href: "https://www.linkedin.com", label: "LinkedIn", icon: linkedin },
-  { href: "https://www.instagram.com", label: "Instagram", icon: instagram },
-  { href: "https://www.youtube.com", label: "YouTube", icon: youtube },
+  { href: "https://br.linkedin.com/company/vozes-da-educação", label: "LinkedIn", icon: linkedin },
+  { href: "https://www.instagram.com/vozesdaeducacao_/", label: "Instagram", icon: instagram },
+  { href: "https://www.facebook.com/people/Vozes-da-Educação/100054698893381/", label: "Facebook", icon: facebook },
   { href: "https://wa.me/5511946292212", label: "WhatsApp", icon: whatsapp },
 ]
 
