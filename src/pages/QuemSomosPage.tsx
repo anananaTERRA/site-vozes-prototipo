@@ -203,7 +203,7 @@ function TeamFlipCard({ person, onOpen }: { person: TeamMember; onOpen: () => vo
         )}
       >
         <span className="absolute inset-0 overflow-hidden rounded-full [backface-visibility:hidden]" style={{ backgroundColor: person.color }}>
-          <img src={person.photo} alt="" className="absolute max-w-none" style={faceFrame(person.face)} />
+          <img src={person.photo} alt="" className="absolute inset-0 size-full object-cover" style={faceFrame(person.face)} />
         </span>
         {childhoodPhoto ? (
           <span
@@ -259,21 +259,13 @@ function Portrait({
 }) {
   return (
     <span className={`relative block overflow-hidden rounded-full ${className ?? ""}`} style={{ backgroundColor: color }}>
-      <img src={src} alt="" className="absolute max-w-none" style={faceFrame(face)} />
+      <img src={src} alt="" className="absolute inset-0 size-full object-cover" style={faceFrame(face)} />
     </span>
   )
 }
 
 function faceFrame(face: { x: number; y: number }) {
-  const fx = face.x / 100
-  const fy = face.y / 100
-  const targetX = 0.5
-  const targetY = 0.42
-  const scale = Math.max(targetX / fx, (1 - targetX) / (1 - fx), targetY / fy, (1 - targetY) / (1 - fy)) * 1.05
   return {
-    width: `${scale * 100}%`,
-    height: `${scale * 100}%`,
-    left: `${(targetX - fx * scale) * 100}%`,
-    top: `${(targetY - fy * scale) * 100}%`,
+    objectPosition: `${face.x}% ${face.y}%`,
   }
 }

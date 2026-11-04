@@ -10,6 +10,8 @@ type HistoryTimelineCarouselProps = {
 const STEP = 28
 const VISIBLE = 102
 const ACTIVE_SCALE = 2.08
+const ARROW_ZONE = 56
+const COMPACT_COPY_HEIGHT = 300
 const EASE = [0.16, 1, 0.3, 1] as const
 
 export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselProps) {
@@ -61,8 +63,8 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
   const travel = reduceMotion ? { duration: 0 } : { duration: 0.78, ease: EASE }
   const copyTravel = reduceMotion ? { duration: 0 } : { duration: 0.4, ease: EASE }
 
-  const copy = (
-    <div className="flex flex-col items-center text-center" aria-live="polite">
+  const copyBody = (
+    <div className="text-center" aria-live="polite">
       <AnimatePresence mode="wait">
         <motion.div
           key={chapter.year}
@@ -77,26 +79,29 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
           <p className="mt-4 text-base leading-[26px] md:text-lg md:leading-[29px]">{chapter.text}</p>
         </motion.div>
       </AnimatePresence>
-      <div className="pointer-events-auto mt-8 flex items-center justify-center gap-8">
-        <button
-          type="button"
-          className="flex size-11 items-center justify-center text-3xl text-ink transition-opacity disabled:opacity-30"
-          onClick={() => go(-1)}
-          disabled={active === 0}
-          aria-label="Marco anterior"
-        >
-          ←
-        </button>
-        <button
-          type="button"
-          className="flex size-11 items-center justify-center text-3xl text-ink transition-opacity disabled:opacity-30"
-          onClick={() => go(1)}
-          disabled={active === chapters.length - 1}
-          aria-label="Próximo marco"
-        >
-          →
-        </button>
-      </div>
+    </div>
+  )
+
+  const arrows = (
+    <div className="pointer-events-auto flex items-center justify-center gap-8">
+      <button
+        type="button"
+        className="flex size-11 items-center justify-center text-3xl text-ink transition-opacity disabled:opacity-30"
+        onClick={() => go(-1)}
+        disabled={active === 0}
+        aria-label="Marco anterior"
+      >
+        ←
+      </button>
+      <button
+        type="button"
+        className="flex size-11 items-center justify-center text-3xl text-ink transition-opacity disabled:opacity-30"
+        onClick={() => go(1)}
+        disabled={active === chapters.length - 1}
+        aria-label="Próximo marco"
+      >
+        →
+      </button>
     </div>
   )
 
@@ -127,18 +132,26 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
         </svg>
 
         {!compact ? (
-          <div
-            className="pointer-events-none absolute flex items-center justify-center"
-            style={{
-              left: "50%",
-              top: arcTop + 108,
-              width: Math.min(540, (width || 960) * 0.44),
-              bottom: 20,
-              transform: "translateX(-50%)",
-            }}
-          >
-            <div className="flex w-full justify-center">{copy}</div>
-          </div>
+          <>
+            <div
+              className="pointer-events-none absolute flex justify-center overflow-hidden"
+              style={{
+                left: "50%",
+                top: arcTop + 108,
+                width: Math.min(540, (width || 960) * 0.44),
+                bottom: ARROW_ZONE + 12,
+                transform: "translateX(-50%)",
+              }}
+            >
+              <div className="pointer-events-auto w-full">{copyBody}</div>
+            </div>
+            <div
+              className="pointer-events-none absolute inset-x-0 flex justify-center"
+              style={{ bottom: 12 }}
+            >
+              {arrows}
+            </div>
+          </>
         ) : null}
 
         {chapters.map((item, i) => {
@@ -197,7 +210,12 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
         })}
       </div>
 
-      {compact ? <div className="mx-auto mt-8 max-w-3xl">{copy}</div> : null}
+      {compact ? (
+        <div className="relative mx-auto mt-8 max-w-3xl" style={{ height: COMPACT_COPY_HEIGHT }}>
+          <div className="absolute inset-x-0 top-0 overflow-y-auto pb-2">{copyBody}</div>
+          <div className="absolute inset-x-0 bottom-0 flex justify-center">{arrows}</div>
+        </div>
+      ) : null}
     </div>
   )
 }
