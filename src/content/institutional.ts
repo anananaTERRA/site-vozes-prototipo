@@ -1,8 +1,12 @@
 import carolina from "@/assets/equipe-carolina.png"
+import carolinaChildhood from "@/assets/equipe-carolina-infancia.jpg"
 import vanessa from "@/assets/equipe-vanessa.png"
 import lais from "@/assets/equipe-lais.png"
+import laisChildhood from "@/assets/equipe-lais-infancia.jpg"
 import ana from "@/assets/equipe-ana.png"
+import anaChildhood from "@/assets/equipe-ana-infancia.jpg"
 import claudilene from "@/assets/equipe-claudilene.png"
+import claudileneChildhood from "@/assets/equipe-claudilene-infancia.jpg"
 import lemann from "@/assets/partners/fundacao-lemann.svg"
 import reuna from "@/assets/partners/reuna.svg"
 import b3 from "@/assets/partners/b3-social.png"
@@ -126,42 +130,59 @@ export const testimonials = [
   },
 ]
 
+export const historyIntro =
+  "O Vozes da Educação saiu de uma ideia para se tornar referência nacional em consultoria educacional, influenciando políticas públicas, apoiando gestões estaduais e impactando mais de 2.000 escolas em todo o Brasil. Tudo começou com uma mulher que acreditava, e ainda acredita, que a educação brasileira pode ser muito melhor."
+
+const chapterTone = { background: "#f5f2eb", color: "#493975" }
+
 export const chapters = [
   {
     year: "2019",
-    title: "Ouvir quem vive a escola",
-    background: "#ffffff",
-    color: "#493975",
-    text: "Depois de atuar como professora, gestora pública e formadora de educadores, Carolina Campos percebeu que muitas soluções em educação já estavam disponíveis — faltava conectá-las a quem vive a escola. Nasce a consultoria Vozes da Educação.",
-    kicker: "Fundação",
+    title: "Nasce uma Consultoria",
+    ...chapterTone,
+    text: "Depois de atuar como professora, gestora pública e formadora de educadores, Carolina Campos percebeu que muitas soluções em educação já estavam disponíveis no Brasil e no mundo, mas em geral, quem vive a escola no dia-a-dia não era suficientemente ouvido. Isso a motivou a criar o Vozes, em Fevereiro de 2019.",
   },
   {
-    year: "2020–2021",
-    title: "Reabrir as escolas",
-    background: "#d0e770",
-    color: "#493975",
-    text: "A pandemia fechou as escolas e a pergunta passou a ser como voltar com segurança. A Vozes ajudou redes a organizar protocolos, a comunicação com as famílias e o retorno presencial.",
+    year: "2020",
+    title: "A Pandemia, o Vozes e a reabertura das escolas",
+    ...chapterTone,
+    text: "Poucos meses depois, a pandemia fechou as escolas do mundo inteiro. Começamos a mapear como outros países estavam reabrindo as suas escolas e o nosso documento serviu de insumo para uma série de publicações. Ele foi traduzido para o inglês e distribuído globalmente. Até hoje, esses materiais orientam decisões de juízes, promotores e gestores públicos.",
   },
   {
-    year: "2021–2022",
-    title: "Recompor as aprendizagens",
-    background: "#153792",
-    color: "#ffffff",
-    text: "Com as escolas abertas, o desafio virou recuperar o que ficou para trás sem tratar o atraso como culpa de quem ensina.",
+    year: "2021",
+    title: "Iniciativas para mitigar impactos da pandemia nas redes públicas brasileiras",
+    ...chapterTone,
+    text: "Alguns parceiros nos procuraram para implementar estratégias de reabertura. Em um mês, alocamos consultores em 12 estados brasileiros. A meta foi 100% cumprida. Nosso levantamento sobre recomposição de aprendizagens chegou ao Ministério da Educação, ao CNE e foi apresentado a mais de 300 redes de ensino, inspirando a criação de uma escola de verão pela Prefeitura do Rio de Janeiro. Depois, nos debruçamos sobre a temática de saúde mental no pós-pandemia, analisando boas práticas em oito países. O trabalho apoiou mais de 400 redes de ensino, embasou um projeto de lei no Congresso e sustentou o relatório da COMEX na Câmara.",
+  },
+  {
+    year: "2022",
+    title: "Saúde Mental nas Escolas",
+    ...chapterTone,
+    text: "Criamos o PodCast “Vozes da Educação” e lançamos o Movimento “Aprendizagem Segura”, que teve como objetivo mostrar a intersecção entre saúde mental, trauma e educação para redes de ensino e escolas de todo o país. O que começou como um movimento, virou nossa forma de trabalhar e atuar, que perdura até hoje.",
   },
   {
     year: "2023",
-    title: "Cuidar da saúde mental",
-    background: "#faa4ff",
-    color: "#493975",
-    text: "O desgaste de educadores e estudantes entrou no centro do trabalho, com escuta e materiais que cabem na rotina da escola.",
+    title: "Violência nas escolas: protocolos de prevenção, proteção e segurança",
+    ...chapterTone,
+    text: "O ano marcado pelo aumento significativo do número de atentados de violência extrema nas escolas de todo o Brasil, também foi o ano que nos levou a desenvolver protocolos de enfrentamento às múltiplas violências escolares e encaminhamentos de saúde mental no ambiente escolar. Apoiamos redes municipais e estaduais no desenho, escrita e implementação de seus protocolos.",
   },
   {
-    year: "2024–2026",
-    title: "Responder às emergências",
-    background: "#0d6353",
-    color: "#ffffff",
-    text: "Enchentes, calor extremo e outras crises pedem resposta rápida e didática para quem precisa decidir no meio do acontecimento.",
+    year: "2024",
+    title: "As enchentes do Rio Grande do Sul e a Escola Resiliente",
+    ...chapterTone,
+    text: "As enchentes no Rio Grande do Sul destruíram escolas e deixaram comunidades inteiras em colapso. Em parceria com a SEDUC-RS e outros parceiros incríveis, ofertamos formações sobre acolhimento escolar e abordagem sensível ao trauma em contexto de crise climática.",
+  },
+  {
+    year: "2025",
+    title: "Iniciativas para fortalecer os sistemas educacionais frente às crises climáticas",
+    ...chapterTone,
+    text: "Lançamos, junto com grandes parceiros, o documento “Educação Resiliente”. No mesmo ano, publicamos o PLANCON Escolar, guia para elaboração de planos de contingência escolares para eventos climáticos, que está apoiando as mais de 2.700 escolas gaúchas.",
+  },
+  {
+    year: "2026",
+    title: "Seguimos ouvindo, sistematizando e ecoando as Vozes da Educação.",
+    ...chapterTone,
+    text: "Estamos ampliando a abrangência dos Planos de Contingência para outros estados brasileiros e lançamos a coletânea “Cadernos Educação e Emergências Climáticas”, graças ao apoio de parceiros que seguem acreditando no nosso trabalho. Seguimos respondendo aos desafios que a educação já conhece e nos preparamos para os que estão chegando, como o impacto do El Niño e de outras emergências em educação.",
   },
 ]
 
@@ -172,6 +193,8 @@ export const team = [
     photo: carolina,
     color: "#9ca7ef",
     face: { x: 62.1, y: 46.8 },
+    childhoodPhoto: carolinaChildhood,
+    dreamJobText: "Professora",
     bio: "Professora e advogada com mestrado em Políticas Públicas, estudou inovação educacional na escola de extensão da Universidade de Harvard. Foi Diretora Pedagógica da ESFAPEGE, a escola de formação de professores em Sobral/CE, além de Secretária Municipal de Educação de Gravatá/PE. Assessorou a Diretoria de Formação dos Profissionais da Educação da Secretaria de Educação Básica/MEC. É membro do Conselho do Movimento Mapa Educação e do Conselho Representativo da Fundação Lemann, além de pesquisadora associada do CPRE / Teachers College / Columbia University. Acredita que as escolas podem ser espaços melhores, mais humanos e afetivos para educadores e estudantes. Fora do Vozes: sou mãe de um rapaz e de 2 gatos, mosaiquista e tenho paixão por pipoca, discos de vinil e cultura brasileira!",
   },
   {
@@ -187,6 +210,8 @@ export const team = [
     photo: lais,
     color: "#9ca7ef",
     face: { x: 59.4, y: 37.7 },
+    childhoodPhoto: laisChildhood,
+    dreamJobText: "Psicóloga",
     bio: "Sou formada em Engenharia Civil pela USP, Licenciatura em Matemática e Pedagogia, e pós-graduada em Práticas da Educação Bilíngue. Atuei em escolas bilíngues com turmas do Ensino Fundamental, como professora autônoma com materiais didáticos autorais e como assistente administrativa em escola. Hoje, sou Analista de Pesquisa e Inovação no Vozes da Educação. Para mim, a educação é o que nos desperta como seres humanos e amplia nossas possibilidades. Fora do trabalho, sou apaixonada por música e gosto de aprender um pouco de cada instrumento.",
   },
   {
@@ -195,6 +220,8 @@ export const team = [
     photo: ana,
     color: "#faa4ff",
     face: { x: 56.5, y: 55.7 },
+    childhoodPhoto: anaChildhood,
+    dreamJobText: "Arqueóloga",
   },
   {
     name: "Claudilene Santos",
@@ -202,6 +229,8 @@ export const team = [
     photo: claudilene,
     color: "#01c689",
     face: { x: 54.1, y: 47.5 },
+    childhoodPhoto: claudileneChildhood,
+    dreamJobText: "Contadora",
   },
 ]
 

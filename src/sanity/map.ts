@@ -44,7 +44,17 @@ export type SanityPayload = {
   eventos?: RawArticle[] | null
   midia?: RawArticle[] | null
   publicacoes?: RawArticle[] | null
-  team?: { name?: string | null; role?: string | null; photo?: string | null; color?: string | null; faceX?: number | null; faceY?: number | null; bio?: string | null }[] | null
+  team?: {
+    name?: string | null
+    role?: string | null
+    photo?: string | null
+    childhoodPhoto?: string | null
+    color?: string | null
+    faceX?: number | null
+    faceY?: number | null
+    bio?: string | null
+    dreamJobText?: string | null
+  }[] | null
   partners?: { name?: string | null; src?: string | null; invertOnDark?: boolean | null }[] | null
   services?: { id?: string | null; title?: string | null; face?: string | null; accent?: string | null; text?: string | null; body?: string | null; audience?: string | null; delivery?: string | null }[] | null
   testimonials?: { quote?: string | null; name?: string | null; role?: string | null }[] | null
@@ -107,6 +117,8 @@ export function mapSanityContent(payload: SanityPayload): SiteContent {
         color: item.color,
         face: { x: item.faceX, y: item.faceY },
         bio: item.bio || undefined,
+        childhoodPhoto: item.childhoodPhoto || undefined,
+        dreamJobText: item.dreamJobText?.trim() || undefined,
       }
       return [member]
     }),

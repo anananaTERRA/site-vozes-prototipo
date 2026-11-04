@@ -45,7 +45,7 @@ export function localContent(): SiteContent {
       background: chapter.background,
       color: chapter.color,
       text: chapter.text,
-      kicker: "kicker" in chapter ? chapter.kicker : undefined,
+      kicker: "kicker" in chapter && typeof chapter.kicker === "string" ? chapter.kicker : undefined,
     })),
     team: team.map((member) => ({
       name: member.name,
@@ -54,6 +54,9 @@ export function localContent(): SiteContent {
       color: member.color,
       face: member.face,
       bio: "bio" in member ? member.bio : undefined,
+      childhoodPhoto:
+        "childhoodPhoto" in member && typeof member.childhoodPhoto === "string" ? member.childhoodPhoto : undefined,
+      dreamJobText: "dreamJobText" in member && typeof member.dreamJobText === "string" ? member.dreamJobText : undefined,
     })),
     values: values.map((item, index) => ({
       title: item.title,

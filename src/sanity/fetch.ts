@@ -23,7 +23,7 @@ const query = `{
     body[]{ ..., _type == "image" => { alt, caption, "url": asset->url } }
   },
   "team": *[_type == "teamMember"] | order(order asc) {
-    name, role, "photo": photo.asset->url, color, faceX, faceY, bio
+    name, role, "photo": photo.asset->url, "childhoodPhoto": childhoodPhoto.asset->url, color, faceX, faceY, bio, dreamJobText
   },
   "partners": *[_type == "partner"] | order(order asc) { name, "src": logo.asset->url, invertOnDark },
   "services": *[_type == "service"] | order(order asc) { id, title, face, accent, text, body, audience, delivery },

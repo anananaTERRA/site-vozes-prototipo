@@ -79,17 +79,19 @@ export function PressCard({ item }: { item: PressItem }) {
 
 export function PublicationCard({ item }: { item: Publication }) {
   return (
-    <Link to={`/publicacoes/${item.slug}`} className="group flex flex-col gap-4">
-      <img
-        src={item.image}
-        alt=""
-        className="aspect-[3/4] w-full rounded-[20px] object-cover"
-        style={{ objectPosition: item.imagePosition }}
-      />
+    <Link to={`/publicacoes/${item.slug}`} className="group flex flex-col gap-3">
+      <div className="overflow-hidden rounded-[20px] bg-paper">
+        <img
+          src={item.image}
+          alt=""
+          className="aspect-[3/4] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          style={{ objectPosition: item.imagePosition }}
+        />
+      </div>
       <p className="text-[13px] font-extrabold tracking-[1.04px] text-violet uppercase">
         {item.type} · {item.year}
       </p>
-      <h3 className="font-display text-2xl leading-[30px] font-medium text-ink group-hover:text-violet">
+      <h3 className="font-display text-xl leading-[28px] font-medium text-ink transition-colors group-hover:text-violet md:text-2xl md:leading-[30px]">
         {item.title}
       </h3>
       {item.themes[0] ? (

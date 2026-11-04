@@ -195,6 +195,10 @@ async function main() {
       faceX: member.face.x,
       faceY: member.face.y,
       ...("bio" in member ? { bio: member.bio } : {}),
+      ...("childhoodPhoto" in member && member.childhoodPhoto
+        ? { childhoodPhoto: image(await upload(member.childhoodPhoto)) }
+        : {}),
+      ...("dreamJobText" in member && member.dreamJobText ? { dreamJobText: member.dreamJobText } : {}),
       order: index,
     })
   }

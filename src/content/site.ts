@@ -47,6 +47,9 @@ export type TeamMember = {
   color: string
   face: { x: number; y: number }
   bio?: string
+  /** Placeholder até assets `team-{slug}-childhood.png` do cliente */
+  childhoodPhoto?: string
+  dreamJobText?: string
 }
 
 export type ValueItem = {

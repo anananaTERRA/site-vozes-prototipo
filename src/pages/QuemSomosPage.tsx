@@ -1,4 +1,4 @@
-import { Fragment, useLayoutEffect, useRef, useState } from "react"
+import { Fragment, useState } from "react"
 import photoComo from "@/assets/photo-como-trabalhamos.png"
 import portrait from "@/assets/photo-quem-somos.png"
 import valorAntecipacao from "@/assets/valor-antecipacao.svg"
@@ -7,7 +7,7 @@ import valorFundamentacao from "@/assets/valor-fundamentacao.svg"
 import valorHumanidade from "@/assets/valor-humanidade.svg"
 import valorTraducao from "@/assets/valor-traducao.svg"
 import { PageHero } from "@/components/layout/PageHero"
-import { Button } from "@/components/ui/button"
+import { HistoryTimelineCarousel } from "@/components/quem-somos/HistoryTimelineCarousel"
 import {
   Dialog,
   DialogClose,
@@ -15,8 +15,11 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { Separator } from "@/components/ui/separator"
+import { historyIntro } from "@/content/institutional"
 import { useSiteContent } from "@/content/provider"
-import type { Chapter, TeamMember } from "@/content/site"
+import type { TeamMember } from "@/content/site"
+import { cn } from "cn"
 
 const valueIcons: Record<string, string> = {
   antecipacao: valorAntecipacao,
@@ -26,28 +29,16 @@ const valueIcons: Record<string, string> = {
   colaboracao: valorColaboracao,
 }
 
+const teamGridClass = (index: number) => {
+  if (index < 3) return "lg:col-span-2"
+  if (index === 3) return "lg:col-span-2 lg:col-start-2"
+  return "lg:col-span-2 lg:col-start-4"
+}
+
 export function QuemSomosPage() {
   const { chapters, team, values } = useSiteContent()
-  const [open, setOpen] = useState(0)
   const [active, setActive] = useState<number | null>(null)
-  const historyRef = useRef<HTMLDivElement>(null)
-  const [chapterWidth, setChapterWidth] = useState<number | null>(null)
   const person = active === null ? null : team[active]
-
-  useLayoutEffect(() => {
-    const el = historyRef.current
-    if (!el) return
-    const measure = () => {
-      const gap = Number.parseFloat(getComputedStyle(el).columnGap || "0") || 0
-      const rail = 96
-      const width = el.clientWidth - rail * (chapters.length - 1) - gap * (chapters.length - 1)
-      setChapterWidth(Math.max(280, Math.round(width)))
-    }
-    measure()
-    const observer = new ResizeObserver(measure)
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [chapters.length])
 
   function step(delta: number) {
     setActive((current) => {
@@ -68,28 +59,17 @@ export function QuemSomosPage() {
         imageAlt="Retrato em ambiente escolar"
       />
 
-      <section id="historia" className="mx-auto w-full max-w-[1440px] px-6 py-24 md:px-20">
-        <div className="grid gap-8 md:grid-cols-2">
-          <h2 className="font-display text-5xl leading-[54px] tracking-[-0.48px]">Nossa história</h2>
-          <p className="text-[22px] leading-[34px]">
-            Desde 2019, seguimos conectando pessoas e ideias para resolver os problemas da educação brasileira de forma inteligente, didática e humana.
-          </p>
-        </div>
-        <div ref={historyRef} className="mt-12 flex h-[520px] gap-2">
-          {chapters.map((item, index) => (
-            <ChapterRail key={item.year} item={item} open={index === open} textWidth={chapterWidth} onOpen={() => setOpen(index)} />
-          ))}
-        </div>
-        <div className="mt-6 flex items-center gap-4 text-[15px] font-medium text-violet">
-          <Button type="button" variant="outline" className="size-14 rounded-full border-2 border-ink" onClick={() => setOpen((value) => (value + chapters.length - 1) % chapters.length)} aria-label="Capítulo anterior">
-            ←
-          </Button>
-          Capítulo anterior · Próximo
-          <Button type="button" variant="outline" className="size-14 rounded-full border-2 border-ink" onClick={() => setOpen((value) => (value + 1) % chapters.length)} aria-label="Próximo capítulo">
-            →
-          </Button>
+      <section id="historia" className="overflow-x-clip bg-paper">
+        <div className="mx-auto w-full max-w-[1440px] px-6 py-24 md:px-20">
+          <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+            <h2 className="font-display text-5xl leading-[54px] tracking-[-0.48px]">Nossa história</h2>
+            <p className="text-[22px] leading-[34px]">{historyIntro}</p>
+          </div>
+          <HistoryTimelineCarousel chapters={chapters} />
         </div>
       </section>
+
+      <Separator className="mx-auto max-w-[1280px] bg-line" />
 
       <section id="equipe" className="bg-surface px-6 py-24 md:px-20">
         <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-12">
@@ -99,15 +79,20 @@ export function QuemSomosPage() {
               Pessoas que vieram da sala de aula, da gestão pública e da pesquisa, unidas pela mesma escuta.
             </p>
           </div>
-          <ul className="flex flex-wrap justify-center gap-y-12">
+          <ul className="mx-auto grid w-full max-w-[960px] grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-6">
             {team.map((member, index) => (
-              <li key={member.name} className="flex w-1/2 justify-center px-3 min-[720px]:w-1/3 min-[1100px]:w-1/5">
-                <PersonCard person={member} onOpen={() => setActive(index)} />
+              <li key={member.name} className={cn("flex justify-center px-3", teamGridClass(index))}>
+                <TeamFlipCard person={member} onOpen={() => setActive(index)} />
               </li>
             ))}
           </ul>
         </div>
-        <Dialog open={person !== null} onOpenChange={(next) => { if (!next) setActive(null) }}>
+        <Dialog
+          open={person !== null}
+          onOpenChange={(next) => {
+            if (!next) setActive(null)
+          }}
+        >
           <DialogContent
             showCloseButton={false}
             overlayClassName="bg-black/50"
@@ -125,7 +110,12 @@ export function QuemSomosPage() {
           >
             {person ? (
               <div className="relative flex items-center justify-center">
-                <button type="button" className="absolute left-0 flex size-14 items-center justify-center rounded-full border-2 border-ink bg-surface text-2xl" onClick={() => step(-1)} aria-label="Pessoa anterior">
+                <button
+                  type="button"
+                  className="absolute left-0 flex size-14 items-center justify-center rounded-full border-2 border-ink bg-surface text-2xl"
+                  onClick={() => step(-1)}
+                  aria-label="Pessoa anterior"
+                >
                   ←
                 </button>
                 <div className="flex w-full max-w-[600px] flex-col items-center gap-4 rounded-[20px] bg-surface px-10 pt-8 pb-10">
@@ -142,7 +132,12 @@ export function QuemSomosPage() {
                   <DialogDescription className="text-center text-base font-medium text-violet">{person.role}</DialogDescription>
                   {person.bio ? <p className="text-[15px] leading-[1.5] text-ink">{person.bio}</p> : null}
                 </div>
-                <button type="button" className="absolute right-0 flex size-14 items-center justify-center rounded-full border-2 border-ink bg-surface text-2xl" onClick={() => step(1)} aria-label="Próxima pessoa">
+                <button
+                  type="button"
+                  className="absolute right-0 flex size-14 items-center justify-center rounded-full border-2 border-ink bg-surface text-2xl"
+                  onClick={() => step(1)}
+                  aria-label="Próxima pessoa"
+                >
                   →
                 </button>
               </div>
@@ -171,7 +166,11 @@ export function QuemSomosPage() {
               <Fragment key={item.title}>
                 {index > 0 ? <div aria-hidden className="hidden h-[200px] w-px shrink-0 bg-line xl:block" /> : null}
                 <article className="flex min-w-0 flex-1 flex-col gap-4 xl:px-6">
-                  <img src={valueIcons[item.icon]} alt="" className="self-start" />
+                  <img
+                    src={valueIcons[item.icon]}
+                    alt=""
+                    className="h-16 w-16 shrink-0 object-contain object-left"
+                  />
                   <h3 className="font-display text-2xl leading-[30px] font-medium">{item.title}</h3>
                   <p className="text-[15px] leading-[22px] font-medium">{item.text}</p>
                 </article>
@@ -184,67 +183,41 @@ export function QuemSomosPage() {
   )
 }
 
-function ChapterRail({
-  item,
-  open,
-  textWidth,
-  onOpen,
-}: {
-  item: Chapter
-  open: boolean
-  textWidth: number | null
-  onOpen: () => void
-}) {
-  return (
-    <div
-      role={open ? "article" : "button"}
-      tabIndex={open ? -1 : 0}
-      aria-expanded={open}
-      aria-label={open ? undefined : `${item.year}. ${item.title}`}
-      onClick={() => {
-        if (!open) onOpen()
-      }}
-      onKeyDown={(event) => {
-        if (open) return
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault()
-          onOpen()
-        }
-      }}
-      className={`relative h-full min-w-24 basis-0 overflow-hidden rounded-[20px] border text-left motion-reduce:transition-none! ${open ? "grow cursor-default border-line" : "grow-0 cursor-pointer border-transparent"}`}
-      style={{
-        backgroundColor: open ? "#ffffff" : item.background,
-        transition: "flex-grow 680ms cubic-bezier(0.4, 0, 0.2, 1), background-color 360ms ease, border-color 360ms ease",
-      }}
-    >
-      <div
-        aria-hidden={open}
-        className={`pointer-events-none absolute inset-y-0 left-0 flex w-24 flex-col items-center gap-4 px-2 py-6 transition-opacity ease-out motion-reduce:transition-none ${open ? "opacity-0 duration-150" : "opacity-100 delay-150 duration-300"}`}
-        style={{ color: item.color }}
-      >
-        <span className="text-[13px] font-extrabold tracking-[1.04px]">{item.year}</span>
-        <span className="text-[15px] font-extrabold [writing-mode:vertical-rl] rotate-180">{item.title}</span>
-      </div>
-      <div
-        aria-hidden={!open}
-        className={`absolute inset-y-0 left-0 overflow-hidden p-10 text-ink transition-opacity ease-out motion-reduce:transition-none ${open ? "opacity-100 delay-150 duration-[450ms]" : "pointer-events-none opacity-0 duration-200"}`}
-        style={{ width: textWidth ? `${textWidth}px` : "100%" }}
-      >
-        <p className="text-[13px] font-extrabold tracking-[1.04px] text-violet">{item.year}</p>
-        <h3 className="mt-4 font-display text-[32px] leading-[38px] font-medium">{item.title}</h3>
-        <p className="mt-4 max-w-xl text-lg leading-[29px]">{item.text}</p>
-        {item.kicker ? <p className="mt-6 font-display text-5xl text-violet">{item.kicker}</p> : null}
-      </div>
-    </div>
-  )
-}
+function TeamFlipCard({ person, onOpen }: { person: TeamMember; onOpen: () => void }) {
+  const childhood = person.childhoodPhoto ?? person.photo
+  const dreamJob = person.dreamJobText?.trim()
 
-function PersonCard({ person, onOpen }: { person: TeamMember; onOpen: () => void }) {
   return (
-    <button type="button" onClick={onOpen} className="flex w-full max-w-[220px] flex-col items-center gap-4 text-center">
-      <Portrait src={person.photo} face={person.face} color={person.color} className="aspect-square w-full" />
-      <span className="w-full font-display text-[22px] leading-7 font-medium text-balance">{person.name}</span>
-      <span className="w-full text-[15px] leading-[22px] font-medium text-balance text-violet">{person.role}</span>
+    <button
+      type="button"
+      onClick={onOpen}
+      className="group flex w-full max-w-[240px] flex-col items-center gap-3 text-center [perspective:1000px]"
+    >
+      <span className="relative block aspect-square w-full max-w-[220px] [transform-style:preserve-3d] transition-transform duration-700 ease-in-out group-hover:[transform:rotateY(180deg)] group-focus-visible:[transform:rotateY(180deg)] motion-reduce:transition-none">
+        <span className="absolute inset-0 overflow-hidden rounded-full [backface-visibility:hidden]" style={{ backgroundColor: person.color }}>
+          <img src={person.photo} alt="" className="absolute max-w-none" style={faceFrame(person.face)} />
+        </span>
+        <span
+          className="absolute inset-0 overflow-hidden rounded-full [transform:rotateY(180deg)] [backface-visibility:hidden]"
+          style={{ backgroundColor: person.color }}
+        >
+          <img src={childhood} alt="" className="size-full object-cover opacity-90" />
+        </span>
+      </span>
+      <span className="relative grid w-full min-h-[76px] grid-rows-[auto_auto] content-start gap-0.5">
+        <span className="col-start-1 row-start-1 font-display text-[22px] leading-7 font-medium text-balance transition-opacity duration-300 ease-in-out group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:group-hover:opacity-100">
+          {person.name}
+        </span>
+        <span className="col-start-1 row-start-2 text-[15px] leading-[22px] font-medium text-balance text-ink transition-opacity duration-300 ease-in-out group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:group-hover:opacity-100">
+          {person.role}
+        </span>
+        <span className="pointer-events-none col-start-1 row-start-1 font-display text-[22px] leading-7 font-medium text-balance opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:hidden">
+          Queria ser…
+        </span>
+        <span className="pointer-events-none col-start-1 row-start-2 text-[15px] leading-[22px] font-medium text-balance text-ink opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:hidden">
+          {dreamJob ?? "—"}
+        </span>
+      </span>
     </button>
   )
 }

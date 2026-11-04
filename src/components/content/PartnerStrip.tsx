@@ -121,12 +121,19 @@ function StripCopy({ sequence, duplicate = false }: { sequence: StripSlot[]; dup
   )
 }
 
-export function PartnerStrip() {
+type PartnerStripProps = {
+  heading?: string
+  showTitle?: boolean
+}
+
+export function PartnerStrip({ heading = "PARCEIROS", showTitle = true }: PartnerStripProps) {
   const { partners } = useSiteContent()
   const sequence = beltSequence(partners)
   return (
     <div>
-      <p className="text-[13px] font-extrabold tracking-[1.04px]">PARCEIROS</p>
+      {showTitle ? (
+        <p className="text-[13px] font-extrabold tracking-[1.04px] uppercase">{heading}</p>
+      ) : null}
       <div className="partner-belt-viewport mt-5 overflow-hidden">
         <div className="partner-belt flex w-max items-center">
           <StripCopy sequence={sequence} />

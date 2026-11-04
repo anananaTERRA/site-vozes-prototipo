@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router"
+import { ArrowRight } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 import face1 from "@/assets/carinha-1.svg"
 import face2 from "@/assets/carinha-2.svg"
@@ -36,7 +37,6 @@ function luminance(hex: string) {
 
 const faceLuminance = luminance("#493975")
 
-/** Indigo faces disappear on the darker accents. Those hover copies knock out to white. */
 function accentHidesMark(accent: string) {
   const accentLuminance = luminance(accent)
   const lighter = Math.max(accentLuminance, faceLuminance)
@@ -50,13 +50,7 @@ function syncOpen(element: HTMLElement) {
   return element.matches(":hover") || element.matches(":focus-visible")
 }
 
-function ServiceCard({
-  service,
-  index,
-}: {
-  service: Service
-  index: number
-}) {
+function ServiceCard({ service, index }: { service: Service; index: number }) {
   const reduce = useReducedMotion()
   const [open, setOpen] = useState(false)
   const duration = reduce ? 0 : 0.4
@@ -91,44 +85,47 @@ function ServiceCard({
         transition={transition}
       />
       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-        <span className="relative block h-8 w-8 shrink-0">
-          <motion.img
-            src={src}
-            alt=""
-            className="h-8 w-8 object-contain dark:brightness-0 dark:invert"
+        <h3 className="shrink-0 text-left font-display text-[32px] leading-[38px] font-medium">{service.title}</h3>
+        <div className="relative mt-4 min-h-0 flex-1">
+          <motion.p
+            className="line-clamp-4 text-[17px] leading-[26px] font-medium text-white"
             initial={false}
-            animate={{ opacity: open ? 0 : 1 }}
+            animate={{ opacity: open ? 1 : 0, y: open || reduce ? 0 : 8 }}
             transition={transition}
-          />
-          <motion.img
-            src={src}
-            alt=""
-            aria-hidden
-            className={`absolute inset-0 h-8 w-8 object-contain ${lighten ? "brightness-0 invert" : ""}`}
+          >
+            {service.text}
+          </motion.p>
+        </div>
+        <div className="mt-auto flex items-end justify-between gap-4">
+          <span className="relative block h-10 w-10 shrink-0">
+            <motion.img
+              src={src}
+              alt=""
+              className="h-10 w-10 object-contain dark:brightness-0 dark:invert"
+              initial={false}
+              animate={{ opacity: open ? 0 : 1 }}
+              transition={transition}
+            />
+            <motion.img
+              src={src}
+              alt=""
+              aria-hidden
+              className={`absolute inset-0 h-10 w-10 object-contain ${lighten ? "brightness-0 invert" : ""}`}
+              initial={false}
+              animate={{ opacity: open ? 1 : 0 }}
+              transition={transition}
+            />
+          </span>
+          <motion.span
+            className="inline-flex items-center gap-1.5 text-[15px] leading-[18px] font-extrabold whitespace-nowrap text-white"
             initial={false}
             animate={{ opacity: open ? 1 : 0 }}
             transition={transition}
-          />
-        </span>
-        <div className="relative min-h-0 flex-1">
-          <motion.div
-            className="absolute inset-x-0 bottom-3"
-            initial={false}
-            animate={{ opacity: open ? 1 : 0, y: open || reduce ? 0 : 10 }}
-            transition={transition}
           >
-            <p className="line-clamp-3 text-[15px] leading-[22px] font-medium text-white">{service.text}</p>
-          </motion.div>
+            Saiba mais
+            <ArrowRight className="size-4" aria-hidden />
+          </motion.span>
         </div>
-        <h3 className="shrink-0 font-display text-[32px] leading-[38px] font-medium">{service.title}</h3>
-        <motion.span
-          className="pointer-events-none absolute top-0 right-0 text-[15px] leading-[18px] font-extrabold whitespace-nowrap text-white"
-          initial={false}
-          animate={{ opacity: open ? 1 : 0 }}
-          transition={transition}
-        >
-          Saiba mais
-        </motion.span>
       </div>
     </MotionLink>
   )
@@ -137,7 +134,7 @@ function ServiceCard({
 export function ServiceCards() {
   const { services } = useSiteContent()
   return (
-    <section className="mx-auto mt-16 w-full max-w-[1280px]" aria-labelledby="nossos-servicos">
+    <section className="mx-auto w-full max-w-[1280px]" aria-labelledby="nossos-servicos">
       <h2 id="nossos-servicos" className="font-display text-5xl leading-[54px]">
         Nossos serviços
       </h2>
