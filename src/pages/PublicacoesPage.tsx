@@ -17,7 +17,6 @@ import {
 } from "@/content/posts"
 import type { Block, Publication } from "@/content/types"
 import { cn } from "cn"
-import { downloadFileFromUrl, pdfFilenameFromTitle } from "@/lib/download"
 import { roundFilterInput, roundFilterPill } from "@/lib/round-control"
 import { Input } from "@/components/ui/input"
 
@@ -242,24 +241,15 @@ function PublicationShareLink() {
 }
 
 function PublicationPdfDownload({ item }: { item: Publication }) {
-  const [busy, setBusy] = useState(false)
   if (!item.pdfUrl) return null
 
   const label = item.pdfSizeLabel ? `Baixar PDF (${item.pdfSizeLabel})` : "Baixar PDF"
 
-  async function onDownload() {
-    if (!item.pdfUrl || busy) return
-    setBusy(true)
-    try {
-      await downloadFileFromUrl(item.pdfUrl, pdfFilenameFromTitle(item.title))
-    } finally {
-      setBusy(false)
-    }
-  }
-
   return (
-    <BrandButton tone="orange" pillSize="md" type="button" disabled={busy} onClick={onDownload}>
-      {busy ? "Baixando…" : label}
+    <BrandButton tone="orange" pillSize="md" asChild>
+      <a href={item.pdfUrl} target="_blank" rel="noopener noreferrer">
+        {label}
+      </a>
     </BrandButton>
   )
 }
