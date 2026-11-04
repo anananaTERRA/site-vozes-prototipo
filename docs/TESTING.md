@@ -45,7 +45,7 @@ Se `npm test` falhar, **não publique** até corrigir ou pedir ajuda à pessoa d
 | **Evento** `/vozes/eventos/:slug` | idem | Título do evento (ex.: seminário recomposição). |
 | **Publicação** `/publicacoes/:slug` | idem | Título da publicação, seção “Relacionadas”. |
 
-Conteúdo usado nos testes vem dos **textos locais** do repositório (`src/content/`). A API do Sanity é **desligada nos testes** de propósito, para não depender de internet.
+Conteúdo usado nos testes vem dos **textos locais** do repositório (`src/content/`). Nos testes, a chamada ao Sanity é **simulada** (resposta vazia, sem internet), e o site usa os mesmos textos locais que entrariam no fallback.
 
 ## Mapa: componentes compartilhados
 

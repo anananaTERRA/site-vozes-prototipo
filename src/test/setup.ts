@@ -6,7 +6,26 @@ vi.mock("@/components/home/ProcessScroll", () => ({
 }))
 
 vi.mock("@/sanity/fetch", () => ({
-  fetchSanityContent: vi.fn(() => Promise.reject(new Error("test: Sanity offline"))),
+  // Resposta vazia: mergeContent mantém textos locais, sem passar pelo console.warn de fallback.
+  fetchSanityContent: vi.fn(() =>
+    Promise.resolve({
+      noticias: [],
+      eventos: [],
+      midia: [],
+      publicacoes: [],
+      partners: [],
+      services: [],
+      servicesIntro: [],
+      segments: [],
+      testimonials: [],
+      chapters: [],
+      team: [],
+      values: [],
+      faq: [],
+      stats: [],
+      historyIntro: "",
+    }),
+  ),
 }))
 
 Object.defineProperty(window, "matchMedia", {

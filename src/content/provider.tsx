@@ -30,7 +30,10 @@ export function ContentProvider({ children }: { children: ReactNode }) {
         })
         .catch((error: unknown) => {
           if (!active) return
-          console.warn("Conteúdo do Sanity indisponível. O site está usando os textos locais.", error)
+          const detail = error instanceof Error ? error.message : String(error)
+          console.warn(
+            `Conteúdo do Sanity indisponível. O site está usando os textos locais.${detail ? ` (${detail})` : ""}`,
+          )
           setState((prev) => (prev.ready ? prev : { ...local, ready: true }))
         })
     }
