@@ -1,12 +1,8 @@
 import carolina from "@/assets/equipe-carolina.png"
-import carolinaChildhood from "@/assets/equipe-carolina-infancia.jpg"
 import vanessa from "@/assets/equipe-vanessa.png"
 import lais from "@/assets/equipe-lais.png"
-import laisChildhood from "@/assets/equipe-lais-infancia.jpg"
 import ana from "@/assets/equipe-ana.png"
-import anaChildhood from "@/assets/equipe-ana-infancia.jpg"
 import claudilene from "@/assets/equipe-claudilene.png"
-import claudileneChildhood from "@/assets/equipe-claudilene-infancia.jpg"
 import lemann from "@/assets/partners/fundacao-lemann.svg"
 import reuna from "@/assets/partners/reuna.svg"
 import b3 from "@/assets/partners/b3-social.png"
@@ -193,7 +189,6 @@ export const team = [
     photo: carolina,
     color: "#9ca7ef",
     face: { x: 62.1, y: 46.8 },
-    childhoodPhoto: carolinaChildhood,
     dreamJobText: "Professora",
     bio: "Professora e advogada com mestrado em Políticas Públicas, estudou inovação educacional na escola de extensão da Universidade de Harvard. Foi Diretora Pedagógica da ESFAPEGE, a escola de formação de professores em Sobral/CE, além de Secretária Municipal de Educação de Gravatá/PE. Assessorou a Diretoria de Formação dos Profissionais da Educação da Secretaria de Educação Básica/MEC. É membro do Conselho do Movimento Mapa Educação e do Conselho Representativo da Fundação Lemann, além de pesquisadora associada do CPRE / Teachers College / Columbia University. Acredita que as escolas podem ser espaços melhores, mais humanos e afetivos para educadores e estudantes. Fora do Vozes: sou mãe de um rapaz e de 2 gatos, mosaiquista e tenho paixão por pipoca, discos de vinil e cultura brasileira!",
   },
@@ -210,7 +205,6 @@ export const team = [
     photo: lais,
     color: "#9ca7ef",
     face: { x: 59.4, y: 37.7 },
-    childhoodPhoto: laisChildhood,
     dreamJobText: "Psicóloga",
     bio: "Sou formada em Engenharia Civil pela USP, Licenciatura em Matemática e Pedagogia, e pós-graduada em Práticas da Educação Bilíngue. Atuei em escolas bilíngues com turmas do Ensino Fundamental, como professora autônoma com materiais didáticos autorais e como assistente administrativa em escola. Hoje, sou Analista de Pesquisa e Inovação no Vozes da Educação. Para mim, a educação é o que nos desperta como seres humanos e amplia nossas possibilidades. Fora do trabalho, sou apaixonada por música e gosto de aprender um pouco de cada instrumento.",
   },
@@ -220,7 +214,6 @@ export const team = [
     photo: ana,
     color: "#faa4ff",
     face: { x: 56.5, y: 55.7 },
-    childhoodPhoto: anaChildhood,
     dreamJobText: "Arqueóloga",
   },
   {
@@ -229,7 +222,6 @@ export const team = [
     photo: claudilene,
     color: "#01c689",
     face: { x: 54.1, y: 47.5 },
-    childhoodPhoto: claudileneChildhood,
     dreamJobText: "Contadora",
   },
 ]

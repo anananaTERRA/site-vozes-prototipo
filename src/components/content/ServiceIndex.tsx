@@ -1,13 +1,26 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useLocation } from "react-router"
 import { ArrowRight } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { useSiteContent } from "@/content/provider"
 import { cn } from "cn"
 
+/** Wait for accordion height animations before aligning the section under the sticky header. */
+const ACCORDION_LAYOUT_MS = 280
+
+function scrollServiceIntoView(id: string, behavior: ScrollBehavior = "smooth") {
+  const element = document.getElementById(id)
+  if (!element) return
+  const header = document.querySelector("header")
+  const offset = (header?.getBoundingClientRect().height ?? 88) + 12
+  const top = element.getBoundingClientRect().top + window.scrollY - offset
+  window.scrollTo({ top: Math.max(0, top), behavior })
+}
+
 export function ServiceIndex() {
   const { services, servicesIntro } = useSiteContent()
   const location = useLocation()
+  const pendingScrollRef = useRef<string | null>(null)
   const [open, setOpen] = useState(() => {
     const hash = window.location.hash.replace("#", "")
     return services.some((service) => service.id === hash) ? hash : (services[0]?.id ?? "")
@@ -17,14 +30,27 @@ export function ServiceIndex() {
     const hash = location.hash.replace("#", "")
     if (!services.some((service) => service.id === hash)) return
     setOpen(hash)
-    document.getElementById(hash)?.scrollIntoView({ block: "start" })
+    const behavior: ScrollBehavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+    const timeout = window.setTimeout(() => scrollServiceIntoView(hash, behavior), ACCORDION_LAYOUT_MS)
+    return () => window.clearTimeout(timeout)
   }, [location.hash, services])
 
+  useEffect(() => {
+    const id = pendingScrollRef.current
+    if (!id || id !== open) return
+    pendingScrollRef.current = null
+    const behavior: ScrollBehavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+    const timeout = window.setTimeout(() => scrollServiceIntoView(id, behavior), ACCORDION_LAYOUT_MS)
+    return () => window.clearTimeout(timeout)
+  }, [open])
+
   function onValueChange(next: string) {
+    if (next) pendingScrollRef.current = next
     setOpen(next)
     const hash = `#${next || "servicos"}`
-    if (window.location.hash === hash) return
-    window.history.replaceState(null, "", hash)
+    const path = `${location.pathname}${location.search}${hash}`
+    if (`${location.pathname}${location.search}${location.hash}` === path) return
+    window.history.replaceState(null, "", path)
   }
 
   return (
@@ -47,7 +73,6 @@ export function ServiceIndex() {
                 onClick={(event) => {
                   event.preventDefault()
                   onValueChange(service.id)
-                  document.getElementById(service.id)?.scrollIntoView({ behavior: "smooth", block: "start" })
                 }}
                 className="group flex h-full min-h-[200px] flex-col rounded-[20px] bg-paper p-6 transition-shadow hover:shadow-lg"
                 style={{ borderLeft: `6px solid ${service.accent}` }}

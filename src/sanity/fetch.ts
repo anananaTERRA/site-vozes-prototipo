@@ -31,7 +31,7 @@ const query = `{
   "chapters": *[_type == "chapter"] | order(order asc) { year, title, background, color, text, kicker },
   "values": *[_type == "value"] | order(order asc) { icon, title, text },
   "faq": *[_type == "faq"] | order(order asc) { "q": question, "a": answer },
-  "settings": *[_id == "siteSettings"][0]{ servicesIntro, stats, segments }
+  "settings": *[_id == "siteSettings"][0]{ servicesIntro, stats, segments, historyIntro }
 }`
 
 export async function fetchSanityContent(): Promise<SiteContent> {

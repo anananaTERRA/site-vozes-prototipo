@@ -5,6 +5,7 @@ import { apiVersion, dataset, projectId } from "../src/sanity/config.ts"
 import {
   chapters,
   faq,
+  historyIntro,
   partners,
   segments,
   services,
@@ -282,6 +283,7 @@ async function main() {
     servicesIntro: [...servicesIntro],
     stats: stats.map((item, index) => ({ _type: "homeStat", _key: `s${index}`, ...item })),
     segments: segments.map((item, index) => ({ _type: "segment", _key: `g${index}`, ...item })),
+    historyIntro,
   })
 
   let transaction = client.transaction()

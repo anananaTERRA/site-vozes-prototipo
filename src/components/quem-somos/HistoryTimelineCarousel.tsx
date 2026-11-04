@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent } from "react"
+import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import type { Chapter } from "@/content/site"
 import { cn } from "cn"
 
@@ -6,13 +7,16 @@ type HistoryTimelineCarouselProps = {
   chapters: Chapter[]
 }
 
-const STEP = 22.5
-const VISIBLE = 96
+const STEP = 28
+const VISIBLE = 102
+const ACTIVE_SCALE = 2.08
+const EASE = [0.16, 1, 0.3, 1] as const
 
 export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselProps) {
   const [index, setIndex] = useState(0)
   const [width, setWidth] = useState(0)
   const frameRef = useRef<HTMLDivElement>(null)
+  const reduceMotion = useReducedMotion()
   const active = Math.min(index, Math.max(chapters.length - 1, 0))
   const chapter = chapters[active]
 
@@ -27,10 +31,7 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
   }, [])
 
   function go(delta: number) {
-    setIndex((current) => {
-      const next = Math.min(Math.max(current + delta, 0), chapters.length - 1)
-      return next
-    })
+    setIndex((current) => Math.min(Math.max(current + delta, 0), chapters.length - 1))
   }
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
@@ -47,81 +48,36 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
   if (!chapter) return null
 
   const compact = width > 0 && width < 720
-  const radius = width === 0 ? 420 : compact ? Math.min(210, width * 0.58) : Math.min(540, width * 0.48)
-  const arcTop = compact ? 52 : 64
+  const radius = width === 0 ? 420 : compact ? Math.min(220, width * 0.62) : Math.min(560, width * 0.48)
+  const restGap = compact ? 24 : 34
+  const selectedLift = compact ? 14 : 18
+  const selectedSize = compact ? 22 : 38
+  const arcTop = restGap + selectedLift + Math.round(selectedSize * ACTIVE_SCALE) + (compact ? 12 : 16)
   const cx = (width || 960) / 2
   const cy = arcTop + radius
-  const frameHeight = arcTop + radius * (1 - Math.cos((72 * Math.PI) / 180)) + (compact ? 36 : 28)
-  const ticks = gaugeTicks(cx, cy, radius, -active * STEP - 8, (chapters.length - 1 - active) * STEP + 8)
+  const sweep = compact ? 74 : 90
+  const frameHeight = arcTop + radius * (1 - Math.cos((sweep * Math.PI) / 180)) + (compact ? 20 : 16)
+  const ticks = gaugeTicks(cx, cy, radius)
+  const travel = reduceMotion ? { duration: 0 } : { duration: 0.78, ease: EASE }
+  const copyTravel = reduceMotion ? { duration: 0 } : { duration: 0.4, ease: EASE }
 
-  return (
-    <div
-      className="mt-10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet"
-      role="region"
-      aria-roledescription="linha do tempo"
-      aria-label="Nossa história"
-      tabIndex={0}
-      onKeyDown={onKeyDown}
-    >
-      <div ref={frameRef} className="relative overflow-hidden" style={{ height: frameHeight }}>
-        <svg
-          className="absolute inset-0 text-ink"
-          width={width || "100%"}
-          height={frameHeight}
-          aria-hidden
+  const copy = (
+    <div className="flex flex-col items-center text-center" aria-live="polite">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={chapter.year}
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
+          transition={copyTravel}
         >
-          {ticks.map((tick) => (
-            <line
-              key={tick.key}
-              x1={tick.x1}
-              y1={tick.y1}
-              x2={tick.x2}
-              y2={tick.y2}
-              stroke="currentColor"
-              strokeWidth={tick.center ? 1.5 : 1}
-              strokeLinecap="round"
-              opacity={tick.center ? 0.9 : tick.major ? 0.55 : 0.28}
-            />
-          ))}
-        </svg>
-        {chapters.map((item, i) => {
-          const angle = (i - active) * STEP
-          const hidden = Math.abs(angle) > VISIBLE
-          const point = pointOnArc(cx, cy, radius, angle)
-          return (
-            <button
-              key={`${item.year}-${item.title}`}
-              type="button"
-              tabIndex={hidden ? -1 : 0}
-              aria-current={i === active ? "true" : undefined}
-              aria-hidden={hidden || undefined}
-              aria-label={item.year}
-              onClick={() => setIndex(i)}
-              className={cn(
-                "absolute font-display leading-none tracking-[-0.03em] whitespace-nowrap text-ink transition-[left,top,transform,opacity,color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
-                compact ? "text-[28px]" : "text-[42px]",
-                i === active ? "z-10 text-violet" : "text-ink/75",
-                hidden ? "pointer-events-none" : "cursor-pointer",
-              )}
-              style={{
-                left: point.x,
-                top: point.y,
-                opacity: hidden ? 0 : Math.abs(angle) > 72 ? 0.45 : 1,
-                transform: `translate(-50%, -50%) rotate(${angle}deg) scale(${i === active ? (compact ? 1.35 : 1.45) : 1})`,
-              }}
-            >
-              {item.year}
-            </button>
-          )
-        })}
-      </div>
-
-      <div className="mx-auto mt-2 max-w-3xl text-center" aria-live="polite">
-        <h3 className="font-display text-2xl leading-8 font-medium text-balance md:text-[28px] md:leading-9">{chapter.title}</h3>
-        <p className="mt-4 text-lg leading-[29px]">{chapter.text}</p>
-      </div>
-
-      <div className="mt-8 flex items-center justify-center gap-8">
+          <h3 className="font-display text-2xl leading-8 font-medium text-balance md:text-[28px] md:leading-9">
+            {chapter.title}
+          </h3>
+          <p className="mt-4 text-base leading-[26px] md:text-lg md:leading-[29px]">{chapter.text}</p>
+        </motion.div>
+      </AnimatePresence>
+      <div className="pointer-events-auto mt-8 flex items-center justify-center gap-8">
         <button
           type="button"
           className="flex size-11 items-center justify-center text-3xl text-ink transition-opacity disabled:opacity-30"
@@ -143,6 +99,114 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
       </div>
     </div>
   )
+
+  return (
+    <div
+      className="mt-10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet"
+      role="region"
+      aria-roledescription="linha do tempo"
+      aria-label="Nossa história"
+      tabIndex={0}
+      onKeyDown={onKeyDown}
+    >
+      <div ref={frameRef} className="relative overflow-hidden" style={{ height: frameHeight }}>
+        <svg className="pointer-events-none absolute inset-0 text-ink" width={width || "100%"} height={frameHeight} aria-hidden>
+          {ticks.map((tick) => (
+            <line
+              key={tick.key}
+              x1={tick.x1}
+              y1={tick.y1}
+              x2={tick.x2}
+              y2={tick.y2}
+              stroke="currentColor"
+              strokeWidth={tick.center ? 1.6 : 1}
+              strokeLinecap="round"
+              opacity={tick.center ? 0.92 : tick.opacity * (tick.major ? 0.55 : 0.28)}
+            />
+          ))}
+        </svg>
+
+        {!compact ? (
+          <div
+            className="pointer-events-none absolute flex items-center justify-center"
+            style={{
+              left: "50%",
+              top: arcTop + 108,
+              width: Math.min(540, (width || 960) * 0.44),
+              bottom: 20,
+              transform: "translateX(-50%)",
+            }}
+          >
+            <div className="flex w-full justify-center">{copy}</div>
+          </div>
+        ) : null}
+
+        {chapters.map((item, i) => {
+          const offset = i - active
+          const angle = offset * STEP
+          const hidden = Math.abs(angle) > VISIBLE
+          const selected = i === active
+          const dist = Math.abs(offset)
+          const lift = selected ? selectedLift : 0
+          const scale = selected ? ACTIVE_SCALE : dist === 1 ? 1 : 0.86
+
+          return (
+            <motion.div
+              key={`${item.year}-${item.title}`}
+              className="absolute top-0 left-0 h-0 w-0"
+              style={{ left: cx, top: cy }}
+              initial={false}
+              animate={{ rotate: angle }}
+              transition={travel}
+              aria-hidden={hidden || undefined}
+            >
+              <motion.div
+                className="absolute top-0 left-0"
+                initial={false}
+                animate={{ y: -(radius + restGap + lift) }}
+                transition={travel}
+              >
+                <motion.button
+                  type="button"
+                  tabIndex={hidden ? -1 : 0}
+                  aria-current={selected ? "true" : undefined}
+                  aria-hidden={hidden || undefined}
+                  aria-label={`${item.year}: ${item.title}`}
+                  onClick={() => setIndex(i)}
+                  className={cn(
+                    "absolute top-0 left-0 cursor-pointer font-display font-bold leading-none tracking-[0.03em] whitespace-nowrap text-violet",
+                    compact ? "text-[22px]" : "text-[38px]",
+                    selected ? "z-10" : "z-[1]",
+                    hidden && "pointer-events-none",
+                  )}
+                  style={{ originX: 0.5, originY: 1 }}
+                  initial={false}
+                  animate={{
+                    x: "-50%",
+                    y: "-100%",
+                    scale,
+                    opacity: hidden ? 0 : yearOpacity(dist),
+                  }}
+                  transition={travel}
+                >
+                  {item.year}
+                </motion.button>
+              </motion.div>
+            </motion.div>
+          )
+        })}
+      </div>
+
+      {compact ? <div className="mx-auto mt-8 max-w-3xl">{copy}</div> : null}
+    </div>
+  )
+}
+
+function yearOpacity(dist: number) {
+  if (dist === 0) return 1
+  if (dist === 1) return 0.68
+  if (dist === 2) return 0.32
+  return 0.12
 }
 
 function pointOnArc(cx: number, cy: number, radius: number, angle: number) {
@@ -150,23 +214,25 @@ function pointOnArc(cx: number, cy: number, radius: number, angle: number) {
   return { x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad) }
 }
 
-function gaugeTicks(cx: number, cy: number, radius: number, fromAngle: number, toAngle: number) {
-  const ticks: { key: string; x1: number; y1: number; x2: number; y2: number; center: boolean; major: boolean }[] = []
-  const start = Math.max(-84, Math.min(0, Math.floor(fromAngle / 3) * 3))
-  const end = Math.min(84, Math.max(0, Math.ceil(toAngle / 3) * 3))
-  for (let angle = start; angle <= end; angle += 3) {
+function gaugeTicks(cx: number, cy: number, radius: number) {
+  const ticks: { key: string; x1: number; y1: number; x2: number; y2: number; center: boolean; major: boolean; opacity: number }[] = []
+  for (let angle = -90; angle <= 90; angle += 2) {
     const center = angle === 0
-    const major = angle % 9 === 0
-    const outer = pointOnArc(cx, cy, radius - (center ? 6 : 2), angle)
-    const inner = pointOnArc(cx, cy, radius - (center ? 78 : major ? 22 : 14), angle)
-    ticks.push({ key: String(angle), ...outerToLine(inner, outer), center, major })
+    const major = angle % 10 === 0
+    const length = center ? 76 : major ? 22 : 12
+    const fade = 1 - (Math.abs(angle) / 90) ** 2.6
+    const outer = pointOnArc(cx, cy, radius, angle)
+    const inner = pointOnArc(cx, cy, radius - length, angle)
+    ticks.push({
+      key: String(angle),
+      x1: inner.x,
+      y1: inner.y,
+      x2: outer.x,
+      y2: outer.y,
+      center,
+      major,
+      opacity: fade,
+    })
   }
   return ticks
-}
-
-function outerToLine(
-  inner: { x: number; y: number },
-  outer: { x: number; y: number },
-) {
-  return { x1: inner.x, y1: inner.y, x2: outer.x, y2: outer.y }
 }

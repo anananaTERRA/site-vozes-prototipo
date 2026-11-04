@@ -18,7 +18,7 @@ export const structure: StructureResolver = (S) =>
       ordered(S, "partner", "Clientes e parceiros"),
       ordered(S, "service", "Serviços"),
       ordered(S, "testimonial", "Depoimentos"),
-      ordered(S, "chapter", "História"),
+      ordered(S, "chapter", "Linha do tempo"),
       ordered(S, "value", "Valores"),
       ordered(S, "faq", "Perguntas frequentes"),
     ])

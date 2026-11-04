@@ -1,6 +1,7 @@
 import {
   chapters,
   faq,
+  historyIntro,
   partners,
   segments,
   services,
@@ -65,5 +66,6 @@ export function localContent(): SiteContent {
     })),
     faq: faq.map((item) => ({ ...item })),
     stats: stats.map((item) => ({ ...item })),
+    historyIntro,
   }
 }

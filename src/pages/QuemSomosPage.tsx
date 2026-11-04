@@ -16,7 +16,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
-import { historyIntro } from "@/content/institutional"
 import { useSiteContent } from "@/content/provider"
 import type { TeamMember } from "@/content/site"
 import { cn } from "cn"
@@ -36,7 +35,7 @@ const teamGridClass = (index: number) => {
 }
 
 export function QuemSomosPage() {
-  const { chapters, team, values } = useSiteContent()
+  const { chapters, team, values, historyIntro } = useSiteContent()
   const [active, setActive] = useState<number | null>(null)
   const person = active === null ? null : team[active]
 
@@ -184,39 +183,64 @@ export function QuemSomosPage() {
 }
 
 function TeamFlipCard({ person, onOpen }: { person: TeamMember; onOpen: () => void }) {
-  const childhood = person.childhoodPhoto ?? person.photo
+  const childhoodPhoto = person.childhoodPhoto?.trim()
   const dreamJob = person.dreamJobText?.trim()
+  const showDream = Boolean(childhoodPhoto || dreamJob)
 
   return (
     <button
       type="button"
       onClick={onOpen}
-      className="group flex w-full max-w-[240px] flex-col items-center gap-3 text-center [perspective:1000px]"
+      className={cn(
+        "group flex w-full max-w-[240px] flex-col items-center gap-3 text-center",
+        childhoodPhoto && "[perspective:1000px]",
+      )}
     >
-      <span className="relative block aspect-square w-full max-w-[220px] [transform-style:preserve-3d] transition-transform duration-700 ease-in-out group-hover:[transform:rotateY(180deg)] group-focus-visible:[transform:rotateY(180deg)] motion-reduce:transition-none">
+      <span
+        className={cn(
+          "relative block aspect-square w-full max-w-[220px]",
+          childhoodPhoto && "[transform-style:preserve-3d] transition-transform duration-700 ease-in-out group-hover:[transform:rotateY(180deg)] group-focus-visible:[transform:rotateY(180deg)] motion-reduce:transition-none",
+        )}
+      >
         <span className="absolute inset-0 overflow-hidden rounded-full [backface-visibility:hidden]" style={{ backgroundColor: person.color }}>
           <img src={person.photo} alt="" className="absolute max-w-none" style={faceFrame(person.face)} />
         </span>
-        <span
-          className="absolute inset-0 overflow-hidden rounded-full [transform:rotateY(180deg)] [backface-visibility:hidden]"
-          style={{ backgroundColor: person.color }}
-        >
-          <img src={childhood} alt="" className="size-full object-cover opacity-90" />
-        </span>
+        {childhoodPhoto ? (
+          <span
+            className="absolute inset-0 overflow-hidden rounded-full [transform:rotateY(180deg)] [backface-visibility:hidden]"
+            style={{ backgroundColor: person.color }}
+          >
+            <img src={childhoodPhoto} alt="" className="size-full object-cover opacity-90" />
+          </span>
+        ) : null}
       </span>
       <span className="relative grid w-full min-h-[76px] grid-rows-[auto_auto] content-start gap-0.5">
-        <span className="col-start-1 row-start-1 font-display text-[22px] leading-7 font-medium text-balance transition-opacity duration-300 ease-in-out group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:group-hover:opacity-100">
+        <span
+          className={cn(
+            "col-start-1 row-start-1 font-display text-[22px] leading-7 font-medium text-balance transition-opacity duration-300 ease-in-out",
+            showDream && "group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:group-hover:opacity-100",
+          )}
+        >
           {person.name}
         </span>
-        <span className="col-start-1 row-start-2 text-[15px] leading-[22px] font-medium text-balance text-ink transition-opacity duration-300 ease-in-out group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:group-hover:opacity-100">
+        <span
+          className={cn(
+            "col-start-1 row-start-2 text-[15px] leading-[22px] font-medium text-balance text-ink transition-opacity duration-300 ease-in-out",
+            showDream && "group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:group-hover:opacity-100",
+          )}
+        >
           {person.role}
         </span>
-        <span className="pointer-events-none col-start-1 row-start-1 font-display text-[22px] leading-7 font-medium text-balance opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:hidden">
-          Queria ser…
-        </span>
-        <span className="pointer-events-none col-start-1 row-start-2 text-[15px] leading-[22px] font-medium text-balance text-ink opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:hidden">
-          {dreamJob ?? "—"}
-        </span>
+        {showDream ? (
+          <>
+            <span className="pointer-events-none col-start-1 row-start-1 font-display text-[22px] leading-7 font-medium text-balance opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:hidden">
+              Queria ser…
+            </span>
+            <span className="pointer-events-none col-start-1 row-start-2 text-[15px] leading-[22px] font-medium text-balance text-ink opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:hidden">
+              {dreamJob ?? "—"}
+            </span>
+          </>
+        ) : null}
       </span>
     </button>
   )

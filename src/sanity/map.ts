@@ -65,8 +65,11 @@ export type SanityPayload = {
     servicesIntro?: (string | null)[] | null
     stats?: { value?: string | null; label?: string | null }[] | null
     segments?: { title?: string | null; text?: string | null; background?: string | null; titleColor?: string | null; href?: string | null }[] | null
+    historyIntro?: string | null
   } | null
 }
+
+const chapterTone = { background: "#f5f2eb", color: "#493975" }
 
 const themeIds = new Set<string>(themes.map((theme) => theme.id))
 const publicationTypeSet = new Set<string>(publicationTypes)
@@ -153,12 +156,12 @@ export function mapSanityContent(payload: SanityPayload): SiteContent {
       return [testimonial]
     }),
     chapters: (payload.chapters ?? []).flatMap((item) => {
-      if (!item.year || !item.title || !item.background || !item.color || !item.text) return []
+      if (!item.year || !item.title || !item.text) return []
       const chapter: Chapter = {
         year: item.year,
         title: item.title,
-        background: item.background,
-        color: item.color,
+        background: item.background?.trim() || chapterTone.background,
+        color: item.color?.trim() || chapterTone.color,
         text: item.text,
         kicker: item.kicker || undefined,
       }
@@ -179,6 +182,7 @@ export function mapSanityContent(payload: SanityPayload): SiteContent {
       const stat: Stat = { value: item.value, label: item.label }
       return [stat]
     }),
+    historyIntro: payload.settings?.historyIntro?.trim() ?? "",
   }
 }
 

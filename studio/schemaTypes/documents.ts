@@ -184,19 +184,37 @@ export const testimonial = defineType({
 
 export const chapter = defineType({
   name: "chapter",
-  title: "Capítulo da história",
+  title: "Marco da linha do tempo",
   type: "document",
   fields: [
-    defineField({ name: "year", title: "Ano", type: "string", validation: (rule) => rule.required() }),
-    defineField({ name: "title", title: "Título", type: "string", validation: (rule) => rule.required() }),
-    defineField({ name: "text", title: "Texto", type: "text", rows: 5, validation: (rule) => rule.required() }),
-    defineField({ name: "kicker", title: "Destaque", type: "string", description: "Palavra grande, como Fundação. Opcional." }),
-    defineField({ name: "background", title: "Cor de fundo", type: "string", validation: (rule) => rule.required() }),
-    defineField({ name: "color", title: "Cor do texto fechado", type: "string", validation: (rule) => rule.required() }),
     orderField,
+    defineField({
+      name: "year",
+      title: "Ano",
+      type: "string",
+      description: "Aparece no arco interativo em Quem somos → Nossa história.",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({ name: "title", title: "Título", type: "string", validation: (rule) => rule.required() }),
+    defineField({
+      name: "text",
+      title: "Texto",
+      type: "text",
+      rows: 6,
+      description: "Parágrafo exibido abaixo do arco quando este marco está selecionado.",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "kicker",
+      title: "Destaque",
+      type: "string",
+      description: "Opcional. Reservado para layouts antigos.",
+    }),
+    defineField({ name: "background", title: "Cor de fundo (legado)", type: "string", hidden: true }),
+    defineField({ name: "color", title: "Cor do texto (legado)", type: "string", hidden: true }),
   ],
   orderings: [{ title: "Ordem", name: "orderAsc", by: [{ field: "order", direction: "asc" }] }],
-  preview: { select: { title: "title", subtitle: "year" } },
+  preview: { select: { title: "year", subtitle: "title" } },
 })
 
 export const value = defineType({
@@ -248,6 +266,13 @@ export const siteSettings = defineType({
       title: "Com quem trabalhamos",
       type: "array",
       of: [{ type: "segment" }],
+    }),
+    defineField({
+      name: "historyIntro",
+      title: "Introdução — Nossa história",
+      type: "text",
+      rows: 4,
+      description: "Parágrafo acima da linha do tempo em Quem somos.",
     }),
   ],
   preview: { prepare: () => ({ title: "Textos do site" }) },

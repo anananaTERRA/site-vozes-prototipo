@@ -242,12 +242,12 @@ export function SiteHeader() {
                   key={hoverTo}
                   aria-hidden
                   className="pointer-events-none absolute bottom-0 z-0 h-0.5 bg-violet/35"
-                  style={{ left: hoverBox.left, width: hoverBox.width, originX: 0.5 }}
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  exit={{ scaleX: 0, transition: { duration: reduceMotion ? 0 : 0.14, ease: "easeIn" } }}
+                  style={{ left: hoverBox.left, width: hoverBox.width }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, transition: { duration: reduceMotion ? 0 : 0.3, ease: "easeIn" } }}
                   transition={
-                    reduceMotion ? { duration: 0 } : { duration: 0.34, ease: [0.22, 1, 0.36, 1] }
+                    reduceMotion ? { duration: 0 } : { duration: 0.62, ease: [0.22, 1, 0.36, 1] }
                   }
                 />
               )}

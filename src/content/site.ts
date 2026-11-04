@@ -47,7 +47,7 @@ export type TeamMember = {
   color: string
   face: { x: number; y: number }
   bio?: string
-  /** Placeholder até assets `team-{slug}-childhood.png` do cliente */
+  /** URL da foto de infância (Sanity). */
   childhoodPhoto?: string
   dreamJobText?: string
 }
@@ -83,6 +83,25 @@ export type SiteContent = {
   values: ValueItem[]
   faq: FaqItem[]
   stats: Stat[]
+  historyIntro: string
+}
+
+function mergeTeam(remote: TeamMember[], local: TeamMember[]): TeamMember[] {
+  if (remote.length === 0) return local
+  const localByName = new Map(local.map((member) => [member.name, member]))
+  return remote.flatMap((member) => {
+    const fallback = localByName.get(member.name)
+    const photo = member.photo || fallback?.photo
+    if (!photo) return []
+    const merged: TeamMember = {
+      ...member,
+      photo,
+      childhoodPhoto: member.childhoodPhoto || undefined,
+      dreamJobText: member.dreamJobText ?? fallback?.dreamJobText,
+      bio: member.bio ?? fallback?.bio,
+    }
+    return [merged]
+  })
 }
 
 export function mergeContent(local: SiteContent, remote: SiteContent): SiteContent {
@@ -98,9 +117,10 @@ export function mergeContent(local: SiteContent, remote: SiteContent): SiteConte
     segments: pick(remote.segments, local.segments),
     testimonials: pick(remote.testimonials, local.testimonials),
     chapters: pick(remote.chapters, local.chapters),
-    team: pick(remote.team, local.team),
+    team: mergeTeam(remote.team, local.team),
     values: pick(remote.values, local.values),
     faq: pick(remote.faq, local.faq),
     stats: pick(remote.stats, local.stats),
+    historyIntro: remote.historyIntro.trim() ? remote.historyIntro : local.historyIntro,
   }
 }
