@@ -10,7 +10,7 @@ import peca2 from "@/assets/peca-2.svg"
 import peca3 from "@/assets/peca-3.svg"
 import peca4 from "@/assets/peca-4.svg"
 import peca5 from "@/assets/peca-5.svg"
-import { BrandButton } from "@/components/brand/BrandButton"
+import { MorphPillButton } from "@/components/brand/MorphPillButton"
 import { footerColumns } from "@/content/institutional"
 
 const social = [
@@ -27,18 +27,14 @@ export function SiteFooter({ showCta = true }: { showCta?: boolean }) {
         <div className="bg-paper px-6 py-14 md:px-20">
           <div className="relative flex min-h-[360px] items-center overflow-hidden rounded-[40px] bg-indigo px-8 py-12 md:px-16">
             <div className="relative z-10 max-w-[620px]">
-              <p className="inline-flex rounded-full border border-white px-3.5 py-1.5 text-xs font-bold tracking-[0.96px]">
-                CONTATO
-              </p>
+              <p className="text-[13px] font-extrabold tracking-[1.5px] text-lime uppercase">CONTATO</p>
               <h2 className="mt-5 font-display text-4xl leading-[48px] font-medium">
                 Tem um desafio educacional em mente?
               </h2>
               <p className="mt-4 max-w-xl text-base leading-6 text-white/90">
                 Vamos conversar sobre o que sua rede ou organização está enfrentando e pensar juntos em uma resposta à altura.
               </p>
-              <BrandButton asChild className="mt-6 text-white">
-                <Link to="/contato">Fale com a gente</Link>
-              </BrandButton>
+              <MorphPillButton to="/contato#inicio" surface="dark" pill="orange" className="mt-6" />
             </div>
             <div className="pointer-events-none absolute top-0 right-0 hidden h-full w-[460px] lg:block">
               <img src={peca1} alt="" className="absolute top-6 left-4 w-48" />
@@ -55,7 +51,7 @@ export function SiteFooter({ showCta = true }: { showCta?: boolean }) {
         <div className="flex flex-col justify-between gap-10 lg:flex-row">
           <div className="max-w-[260px]">
             <img src={logo} alt="Vozes da Educação" className="h-[72px] w-auto brightness-0 invert" />
-            <p className="mt-3 text-[15px] font-extrabold tracking-[1px] text-orange">INTELIGÊNCIA EDUCACIONAL</p>
+            <p className="mt-3 text-[15px] font-extrabold tracking-[1px] text-lime">INTELIGÊNCIA EDUCACIONAL</p>
             <p className="mt-6 text-[15px] leading-[22px] font-medium">
               Rua Pamplona, 943/12, Jardim Paulista, São Paulo - SP. 01405-200
               <br />
