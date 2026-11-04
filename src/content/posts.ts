@@ -4,7 +4,6 @@ import classroom from "@/assets/photo-quem-somos.png"
 import school from "@/assets/photo-servicos.png"
 import transicao from "@/assets/photo-transicao.png"
 import portrait from "@/assets/photo-vozes.png"
-import type { ThemeId } from "@/content/themes"
 import { matchesThemeFilter, parseThemeFilter } from "@/lib/theme-filter"
 import type { Block, EventArticle, NewsArticle, PressItem, Publication, PublicationType } from "@/content/types"
 
