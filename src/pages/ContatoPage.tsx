@@ -8,7 +8,8 @@ import peca1 from "@/assets/peca-1.svg"
 import peca2 from "@/assets/peca-2.svg"
 import peca3 from "@/assets/peca-3.svg"
 import { BrandButton } from "@/components/brand/BrandButton"
-import { faq, subjects } from "@/content/institutional"
+import { useSiteContent } from "@/content/provider"
+import { subjects } from "@/content/institutional"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -36,6 +37,7 @@ const routes = [
 ]
 
 export function ContatoPage() {
+  const { faq } = useSiteContent()
   const [params] = useSearchParams()
   const [sent, setSent] = useState(false)
   const form = useForm<FormValues>({

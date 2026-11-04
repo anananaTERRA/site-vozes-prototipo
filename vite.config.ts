@@ -2,7 +2,7 @@ import fs from "node:fs"
 import path from "node:path"
 import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
-import { defineConfig, type Plugin } from "vite"
+import { defineConfig, type Plugin, type ProxyOptions } from "vite"
 
 function spaFallback(): Plugin {
   return {
@@ -16,6 +16,17 @@ function spaFallback(): Plugin {
   }
 }
 
+const sanityProxy: ProxyOptions = {
+  target: "https://n5x78djy.api.sanity.io",
+  changeOrigin: true,
+  rewrite: (requestPath) => requestPath.replace(/^\/sanity-api/, ""),
+  configure: (proxy) => {
+    proxy.on("proxyReq", (proxyReq) => {
+      proxyReq.removeHeader("origin")
+    })
+  },
+}
+
 export default defineConfig({
   base: process.env.VITE_BASE || "/",
   plugins: [react(), tailwindcss(), spaFallback()],
@@ -24,4 +35,6 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: { proxy: { "/sanity-api": sanityProxy } },
+  preview: { proxy: { "/sanity-api": sanityProxy } },
 })

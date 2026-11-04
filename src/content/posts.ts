@@ -373,35 +373,38 @@ export const publicacoes: Publication[] = publicationSeed.map((item) => ({
 }))
 
 export const publicationTypes: PublicationType[] = ["Guia", "Relatório", "Pesquisa", "Artigo"]
-export const publicationYears = [2025, 2024]
 
-export function newsBySlug(slug: string) {
-  return noticias.find((item) => item.slug === slug)
+export function newsBySlug(items: NewsArticle[], slug: string) {
+  return items.find((item) => item.slug === slug)
 }
 
-export function eventBySlug(slug: string) {
-  return eventos.find((item) => item.slug === slug)
+export function eventBySlug(items: EventArticle[], slug: string) {
+  return items.find((item) => item.slug === slug)
 }
 
-export function publicationBySlug(slug: string) {
-  return publicacoes.find((item) => item.slug === slug)
+export function publicationBySlug(items: Publication[], slug: string) {
+  return items.find((item) => item.slug === slug)
 }
 
-export function relatedNews(slug: string) {
-  return noticias.filter((item) => item.slug !== slug).slice(0, 3)
+export function relatedNews(items: NewsArticle[], slug: string) {
+  return items.filter((item) => item.slug !== slug).slice(0, 3)
 }
 
-export function relatedEvents(slug: string) {
-  return eventos.filter((item) => item.slug !== slug).slice(0, 3)
+export function relatedEvents(items: EventArticle[], slug: string) {
+  return items.filter((item) => item.slug !== slug).slice(0, 3)
 }
 
-export function relatedPublications(slug: string) {
-  return publicacoes.filter((item) => item.slug !== slug).slice(0, 3)
+export function relatedPublications(items: Publication[], slug: string) {
+  return items.filter((item) => item.slug !== slug).slice(0, 3)
 }
 
 export type FeedKind = "tudo" | "noticias" | "eventos" | "midia"
 
-export function filterFeed(input: { tipo: FeedKind; tema: string; q: string; ordem: string }) {
+export function filterFeed(
+  source: { noticias: NewsArticle[]; eventos: EventArticle[]; midia: PressItem[] },
+  input: { tipo: FeedKind; tema: string; q: string; ordem: string },
+) {
+  const { noticias, eventos, midia } = source
   const query = input.q.trim().toLocaleLowerCase("pt-BR")
   const featured = noticias.find((item) => item.featured)
   let items = [
@@ -431,15 +434,18 @@ export function filterFeed(input: { tipo: FeedKind; tema: string; q: string; ord
   return { items, destaque }
 }
 
-export function filterPublications(input: {
-  tipo: string
-  ano: string
-  tema: string
-  q: string
-  ordem: string
-}) {
+export function filterPublications(
+  publications: Publication[],
+  input: {
+    tipo: string
+    ano: string
+    tema: string
+    q: string
+    ordem: string
+  },
+) {
   const query = input.q.trim().toLocaleLowerCase("pt-BR")
-  let items = [...publicacoes]
+  let items = [...publications]
   if (input.tipo) items = items.filter((item) => item.type === input.tipo)
   if (input.ano) items = items.filter((item) => String(item.year) === input.ano)
   if (input.tema) items = items.filter((item) => item.themes.includes(input.tema as ThemeId))
@@ -461,27 +467,30 @@ export type SearchHit = {
   external?: boolean
 }
 
-export function searchContent(query: string): SearchHit[] {
+export function searchContent(
+  source: { noticias: NewsArticle[]; eventos: EventArticle[]; midia: PressItem[]; publicacoes: Publication[] },
+  query: string,
+): SearchHit[] {
   const q = query.trim().toLocaleLowerCase("pt-BR")
   if (!q) return []
   const hits: SearchHit[] = [
-    ...noticias.map((item) => ({
+    ...source.noticias.map((item) => ({
       type: "Notícia" as const,
       title: item.title,
       href: `/vozes/noticias/${item.slug}`,
     })),
-    ...eventos.map((item) => ({
+    ...source.eventos.map((item) => ({
       type: "Evento" as const,
       title: item.title,
       href: `/vozes/eventos/${item.slug}`,
     })),
-    ...midia.map((item) => ({
+    ...source.midia.map((item) => ({
       type: "Na mídia" as const,
       title: item.title,
       href: item.url,
       external: true,
     })),
-    ...publicacoes.map((item) => ({
+    ...source.publicacoes.map((item) => ({
       type: "Publicação" as const,
       title: item.title,
       href: `/publicacoes/${item.slug}`,
@@ -490,14 +499,17 @@ export function searchContent(query: string): SearchHit[] {
   return hits.filter((item) => item.title.toLocaleLowerCase("pt-BR").includes(q))
 }
 
-export function recentSearches(): SearchHit[] {
-  return [
-    { type: "Notícia", title: noticias[0]?.title ?? "", href: `/vozes/noticias/${noticias[0]?.slug}` },
-    { type: "Evento", title: eventos[0]?.title ?? "", href: `/vozes/eventos/${eventos[0]?.slug}` },
-    {
-      type: "Publicação",
-      title: publicacoes[0]?.title ?? "",
-      href: `/publicacoes/${publicacoes[0]?.slug}`,
-    },
-  ]
+export function recentSearches(source: {
+  noticias: NewsArticle[]
+  eventos: EventArticle[]
+  publicacoes: Publication[]
+}): SearchHit[] {
+  const hits: SearchHit[] = []
+  const news = source.noticias[0]
+  const event = source.eventos[0]
+  const publication = source.publicacoes[0]
+  if (news) hits.push({ type: "Notícia", title: news.title, href: `/vozes/noticias/${news.slug}` })
+  if (event) hits.push({ type: "Evento", title: event.title, href: `/vozes/eventos/${event.slug}` })
+  if (publication) hits.push({ type: "Publicação", title: publication.title, href: `/publicacoes/${publication.slug}` })
+  return hits
 }

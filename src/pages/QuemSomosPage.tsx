@@ -7,9 +7,6 @@ import valorFundamentacao from "@/assets/valor-fundamentacao.svg"
 import valorHumanidade from "@/assets/valor-humanidade.svg"
 import valorTraducao from "@/assets/valor-traducao.svg"
 import { PageHero } from "@/components/layout/PageHero"
-import { chapters, team, values } from "@/content/institutional"
-
-const valueIcons = [valorAntecipacao, valorTraducao, valorHumanidade, valorFundamentacao, valorColaboracao]
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -18,8 +15,19 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { useSiteContent } from "@/content/provider"
+import type { Chapter, TeamMember } from "@/content/site"
+
+const valueIcons: Record<string, string> = {
+  antecipacao: valorAntecipacao,
+  traducao: valorTraducao,
+  humanidade: valorHumanidade,
+  fundamentacao: valorFundamentacao,
+  colaboracao: valorColaboracao,
+}
 
 export function QuemSomosPage() {
+  const { chapters, team, values } = useSiteContent()
   const [open, setOpen] = useState(0)
   const [active, setActive] = useState<number | null>(null)
   const historyRef = useRef<HTMLDivElement>(null)
@@ -39,7 +47,7 @@ export function QuemSomosPage() {
     const observer = new ResizeObserver(measure)
     observer.observe(el)
     return () => observer.disconnect()
-  }, [])
+  }, [chapters.length])
 
   function step(delta: number) {
     setActive((current) => {
@@ -163,7 +171,7 @@ export function QuemSomosPage() {
               <Fragment key={item.title}>
                 {index > 0 ? <div aria-hidden className="hidden h-[200px] w-px shrink-0 bg-line xl:block" /> : null}
                 <article className="flex min-w-0 flex-1 flex-col gap-4 xl:px-6">
-                  <img src={valueIcons[index]} alt="" className="self-start" />
+                  <img src={valueIcons[item.icon]} alt="" className="self-start" />
                   <h3 className="font-display text-2xl leading-[30px] font-medium">{item.title}</h3>
                   <p className="text-[15px] leading-[22px] font-medium">{item.text}</p>
                 </article>
@@ -182,7 +190,7 @@ function ChapterRail({
   textWidth,
   onOpen,
 }: {
-  item: (typeof chapters)[number]
+  item: Chapter
   open: boolean
   textWidth: number | null
   onOpen: () => void
@@ -231,7 +239,7 @@ function ChapterRail({
   )
 }
 
-function PersonCard({ person, onOpen }: { person: (typeof team)[number]; onOpen: () => void }) {
+function PersonCard({ person, onOpen }: { person: TeamMember; onOpen: () => void }) {
   return (
     <button type="button" onClick={onOpen} className="flex w-full max-w-[220px] flex-col items-center gap-4 text-center">
       <Portrait src={person.photo} face={person.face} color={person.color} className="aspect-square w-full" />

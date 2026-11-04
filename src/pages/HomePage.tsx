@@ -15,8 +15,7 @@ import { WordBalloon } from "@/components/brand/WordBalloon"
 import { ProcessScroll } from "@/components/home/ProcessScroll"
 import { NewsCard, PublicationCard } from "@/components/content/Cards"
 import { PartnerStrip } from "@/components/content/PartnerStrip"
-import { segments, services, stats, testimonials } from "@/content/institutional"
-import { noticias, publicacoes } from "@/content/posts"
+import { useSiteContent } from "@/content/provider"
 import {
   Carousel,
   CarouselContent,
@@ -25,9 +24,17 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 
-const faces = [face1, face2, face3, face4, face5, face6]
+const faces: Record<string, string> = {
+  "carinha-1": face1,
+  "carinha-2": face2,
+  "carinha-3": face3,
+  "carinha-4": face4,
+  "carinha-5": face5,
+  "carinha-6": face6,
+}
 
 export function HomePage() {
+  const { stats, services, testimonials, segments, noticias, publicacoes } = useSiteContent()
   const parallaxRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: parallaxRef,
@@ -110,13 +117,13 @@ export function HomePage() {
           <PartnerStrip />
         </div>
         <div className="mx-auto mt-16 grid w-full max-w-[1280px] gap-8 md:grid-cols-3">
-          {services.map((service, index) => (
+          {services.map((service) => (
             <Link
               key={service.id}
               to={`/o-que-fazemos#${service.id}`}
               className="group flex h-60 flex-col justify-between rounded-[20px] bg-surface p-6"
             >
-              <img src={faces[index]} alt="" className="h-8 w-8 object-contain dark:brightness-0 dark:invert" />
+              <img src={faces[service.face] ?? face1} alt="" className="h-8 w-8 object-contain dark:brightness-0 dark:invert" />
               <div>
                 <p className="hidden text-[15px] leading-[22px] font-medium group-hover:block">{service.text}</p>
                 <h3 className="font-display text-[32px] leading-[38px] font-medium">{service.title}</h3>

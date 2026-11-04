@@ -1,6 +1,7 @@
-import { partners } from "@/content/institutional"
+import { useSiteContent } from "@/content/provider"
 
 export function PartnerStrip() {
+  const { partners } = useSiteContent()
   return (
     <div>
       <p className="text-[13px] font-extrabold tracking-[1.04px]">CLIENTES E PARCEIROS</p>
@@ -10,7 +11,7 @@ export function PartnerStrip() {
             <img
               src={partner.src}
               alt={partner.name}
-              className={`h-14 w-auto object-contain ${"invertOnDark" in partner ? "dark:brightness-0 dark:invert" : ""}`}
+              className={`h-14 w-auto object-contain ${partner.invertOnDark ? "dark:brightness-0 dark:invert" : ""}`}
             />
           </li>
         ))}

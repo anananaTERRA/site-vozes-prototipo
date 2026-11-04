@@ -11,6 +11,11 @@ node_modules
 dist
 dist-ssr
 *.local
+# Segredos locais. O token do Sanity fica em .env.local e não entra no Git.
+.env
+.env.*
+!.env.example
+.sanity
 
 # Editor directories and files
 .vscode/*
