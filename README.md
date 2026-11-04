@@ -7,15 +7,27 @@ npm install
 npm run dev
 ```
 
-O site local abre em `http://localhost:5173`. O painel abre em outro terminal:
+O Studio tem dependências próprias em `studio/`. Só precisa instalar se for rodar ou fazer deploy do painel localmente (`npm ci --prefix studio`).
+
+O site local abre em `http://localhost:5173`.
+
+| O quê | Endereço |
+| --- | --- |
+| Site publicado | https://site-vozes-prototipo.vercel.app |
+| Painel de conteúdo (Studio) | https://vozes-da-educacao.sanity.studio |
+| Protótipo no GitHub Pages | https://anananaterra.github.io/site-vozes-prototipo/ |
+
+O login do Studio é a conta Sanity de quem foi convidado no projeto. Não existe área logada dentro do React.
+
+Para subir o painel nesta máquina (desenvolvimento de schema):
 
 ```bash
 npm run studio
 ```
 
-O Studio sobe em `http://localhost:3333`. O login é a conta Sanity de quem foi convidado no projeto. Não existe área logada dentro do React.
+O Studio local sobe em `http://localhost:3333`.
 
-Cada push na `main` ainda publica o protótipo em `https://anananaterra.github.io/site-vozes-prototipo/`. A Vercel, quando entrar, é um segundo endereço do mesmo site. Publicar um texto no Sanity não exige push nem novo deploy.
+Publicar ou editar conteúdo no Sanity **não exige** push nem novo deploy do site. Recarregue a aba da Vercel depois de clicar em **Publish** no Studio (salvar só grava rascunho; rascunho não aparece no site).
 
 ## Como o fluxo funciona
 
@@ -29,13 +41,13 @@ Há três peças, e cada uma tem um dono diferente.
 
 O navegador do visitante pede o conteúdo publicado direto na API do Sanity. Rascunho não aparece. Se a API falhar, a página usa os textos que ainda estão em `src/content/`. Se uma lista no Sanity vier vazia, essa lista também volta para o texto local. Apagar todas as notícias do painel, por exemplo, faz a home mostrar de novo as notícias do código.
 
-No `npm run dev`, o Vite encaminha essas consultas por `/sanity-api`, para o localhost não esbarrar em CORS. Na Vercel e no GitHub Pages o browser fala com o Sanity direto. Por isso o domínio público precisa estar em [CORS do projeto](https://www.sanity.io/manage/project/n5x78djy/api/cors), com credenciais desligadas. Já estão liberados `http://localhost:5173`, `http://localhost:3333` e `https://anananaterra.github.io`. O domínio da Vercel entra nessa lista no dia do deploy.
+No `npm run dev`, o Vite encaminha essas consultas por `/sanity-api`, para o localhost não esbarrar em CORS. Na Vercel e no GitHub Pages o browser fala com o Sanity direto. Cada domínio público precisa estar em [CORS do projeto](https://www.sanity.io/manage/project/n5x78djy/api/cors), com credenciais desligadas. Já estão liberados `http://localhost:5173`, `http://localhost:3333`, `https://anananaterra.github.io` e `https://site-vozes-prototipo.vercel.app`. Previews da Vercel precisam de origem própria ou de um coringa que a tela de CORS aceite.
 
-O site público não usa token. `SANITY_API_TOKEN` só serve para o seed.
+O projeto Sanity (`n5x78djy`) e o dataset (`production`) estão no código (`src/sanity/config.ts`). O site lê a API pública no navegador; **não** depende de variável de ambiente na Vercel para buscar conteúdo. O site público não usa token. `SANITY_API_TOKEN` em `.env.local` só serve para o seed e para login/deploy do CLI do Sanity nesta máquina.
 
 ## Publicar um post
 
-1. Abra o Studio (`npm run studio` ou o Studio hospedado, se ele já tiver sido publicado).
+1. Abra o Studio em https://vozes-da-educacao.sanity.studio (ou `npm run studio` no localhost, para desenvolvimento).
 2. Entre em **Notícias** e crie um documento.
 3. Preencha título, chamada, data, pelo menos um tema e a imagem. No campo **Endereço**, gere o slug a partir do título. Esse slug vira a URL: `/vozes/noticias/esse-slug`.
 4. Escreva o corpo. Parágrafos, listas e imagens do corpo saem no artigo.
@@ -66,6 +78,8 @@ Quem edita precisa ser membro do projeto, em [manage → Members](https://www.sa
 
 `npm run studio` sobe o painel nesta máquina. As alterações de schema aparecem aqui assim que o arquivo é salvo. O conteúdo em si não fica no Git.
 
+`npm run deploy --prefix studio` republica o painel em https://vozes-da-educacao.sanity.studio (use depois de mudar schema ou `studio/sanity.config.ts`).
+
 `npm run build` gera `dist`. É o que a Vercel e o GitHub Pages publicam. O build não embute os posts. Os posts continuam sendo buscados no navegador.
 
 `npm run seed:sanity` é a carga inicial. Ele lê notícias, equipe, logos e textos que estão em `src/content/`, sobe as imagens e grava os documentos no dataset `production`. Roda uma vez, para popular o painel com o que o protótipo já tinha.
@@ -81,11 +95,11 @@ O token se cria em [API → Tokens](https://www.sanity.io/manage/project/n5x78dj
 
 Não rode o seed de novo depois que alguém já editou no Studio. Ele usa `createOrReplace` com ids fixos (`noticia-` + slug, `team-1`, `siteSettings`, e o mesmo padrão para o resto). O documento com aquele id volta a ser a cópia do código, e a edição feita no painel se perde. Um post criado só no Studio, com outro id, permanece. Imagem com o mesmo nome de arquivo não é enviada outra vez.
 
-## Subir o site na Vercel
+## Deploy do site (Vercel)
 
-O deploy do site e a publicação de conteúdo são independentes. A Vercel entrega o React. O Sanity entrega os textos. Um post novo não gera build.
+O deploy do site e a publicação de conteúdo são independentes. A Vercel entrega o React em https://site-vozes-prototipo.vercel.app. O Sanity entrega os textos. Um post novo não gera build na Vercel.
 
-No projeto da Vercel:
+Configuração do projeto na Vercel:
 
 - Repositório: este.
 - Framework: Vite.
@@ -94,17 +108,30 @@ No projeto da Vercel:
 - Não defina `VITE_BASE`. Vazio significa `/`, que é o certo num domínio próprio. O GitHub Pages é quem define `VITE_BASE=/site-vozes-prototipo/` no workflow. Na Vercel esse valor quebraria os links.
 - Não coloque `SANITY_API_TOKEN` na Vercel. O site não precisa dele, e o token de escrita não deve ir para o ambiente público.
 
-Depois do primeiro deploy, acrescente a URL de produção em [CORS](https://www.sanity.io/manage/project/n5x78djy/api/cors). Credenciais ficam desligadas, como nos outros domínios. Sem essa origem, o browser da Vercel bloqueia a consulta e o site cai no conteúdo local. Se forem usar os previews da Vercel, cada domínio de preview também precisa entrar, ou a lista pode usar um coringa que a tela de CORS aceite.
+Sem a origem da Vercel em [CORS](https://www.sanity.io/manage/project/n5x78djy/api/cors), o browser bloqueia a consulta e o site cai no conteúdo local em `src/content/`.
 
-O painel não precisa ir para a Vercel. Para ter um endereço fixo de edição, na pasta `studio/`:
+Enquanto a `main` continuar recebendo push, o GitHub Pages também publica. Vercel e GitHub Pages leem o mesmo dataset.
+
+## Deploy do Studio (Sanity)
+
+O painel **não** vai para a Vercel. Ele fica hospedado pelo Sanity.
+
+- **Produção (time):** https://vozes-da-educacao.sanity.studio
+- **Local (schema):** `npm run studio` → `http://localhost:3333`
+
+Na primeira vez na pasta `studio/`, instale as dependências:
 
 ```bash
-npm run deploy
+npm ci --prefix studio
 ```
 
-O CLI pede um hostname e publica em `https://esse-nome.sanity.studio`. Esse endereço já está coberto pelo login do Sanity. Quem for editar usa esse link. Quem só visita o site usa a Vercel.
+Para republicar o painel depois de mudar schema ou config (`studio/schemaTypes/`, `studio/sanity.config.ts`):
 
-Enquanto a `main` continuar recebendo push, o GitHub Pages também publica. Os dois hosts leem o mesmo dataset.
+```bash
+npm run deploy --prefix studio
+```
+
+O hostname (`vozes-da-educacao`) e o `deployment.appId` estão em `studio/sanity.cli.ts`, então o deploy não precisa escolher URL de novo. Quem edita conteúdo usa o link `*.sanity.studio`; quem só visita o site usa a Vercel.
 
 ## Criar um tipo novo de conteúdo
 
