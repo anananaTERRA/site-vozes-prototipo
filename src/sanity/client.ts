@@ -14,7 +14,8 @@ export const sanityClient = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: !proxyHost,
+  // API direta: conteúdo publicado reflete mais rápido que pela CDN de leitura.
+  useCdn: false,
   maxRetries: 2,
-  ...(proxyHost ? { apiHost: proxyHost, useProjectHostname: false, useCdn: false } : {}),
+  ...(proxyHost ? { apiHost: proxyHost, useProjectHostname: false } : {}),
 })

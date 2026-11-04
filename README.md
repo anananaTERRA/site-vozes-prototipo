@@ -39,7 +39,7 @@ Há três peças, e cada uma tem um dono diferente.
 | Conteúdo | Sanity. Notícias, eventos, equipe, logos, textos da home | Sempre que alguém publica no Studio |
 | Painel | Sanity Studio, pasta `studio/` | Quando um tipo de conteúdo ganha ou perde um campo |
 
-O navegador do visitante pede o conteúdo publicado direto na API do Sanity. Rascunho não aparece. Se a API falhar, a página usa os textos que ainda estão em `src/content/`. Se uma lista no Sanity vier vazia, essa lista também volta para o texto local. Apagar todas as notícias do painel, por exemplo, faz a home mostrar de novo as notícias do código.
+O navegador do visitante pede o conteúdo publicado direto na API do Sanity (sem CDN de leitura), para refletir **Publish** com menos atraso. Ao voltar para a aba do site, o conteúdo é buscado de novo. Rascunho não aparece. Se a API falhar, a página usa os textos que ainda estão em `src/content/`. Se uma lista no Sanity vier vazia, essa lista também volta para o texto local. Apagar todas as notícias do painel, por exemplo, faz a home mostrar de novo as notícias do código.
 
 No `npm run dev`, o Vite encaminha essas consultas por `/sanity-api`, para o localhost não esbarrar em CORS. Na Vercel e no GitHub Pages o browser fala com o Sanity direto. Cada domínio público precisa estar em [CORS do projeto](https://www.sanity.io/manage/project/n5x78djy/api/cors), com credenciais desligadas. Já estão liberados `http://localhost:5173`, `http://localhost:3333`, `https://anananaterra.github.io` e `https://site-vozes-prototipo.vercel.app`. Previews da Vercel precisam de origem própria ou de um coringa que a tela de CORS aceite.
 
