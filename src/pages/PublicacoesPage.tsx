@@ -15,7 +15,9 @@ import {
   relatedPublications,
 } from "@/content/posts"
 import type { Block } from "@/content/types"
+import { cn } from "cn"
 import { formatDate } from "@/lib/format"
+import { roundFilterInput, roundFilterPill } from "@/lib/round-control"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -61,7 +63,7 @@ export function PublicacoesPage() {
       <PageHero
         background="#493975"
         title="Publicações"
-        titleColor="#ff8327"
+        titleColor="#d0e770"
         statement="Pesquisas, levantamentos e artigos do Vozes — para quem decide com informação de qualidade."
         image={photo}
         imageAlt="Leitura, imagem provisória"
@@ -79,21 +81,24 @@ export function PublicacoesPage() {
             onChange={(event) => update({ q: event.target.value })}
             placeholder="Buscar publicação"
             aria-label="Buscar publicação"
-            className="h-12 max-w-sm rounded-full border-2 border-line"
+            className={roundFilterInput}
           />
           {publicationTypes.map((type) => (
             <button
               key={type}
               type="button"
               onClick={() => update({ tipo: tipo === type ? "" : type })}
-              className={`h-12 rounded-full border-2 px-5 text-[15px] font-extrabold ${tipo === type ? "border-indigo bg-indigo text-white" : "border-line"}`}
+              className={cn(
+                roundFilterPill(),
+                tipo === type ? "border-indigo bg-indigo font-extrabold text-white" : "",
+              )}
             >
               {type}
             </button>
           ))}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button type="button" className="h-12 rounded-full border-2 border-line px-5 text-[15px] font-medium">
+              <button type="button" className={roundFilterPill()}>
                 {ano || "Ano"}
               </button>
             </DropdownMenuTrigger>
@@ -108,7 +113,7 @@ export function PublicacoesPage() {
           </DropdownMenu>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button type="button" className="h-12 rounded-full border-2 border-line px-5 text-[15px] font-medium">
+              <button type="button" className={roundFilterPill()}>
                 {activeTheme?.short ?? "Tema"}
               </button>
             </DropdownMenuTrigger>
@@ -121,7 +126,7 @@ export function PublicacoesPage() {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <button type="button" className="h-12 rounded-full border-2 border-line px-5 text-[15px] font-medium" onClick={() => update({ ordem: ordem === "antigas" ? "" : "antigas" })}>
+          <button type="button" className={roundFilterPill()} onClick={() => update({ ordem: ordem === "antigas" ? "" : "antigas" })}>
             Ordenar: {ordem === "antigas" ? "Mais antigas" : "Mais recentes"}
           </button>
         </div>
@@ -204,7 +209,7 @@ export function PostPublicacaoPage() {
           <p className="text-[15px] font-medium text-violet">
             <Link to="/publicacoes">Publicações</Link>
           </p>
-          <p className="mt-4 text-[13px] font-extrabold tracking-[1.04px] text-orange uppercase">
+          <p className="mt-4 text-[13px] font-extrabold tracking-[1.04px] text-mint uppercase">
             {item.type} · {item.year} · {formatDate(item.date)}
           </p>
           <h1 className="mt-4 font-display text-5xl leading-[56px] font-medium">{item.title}</h1>

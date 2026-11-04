@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router"
+import { Outlet, ScrollRestoration, useLocation } from "react-router"
 import { SiteFooter } from "@/components/layout/SiteFooter"
 import { SiteHeader } from "@/components/layout/SiteHeader"
 
@@ -11,6 +11,7 @@ export function SiteLayout() {
         <Outlet />
       </main>
       <SiteFooter showCta={pathname !== "/contato"} />
+      <ScrollRestoration />
     </div>
   )
 }

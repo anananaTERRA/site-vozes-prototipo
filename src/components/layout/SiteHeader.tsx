@@ -36,8 +36,8 @@ function usePrefersReducedMotion() {
   return reduce
 }
 
-const barPadding =
-  "pr-[max(1rem,env(safe-area-inset-right))] pl-[max(1rem,env(safe-area-inset-left))] sm:pr-[max(1.5rem,env(safe-area-inset-right))] sm:pl-[max(1.5rem,env(safe-area-inset-left))] md:pr-[max(5rem,env(safe-area-inset-right))] md:pl-[max(5rem,env(safe-area-inset-left))]"
+const barInset =
+  "px-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:pl-[max(5rem,env(safe-area-inset-left))] md:pr-[max(5rem,env(safe-area-inset-right))]"
 
 export function SiteHeader() {
   const location = useLocation()
@@ -47,7 +47,6 @@ export function SiteHeader() {
   const menuRef = useRef<HTMLElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({})
-  const [compact, setCompact] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [barHeight, setBarHeight] = useState(88)
@@ -58,13 +57,6 @@ export function SiteHeader() {
   const activeBox = activeTo ? boxes[activeTo] : undefined
   const hoverTo = hovered && hovered !== activeTo ? hovered : null
   const hoverBox = hoverTo ? boxes[hoverTo] : undefined
-
-  useEffect(() => {
-    const onScroll = () => setCompact(window.scrollY > 8)
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
 
   useEffect(() => {
     const state = location.state as { openSearch?: boolean } | null
@@ -207,7 +199,13 @@ export function SiteHeader() {
         "mr-[calc(env(safe-area-inset-right)*-1)] ml-[calc(env(safe-area-inset-left)*-1)]",
       )}
     >
-      <div className={cn("flex items-center justify-between gap-2", barPadding, compact && !menuOpen ? "h-16" : "h-[88px]")}>
+      <div
+        className={cn(
+          "mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4",
+          barInset,
+          "h-[88px]",
+        )}
+      >
         <Link to="/" aria-label="Vozes da Educação" className="shrink-0" onClick={() => setMenuOpen(false)}>
           <img
             src={logo}
@@ -218,7 +216,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-2 sm:gap-4 lg:gap-6">
           <nav
             ref={navRef}
-            className="relative hidden items-center gap-6 lg:flex"
+            className="relative hidden min-h-10 items-center gap-6 pb-1.5 lg:flex"
             aria-label="Principal"
             onMouseLeave={() => setHovered(null)}
           >
@@ -232,7 +230,7 @@ export function SiteHeader() {
                     linkRefs.current[item.to] = node
                   }}
                   onMouseEnter={() => setHovered(active ? null : item.to)}
-                  className="pb-[6px] text-[13px] font-extrabold tracking-[1.04px] text-ink uppercase"
+                  className="text-[13px] font-extrabold tracking-[1.04px] text-ink uppercase"
                 >
                   {item.label}
                 </NavLink>
@@ -287,7 +285,7 @@ export function SiteHeader() {
             {menuOpen ? <X className="size-6" aria-hidden /> : <Menu className="size-6" aria-hidden />}
           </button>
           <div className="flex shrink-0 items-center gap-2">
-            <BrandButton tone="outline" asChild className="hidden h-12 px-5 lg:inline-flex">
+            <BrandButton tone="orange" pillSize="md" asChild className="hidden lg:inline-flex">
               <Link to="/contato">Contato</Link>
             </BrandButton>
             <ThemeToggle />
@@ -324,7 +322,7 @@ export function SiteHeader() {
                   </li>
                 ))}
               </ul>
-              <BrandButton tone="outline" asChild className="mt-8 w-full">
+              <BrandButton tone="orange" asChild className="mt-8 w-full">
                 <Link to="/contato" onClick={() => setMenuOpen(false)}>
                   Contato
                 </Link>

@@ -20,38 +20,23 @@ function applyTheme(theme: ThemeMode) {
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<ThemeMode>(() =>
-    document.documentElement.classList.contains("dark") ? "dark" : "light",
-  )
+  const [theme, setTheme] = useState<ThemeMode>(() => readStoredTheme() ?? "light")
 
   useEffect(() => {
-    const media = window.matchMedia("(prefers-color-scheme: dark)")
-
-    const followSystem = () => {
-      if (readStoredTheme()) return
-      const next: ThemeMode = media.matches ? "dark" : "light"
-      applyTheme(next)
-      setTheme(next)
-    }
+    const initial = readStoredTheme() ?? "light"
+    applyTheme(initial)
+    setTheme(initial)
 
     const onStorage = (event: StorageEvent) => {
       if (event.key !== STORAGE_KEY) return
       const next: ThemeMode =
-        event.newValue === "dark" || event.newValue === "light"
-          ? event.newValue
-          : media.matches
-            ? "dark"
-            : "light"
+        event.newValue === "dark" || event.newValue === "light" ? event.newValue : "light"
       applyTheme(next)
       setTheme(next)
     }
 
-    media.addEventListener("change", followSystem)
     window.addEventListener("storage", onStorage)
-    return () => {
-      media.removeEventListener("change", followSystem)
-      window.removeEventListener("storage", onStorage)
-    }
+    return () => window.removeEventListener("storage", onStorage)
   }, [])
 
   function toggle() {

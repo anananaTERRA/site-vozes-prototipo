@@ -1,5 +1,5 @@
-import { Link } from "react-router"
 import photo from "@/assets/photo-servicos.png"
+import { MorphPillButton } from "@/components/brand/MorphPillButton"
 import { PartnerStrip } from "@/components/content/PartnerStrip"
 import { ServiceIndex } from "@/components/content/ServiceIndex"
 import { PageHero } from "@/components/layout/PageHero"
@@ -38,9 +38,7 @@ export function OQueFazemosPage() {
           <PartnerStrip />
         </div>
         <div className="mx-auto mt-10 w-full max-w-[1280px]">
-          <Link to="/contato" className="text-[19px] font-extrabold">
-            Fale com a gente →
-          </Link>
+          <MorphPillButton to="/contato" />
         </div>
       </section>
     </div>

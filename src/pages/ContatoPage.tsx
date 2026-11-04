@@ -1,13 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState, type ReactNode } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Link, useSearchParams } from "react-router"
+import { useSearchParams } from "react-router"
 import { z } from "zod"
 import photo from "@/assets/photo-quem-somos.png"
 import peca1 from "@/assets/peca-1.svg"
 import peca2 from "@/assets/peca-2.svg"
 import peca3 from "@/assets/peca-3.svg"
 import { BrandButton } from "@/components/brand/BrandButton"
+import { MorphPillButton } from "@/components/brand/MorphPillButton"
+import { ContactRouteCards } from "@/components/contato/ContactRouteCards"
 import { faq, subjects } from "@/content/institutional"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -27,13 +29,6 @@ const schema = z.object({
 })
 
 type FormValues = z.infer<typeof schema>
-
-const routes = [
-  { title: "WhatsApp", text: "Fale agora com a equipe.", href: "https://wa.me/5511946292212", external: true },
-  { title: "Serviços", text: "Veja como a consultoria trabalha.", href: "/o-que-fazemos", external: false },
-  { title: "Imprensa", text: "Pedidos de entrevista e dados.", href: "/vozes#imprensa", external: false },
-  { title: "Trabalhe", text: "Conte em que frente você quer entrar.", href: "/contato?assunto=trabalhe", external: false },
-]
 
 export function ContatoPage() {
   const [params] = useSearchParams()
@@ -63,20 +58,20 @@ export function ContatoPage() {
 
   return (
     <div>
-      <section className="bg-indigo text-white">
+      <section id="inicio" className="scroll-mt-28 bg-indigo text-white">
         <div className="mx-auto grid w-full max-w-[1440px] items-center gap-10 px-6 py-16 lg:grid-cols-[380px_480px_420px] lg:px-16">
           <div>
-            <p className="text-[13px] font-extrabold tracking-[1.5px] text-orange">CONTATO</p>
+            <p className="text-[13px] font-extrabold tracking-[1.5px] text-lime">CONTATO</p>
             <h1 className="mt-6 font-display text-4xl leading-[52px] font-medium md:text-[44px]">
               Tem um desafio em mente?
             </h1>
             <p className="mt-3 flex flex-wrap items-center gap-3 font-display text-4xl md:text-[44px]">
-              Vamos <span className="rounded-3xl bg-orange px-4 py-1 font-sans text-[30px] font-extrabold text-indigo">conversar</span>.
+              Vamos <span className="rounded-3xl bg-lime px-4 py-1 font-sans text-[30px] font-extrabold text-green">conversar</span>.
             </p>
             <p className="mt-6 text-lg leading-7 text-white/90">
               Conte o que sua instituição está enfrentando. A partir daí, construímos juntos a melhor solução.
             </p>
-            <p className="mt-6 text-[15px] font-medium text-orange">contato@…</p>
+            <p className="mt-6 text-[15px] font-medium text-lime">contato@…</p>
             <p className="text-[15px] font-medium">(11) 94629-2212 · WhatsApp</p>
           </div>
           <div className="relative hidden h-[520px] lg:block">
@@ -158,27 +153,11 @@ export function ContatoPage() {
           </div>
         </div>
       </section>
-      <section className="mx-auto grid w-full max-w-[1440px] gap-4 px-6 py-10 md:grid-cols-4 md:px-20">
-        {routes.map((route) =>
-          route.external ? (
-            <a key={route.title} href={route.href} target="_blank" rel="noreferrer" className="rounded-[20px] bg-surface p-6">
-              <h2 className="font-display text-2xl font-medium">{route.title}</h2>
-              <p className="mt-2 text-[15px] leading-[22px]">{route.text}</p>
-            </a>
-          ) : (
-            <Link key={route.title} to={route.href} className="rounded-[20px] bg-surface p-6">
-              <h2 className="font-display text-2xl font-medium">{route.title}</h2>
-              <p className="mt-2 text-[15px] leading-[22px]">{route.text}</p>
-            </Link>
-          ),
-        )}
-      </section>
+      <ContactRouteCards />
       <section id="faq" className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-20 md:grid-cols-[400px_1fr] md:px-20">
         <div>
           <h2 className="font-display text-5xl leading-[54px]">Perguntas frequentes</h2>
-          <Link to="/contato" className="mt-4 inline-block text-lg font-extrabold">
-            Fale com a gente
-          </Link>
+          <MorphPillButton to="/contato#inicio" className="mt-4" />
         </div>
         <Accordion type="single" collapsible defaultValue="item-0">
           {faq.map((item, index) => (

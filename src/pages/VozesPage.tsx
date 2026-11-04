@@ -10,6 +10,7 @@ import { filterFeed, type FeedKind } from "@/content/posts"
 import { themes } from "@/content/themes"
 import type { EventArticle, NewsArticle, PressItem } from "@/content/types"
 import { formatDate } from "@/lib/format"
+import { roundFilterInput, roundFilterPill } from "@/lib/round-control"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -69,11 +70,11 @@ export function VozesPage() {
   return (
     <div className="bg-surface">
       <PageHero
-        background="#ff8327"
+        background="#d0e770"
         title="Vozes na mídia"
-        titleColor="#493975"
+        titleColor="#0d6353"
         statement="Aqui você acompanha nossas aparições na mídia: em entrevistas, debates e eventos sobre educação."
-        textColor="#493975"
+        textColor="#0d6353"
         image={photo}
         imageAlt="Entrevista, imagem provisória"
       />
@@ -87,7 +88,7 @@ export function VozesPage() {
         <div>
           <p className="font-display text-[32px] leading-10">(11) 94629-2212</p>
           <p className="mt-2 text-[15px]">contato@…</p>
-          <BrandButton asChild tone="outline" className="mt-4 h-12">
+          <BrandButton asChild tone="outline" pillSize="md" className="mt-4">
             <Link to="/contato?assunto=imprensa">Enviar mensagem</Link>
           </BrandButton>
         </div>
@@ -127,12 +128,12 @@ export function VozesPage() {
             value={q}
             onChange={(event) => update({ q: event.target.value })}
             placeholder="Buscar na listagem"
-            className="h-12 max-w-sm rounded-2xl border-2 border-line"
+            className={roundFilterInput}
             aria-label="Buscar na listagem"
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button type="button" className="h-12 rounded-2xl border-2 border-line px-4 text-[15px] font-medium">
+              <button type="button" className={roundFilterPill()}>
                 {activeTheme?.label ?? "Temas"}
               </button>
             </DropdownMenuTrigger>
@@ -147,7 +148,7 @@ export function VozesPage() {
           </DropdownMenu>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button type="button" className="h-12 rounded-2xl border-2 border-line px-4 text-[15px] font-medium">
+              <button type="button" className={roundFilterPill()}>
                 Ordenar: {ordem === "antigas" ? "Mais antigas" : "Mais recentes"}
               </button>
             </DropdownMenuTrigger>

@@ -138,8 +138,8 @@ html.nav-open body {
   --card-foreground: #493975;
   --popover: #ffffff;
   --popover-foreground: #493975;
-  --primary: #ff8327;
-  --primary-foreground: #493975;
+  --primary: #d0e770;
+  --primary-foreground: #0d6353;
   --secondary: #f5f2eb;
   --secondary-foreground: #493975;
   --muted: #f5f2eb;
@@ -180,8 +180,8 @@ html.nav-open body {
   --card-foreground: #f6f1ff;
   --popover: #2e2548;
   --popover-foreground: #f6f1ff;
-  --primary: #ff8327;
-  --primary-foreground: #2a1848;
+  --primary: #d0e770;
+  --primary-foreground: #0d6353;
   --secondary: #2e2548;
   --secondary-foreground: #f6f1ff;
   --muted: #2e2548;

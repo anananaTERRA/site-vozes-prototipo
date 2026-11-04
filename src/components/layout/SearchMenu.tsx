@@ -5,6 +5,7 @@ import { themes } from "@/content/themes"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import searchIcon from "@/assets/icon-search.svg"
+import { themeTag } from "@/lib/round-control"
 
 export function SearchMenu({
   open,
@@ -78,7 +79,7 @@ export function SearchMenu({
                       key={theme.id}
                       to={`/vozes?tema=${theme.id}`}
                       onClick={() => onOpenChange(false)}
-                      className="rounded-full px-3 py-1.5 text-sm font-extrabold"
+                      className={themeTag()}
                       style={{ background: theme.background, color: theme.foreground }}
                     >
                       {theme.short}

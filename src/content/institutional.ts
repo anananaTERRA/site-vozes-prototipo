@@ -304,7 +304,7 @@ export const footerColumns: { title: string; links: { label: string; to: string 
   {
     title: "Contato",
     links: [
-      { label: "Fale com a gente", to: "/contato" },
+      { label: "Fale conosco", to: "/contato" },
       { label: "Perguntas frequentes", to: "/contato#faq" },
     ],
   },

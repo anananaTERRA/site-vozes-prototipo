@@ -1,5 +1,5 @@
-import { useRef, useState } from "react"
-import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "motion/react"
+import { useLayoutEffect, useRef, useState } from "react"
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 
 const steps = [
   "Transformamos conhecimento de ponta",
@@ -7,31 +7,37 @@ const steps = [
 ]
 
 const colors = ["#493975", "#0d6353"]
-const anchors = [0, 1]
-
-function nearestStep(value: number) {
-  return value < 0.5 ? 0 : 1
-}
 
 export function ProcessScroll() {
   const reduce = useReducedMotion()
   const ref = useRef<HTMLElement>(null)
+  const [headerHeight, setHeaderHeight] = useState(88)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end end"],
+    offset: [`start ${headerHeight}px`, "end end"],
   })
-  const [step, setStep] = useState(0)
   const backgroundColor = useTransform(scrollYProgress, [0, 1], colors)
   const progress = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
   const scale = useTransform(scrollYProgress, (value) => {
-    const distance = Math.min(Math.abs(value - anchors[nearestStep(value)]) / 0.5, 1)
+    const anchor = value < 0.5 ? 0 : 1
+    const distance = Math.min(Math.abs(value - anchor) / 0.5, 1)
     return 1 - distance * 0.38
   })
+  const firstOpacity = useTransform(scrollYProgress, (value) => (value < 0.5 ? 1 : 0))
+  const secondOpacity = useTransform(scrollYProgress, (value) => (value < 0.5 ? 0 : 1))
 
-  useMotionValueEvent(scrollYProgress, "change", (value) => {
-    const next = nearestStep(value)
-    setStep((current) => (current === next ? current : next))
-  })
+  useLayoutEffect(() => {
+    const header = document.querySelector("header.sticky")
+    if (!header) return
+    const update = () => {
+      const next = header.getBoundingClientRect().height
+      setHeaderHeight((current) => (Math.abs(current - next) < 0.5 ? current : next))
+    }
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(header)
+    return () => observer.disconnect()
+  }, [])
 
   if (reduce) {
     return (
@@ -47,22 +53,34 @@ export function ProcessScroll() {
 
   return (
     <section ref={ref} className="relative h-[240vh]">
-      <motion.div style={{ backgroundColor }} className="sticky top-0 flex h-svh items-center justify-center px-6">
+      <motion.div
+        style={{ backgroundColor, top: headerHeight, height: `calc(100svh - ${headerHeight}px)` }}
+        className="sticky z-0 flex items-center justify-center px-6"
+      >
         <div className="w-full max-w-5xl">
-          <div className="relative mx-[5.5rem] h-40">
+          <div className="relative h-32">
             <motion.p
-              style={{ left: progress, x: "-50%", scale, originX: 0.5, originY: 1 }}
-              className="absolute bottom-2 w-min text-left text-xl leading-snug font-light tracking-wide text-white"
+              style={{ opacity: firstOpacity, scale, originX: 0.5, originY: 1 }}
+              className="absolute inset-x-0 bottom-4 text-center text-2xl leading-9 font-light tracking-wide text-white md:text-3xl"
             >
-              {steps[step]}
+              {steps[0]}
+            </motion.p>
+            <motion.p
+              style={{ opacity: secondOpacity, scale, originX: 0.5, originY: 1 }}
+              className="absolute inset-x-0 bottom-4 text-center text-2xl leading-9 font-light tracking-wide text-white md:text-3xl"
+            >
+              {steps[1]}
             </motion.p>
           </div>
           <div className="relative h-6 w-full">
             <div className="absolute inset-x-0 top-1/2 h-[2px] -translate-y-1/2 rounded-full bg-white/30" />
-            <div className="absolute inset-x-[5.5rem] top-0 h-6">
-              <motion.div className="absolute top-1/2 left-0 h-[2px] -translate-y-1/2 rounded-full bg-white" style={{ width: progress }} />
-              <motion.div className="absolute top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-lg" style={{ left: progress }} />
-            </div>
+            <motion.div
+              className="absolute top-1/2 left-0 h-[2px] -translate-y-1/2 rounded-full bg-white"
+              style={{ width: progress }}
+            />
+            <motion.div className="absolute top-1/2 size-6" style={{ left: progress, x: "-50%", y: "-50%" }}>
+              <motion.div className="size-6 rounded-full bg-white shadow-lg" style={{ scale }} />
+            </motion.div>
           </div>
         </div>
       </motion.div>
