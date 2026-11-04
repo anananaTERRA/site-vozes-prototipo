@@ -183,6 +183,10 @@ async function main() {
       ...(item.imagePosition ? { imagePosition: item.imagePosition } : {}),
       type: item.type,
       year: item.year,
+      ...(item.authorship ? { authorship: item.authorship } : {}),
+      ...(item.pageCount != null ? { pageCount: item.pageCount } : {}),
+      ...(item.pdfUrl ? { pdfUrl: item.pdfUrl } : {}),
+      ...(item.pdfSizeLabel ? { pdfSizeLabel: item.pdfSizeLabel } : {}),
       body: await toPortable(item.body),
     })
   }

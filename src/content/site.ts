@@ -104,6 +104,21 @@ function mergeTeam(remote: TeamMember[], local: TeamMember[]): TeamMember[] {
   })
 }
 
+function mergePublicacoes(remote: Publication[], local: Publication[]): Publication[] {
+  if (remote.length === 0) return local
+  const localBySlug = new Map(local.map((item) => [item.slug, item]))
+  return remote.map((item) => {
+    const fallback = localBySlug.get(item.slug)
+    return {
+      ...item,
+      authorship: item.authorship ?? fallback?.authorship,
+      pageCount: item.pageCount ?? fallback?.pageCount,
+      pdfUrl: item.pdfUrl ?? fallback?.pdfUrl,
+      pdfSizeLabel: item.pdfSizeLabel ?? fallback?.pdfSizeLabel,
+    }
+  })
+}
+
 function mergeEventos(remote: EventArticle[], local: EventArticle[]): EventArticle[] {
   if (remote.length === 0) return local
   const localBySlug = new Map(local.map((item) => [item.slug, item]))
@@ -123,7 +138,7 @@ export function mergeContent(local: SiteContent, remote: SiteContent): SiteConte
     noticias: pick(remote.noticias, local.noticias),
     eventos: mergeEventos(remote.eventos, local.eventos),
     midia: pick(remote.midia, local.midia),
-    publicacoes: pick(remote.publicacoes, local.publicacoes),
+    publicacoes: mergePublicacoes(remote.publicacoes, local.publicacoes),
     partners: pick(remote.partners, local.partners),
     services: pick(remote.services, local.services),
     servicesIntro: pick(remote.servicesIntro, local.servicesIntro),

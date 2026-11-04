@@ -15,9 +15,9 @@ import {
   publicationTypes,
   relatedPublications,
 } from "@/content/posts"
-import type { Block } from "@/content/types"
+import type { Block, Publication } from "@/content/types"
 import { cn } from "cn"
-import { formatDate } from "@/lib/format"
+import { downloadFileFromUrl, pdfFilenameFromTitle } from "@/lib/download"
 import { roundFilterInput, roundFilterPill } from "@/lib/round-control"
 import { Input } from "@/components/ui/input"
 
@@ -222,6 +222,48 @@ function Blocks({ blocks }: { blocks: Block[] }) {
   )
 }
 
+function PublicationShareLink() {
+  const [copied, setCopied] = useState(false)
+
+  async function share() {
+    await navigator.clipboard.writeText(window.location.href)
+    setCopied(true)
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={share}
+      className="text-[13px] font-extrabold tracking-[1.04px] text-violet uppercase"
+    >
+      {copied ? "Link copiado" : "Compartilhar"}
+    </button>
+  )
+}
+
+function PublicationPdfDownload({ item }: { item: Publication }) {
+  const [busy, setBusy] = useState(false)
+  if (!item.pdfUrl) return null
+
+  const label = item.pdfSizeLabel ? `Baixar PDF (${item.pdfSizeLabel})` : "Baixar PDF"
+
+  async function onDownload() {
+    if (!item.pdfUrl || busy) return
+    setBusy(true)
+    try {
+      await downloadFileFromUrl(item.pdfUrl, pdfFilenameFromTitle(item.title))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <BrandButton tone="orange" pillSize="md" type="button" disabled={busy} onClick={onDownload}>
+      {busy ? "Baixando…" : label}
+    </BrandButton>
+  )
+}
+
 export function PostPublicacaoPage() {
   const { slug = "" } = useParams()
   const { ready, publicacoes } = useSiteContent()
@@ -229,23 +271,42 @@ export function PostPublicacaoPage() {
   if (!ready) return <div className="bg-surface px-6 py-16"><ListingState kind="loading" /></div>
   if (!item) return <Navigate to="/nao-encontrada" replace />
   const related = relatedPublications(publicacoes, item.slug)
+  const yearLine = item.pageCount ? `${item.year} · ${item.pageCount} páginas` : String(item.year)
   return (
     <article className="bg-surface">
       <header className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-16 md:grid-cols-[400px_1fr] md:px-20">
-        <img src={item.image} alt={item.title} className="aspect-[3/4] w-full rounded-[20px] object-cover" />
+        <img
+          src={item.image}
+          alt={item.title}
+          className="aspect-[3/4] w-full rounded-[20px] object-cover"
+          style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
+        />
         <div className="self-center">
-          <p className="text-[15px] font-medium text-violet">
-            <Link to="/publicacoes">Publicações</Link>
+          <p className="text-[13px] font-extrabold tracking-[1.04px] text-violet uppercase">
+            Publicação · {item.year}
           </p>
-          <p className="mt-4 text-[13px] font-extrabold tracking-[1.04px] text-mint uppercase">
-            {item.type} · {item.year} · {formatDate(item.date)}
-          </p>
-          <h1 className="mt-4 font-display text-5xl leading-[56px] font-medium">{item.title}</h1>
-          <p className="mt-6 max-w-xl text-[22px] leading-[34px]">{item.excerpt}</p>
+          <h1 className="mt-4 font-display text-5xl leading-[56px] font-medium text-ink">{item.title}</h1>
+          <p className="mt-6 max-w-xl text-[22px] leading-[34px] text-ink">{item.excerpt}</p>
+          <dl className="mt-6 space-y-1 text-[15px] leading-[22px] text-violet">
+            {item.authorship ? (
+              <div>
+                <dt className="inline font-medium">Autoria: </dt>
+                <dd className="inline">{item.authorship}</dd>
+              </div>
+            ) : null}
+            <div>
+              <dt className="inline font-medium">Ano: </dt>
+              <dd className="inline">{yearLine}</dd>
+            </div>
+          </dl>
           <div className="mt-6 flex flex-wrap gap-2">
             {item.themes.map((theme) => (
               <ThemeTag key={theme} id={theme} />
             ))}
+          </div>
+          <div className="mt-8 flex flex-wrap items-center gap-6">
+            <PublicationPdfDownload item={item} />
+            <PublicationShareLink />
           </div>
         </div>
       </header>

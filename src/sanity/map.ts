@@ -39,6 +39,10 @@ type RawArticle = {
   url?: string | null
   type?: string | null
   year?: number | null
+  authorship?: string | null
+  pageCount?: number | null
+  pdfUrl?: string | null
+  pdfSizeLabel?: string | null
 }
 
 export type SanityPayload = {
@@ -119,7 +123,16 @@ export function mapSanityContent(payload: SanityPayload): SiteContent {
     publicacoes: (payload.publicacoes ?? []).flatMap((item) => {
       const article = baseArticle(item)
       if (!article || !item.type || !publicationTypeSet.has(item.type) || !item.year) return []
-      const publication: Publication = { ...article, kind: "publicacao", type: item.type as PublicationType, year: item.year }
+      const publication: Publication = {
+        ...article,
+        kind: "publicacao",
+        type: item.type as PublicationType,
+        year: item.year,
+        ...(item.authorship?.trim() ? { authorship: item.authorship.trim() } : {}),
+        ...(item.pageCount != null && item.pageCount > 0 ? { pageCount: item.pageCount } : {}),
+        ...(item.pdfUrl ? { pdfUrl: item.pdfUrl } : {}),
+        ...(item.pdfSizeLabel?.trim() ? { pdfSizeLabel: item.pdfSizeLabel.trim() } : {}),
+      }
       return [publication]
     }),
     team: (payload.team ?? []).flatMap((item) => {

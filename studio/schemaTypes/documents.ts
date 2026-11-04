@@ -103,6 +103,31 @@ export const publicacao = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({ name: "year", title: "Ano", type: "number", validation: (rule) => rule.required().integer().min(2000).max(2100) }),
+    defineField({
+      name: "authorship",
+      title: "Autoria",
+      type: "string",
+      description: "Opcional. Ex.: Equipe Vozes.",
+    }),
+    defineField({
+      name: "pageCount",
+      title: "Número de páginas",
+      type: "number",
+      description: "Opcional. Aparece ao lado do ano na ficha da publicação.",
+      validation: (rule) => rule.integer().min(1).max(9999),
+    }),
+    defineField({
+      name: "pdfUrl",
+      title: "Link do PDF",
+      type: "url",
+      description: "Opcional. URL externa do arquivo. Se preenchida, exibe o botão Baixar PDF.",
+    }),
+    defineField({
+      name: "pdfSizeLabel",
+      title: "Tamanho do PDF (texto)",
+      type: "string",
+      description: "Opcional. Ex.: 2,4 MB — aparece no rótulo do botão Baixar PDF.",
+    }),
     bodyField,
   ],
   preview: {

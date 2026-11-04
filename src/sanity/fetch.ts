@@ -18,7 +18,7 @@ const query = `{
     "imageUrl": image.asset->url, "hotspot": image.hotspot
   },
   "publicacoes": *[_type == "publicacao" && defined(slug.current)] | order(date desc) {
-    title, "slug": slug.current, excerpt, date, themes, imagePosition, type, year,
+    title, "slug": slug.current, excerpt, date, themes, imagePosition, type, year, authorship, pageCount, pdfUrl, pdfSizeLabel,
     "imageUrl": image.asset->url, "hotspot": image.hotspot,
     body[]{ ..., _type == "image" => { alt, caption, "url": asset->url } }
   },

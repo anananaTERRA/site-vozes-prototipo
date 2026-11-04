@@ -55,6 +55,10 @@ export type Publication = ArticleBase & {
   kind: "publicacao"
   type: PublicationType
   year: number
+  authorship?: string
+  pageCount?: number
+  pdfUrl?: string
+  pdfSizeLabel?: string
 }
 
 export type FeedEntry = NewsArticle | EventArticle | PressItem
