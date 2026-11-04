@@ -7,16 +7,23 @@ export function HomeConvictionBand() {
   return (
     <ParallaxPhotoSection
       imageSrc={impacto}
-      overlayClassName="bg-indigo/65"
-      minHeight="min-h-[420px]"
+      imageAlt="Professora em corredor de escola"
+      imageObjectPosition="42% 38%"
+      imageOverscan={1.1}
+      yRange={["-20%", "20%"]}
+      scaleRange={[1.06, 1]}
+      minHeight="min-h-[min(560px,85vh)]"
+      overlayClassName="bg-gradient-to-r from-indigo/88 via-indigo/55 to-indigo/15"
     >
-      <div className="mx-auto max-w-[900px] text-center text-white">
-        <p className="font-display text-4xl leading-[48px]">
-          Nascemos da convicção de que a educação brasileira pode ser muito melhor.
-        </p>
-        <BrandButton asChild className="mt-8">
-          <Link to="/contato">Vamos construir juntos</Link>
-        </BrandButton>
+      <div className="mx-auto grid w-full max-w-[1280px] items-center md:grid-cols-[minmax(0,560px)_1fr] md:gap-12">
+        <div className="max-w-[520px] text-left text-white">
+          <p className="font-display text-4xl leading-[48px]">
+            Nascemos da convicção de que a educação brasileira pode ser muito melhor.
+          </p>
+          <BrandButton asChild className="mt-8">
+            <Link to="/contato">Vamos construir juntos</Link>
+          </BrandButton>
+        </div>
       </div>
     </ParallaxPhotoSection>
   )

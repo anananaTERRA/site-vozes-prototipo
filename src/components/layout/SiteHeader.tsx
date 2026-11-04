@@ -6,7 +6,7 @@ import { Menu, X } from "lucide-react"
 import logo from "@/assets/logo.svg"
 import { BrandButton } from "@/components/brand/BrandButton"
 import { SearchMenu } from "@/components/layout/SearchMenu"
-import { ThemeToggle } from "@/components/theme/ThemeToggle"
+// import { ThemeToggle } from "@/components/theme/ThemeToggle"
 import { cn } from "cn"
 
 const links = [
@@ -291,7 +291,7 @@ export function SiteHeader() {
             <BrandButton tone="orange" pillSize="md" asChild className="hidden lg:inline-flex">
               <Link to="/contato">Contato</Link>
             </BrandButton>
-            <ThemeToggle />
+            {/* <ThemeToggle /> — dark mode desligado por enquanto; ver ThemeToggle.tsx */}
           </div>
         </div>
       </div>

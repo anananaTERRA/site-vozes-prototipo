@@ -32,6 +32,8 @@ export type EventArticle = ArticleBase & {
   place: string
   format: string
   ficha: { label: string; value: string }[]
+  registrationUrl?: string
+  recordingUrl?: string
 }
 
 export type PressItem = {

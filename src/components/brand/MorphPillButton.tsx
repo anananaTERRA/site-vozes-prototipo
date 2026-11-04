@@ -78,6 +78,7 @@ function MorphPillIcon({ expanded, size }: { expanded: boolean; size: number }) 
 type MorphPillButtonProps = {
   to: string
   className?: string
+  label?: string
   /** Repouso: texto claro ao lado do círculo (hero, footer). */
   surface?: "light" | "dark"
   pill?: keyof typeof pillBackground
@@ -87,11 +88,11 @@ type MorphPillButtonProps = {
 export function MorphPillButton({
   to,
   className,
+  label = "Fale conosco",
   surface = "light",
   pill = "ink",
   size = "default",
 }: MorphPillButtonProps) {
-  const label = "Fale conosco"
   const reducedMotion = useReducedMotion()
   const [hovered, setHovered] = useState(false)
   const labelRef = useRef<HTMLSpanElement>(null)
@@ -104,7 +105,7 @@ export function MorphPillButton({
   useLayoutEffect(() => {
     if (!labelRef.current) return
     setTextWidth(labelRef.current.offsetWidth)
-  }, [metrics.label])
+  }, [label, metrics.label])
 
   const expanded = reducedMotion === true ? true : hovered
   const labelLeft = circleSize + labelGap

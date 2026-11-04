@@ -47,6 +47,18 @@ export const evento = defineType({
       of: [{ type: "fichaItem" }],
       validation: (rule) => rule.required().min(1),
     }),
+    defineField({
+      name: "registrationUrl",
+      title: "Link de inscrição",
+      type: "url",
+      description: "Opcional. Se preenchido, a ficha do evento mostra o botão Inscreva-se apontando para este endereço.",
+    }),
+    defineField({
+      name: "recordingUrl",
+      title: "Link da gravação",
+      type: "url",
+      description: "Opcional. Para eventos já realizados, exibe Ver gravação quando a data já passou.",
+    }),
     bodyField,
   ],
   preview: articlePreview,

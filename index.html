@@ -5,12 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
     <script>
-      try {
-        var stored = localStorage.getItem("vozes-theme")
-        var dark = stored === "dark"
-        document.documentElement.classList.toggle("dark", dark)
-        document.documentElement.style.colorScheme = dark ? "dark" : "light"
-      } catch (e) {}
+      // Dark mode toggle desligado — sempre light. Reativar com ThemeToggle.tsx + script abaixo.
+      // try {
+      //   var stored = localStorage.getItem("vozes-theme")
+      //   var dark = stored === "dark"
+      //   document.documentElement.classList.toggle("dark", dark)
+      //   document.documentElement.style.colorScheme = dark ? "dark" : "light"
+      // } catch (e) {}
+      document.documentElement.classList.remove("dark")
+      document.documentElement.style.colorScheme = "light"
     </script>
     <meta name="theme-color" content="#153792" />
     <title>Vozes da Educação · Inteligência educacional</title>

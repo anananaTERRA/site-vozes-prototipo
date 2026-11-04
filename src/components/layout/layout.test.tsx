@@ -27,7 +27,7 @@ describe("SiteFooter", () => {
         <SiteFooter showCta />
       </MemoryRouter>,
     )
-    expect(screen.getByRole("heading", { level: 2, name: /desafio educacional/i })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { level: 2, name: /desafio/i })).toBeInTheDocument()
     expect(screen.getByRole("link", { name: /LinkedIn/i })).toBeInTheDocument()
   })
 
@@ -37,7 +37,7 @@ describe("SiteFooter", () => {
         <SiteFooter showCta={false} />
       </MemoryRouter>,
     )
-    expect(screen.queryByRole("heading", { level: 2, name: /desafio educacional/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole("heading", { level: 2, name: /desafio/i })).not.toBeInTheDocument()
   })
 })
 

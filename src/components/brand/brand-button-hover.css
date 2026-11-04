@@ -1,0 +1,60 @@
+@layer components {
+  /**
+   * Skewed overlay sweeps off to reveal the base fill (hover palette).
+   * Pair with bg-* / text-* on the control; overlay uses --paint-overlay.
+   */
+  .hover-paint-horizontal {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    appearance: none;
+    color: var(--color-green) !important;
+    transition: color 0.4s cubic-bezier(0.3, 1, 0.8, 1) !important;
+    /* Lime base fills rounded corners; green shows as the skew layer sweeps away. */
+    background-color: var(--color-lime) !important;
+    box-shadow: none !important;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-inset-ring-shadow: 0 0 #0000;
+  }
+
+  .hover-paint-horizontal:hover,
+  .hover-paint-horizontal:focus-visible {
+    color: var(--color-lime) !important;
+    background-color: var(--color-green) !important;
+  }
+
+  .hover-paint-horizontal__label {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: inherit;
+    color: inherit;
+  }
+
+  .hover-paint-horizontal::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: -3px;
+    left: -14%;
+    width: 128%;
+    height: calc(100% + 6px);
+    background: var(--paint-overlay, var(--color-lime));
+    transform: skewX(30deg);
+    transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+  }
+
+  .hover-paint-horizontal:hover::before,
+  .hover-paint-horizontal:focus-visible::before {
+    transform: skewX(30deg) translate3d(100%, 0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hover-paint-horizontal,
+    .hover-paint-horizontal::before {
+      transition-duration: 0.01ms;
+    }
+  }
+}

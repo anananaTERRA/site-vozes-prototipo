@@ -1,10 +1,8 @@
 import { Link } from "react-router"
-import { BrandButton } from "@/components/brand/BrandButton"
 import { MorphPillButton } from "@/components/brand/MorphPillButton"
 import { WordBalloon } from "@/components/brand/WordBalloon"
 import { PartnerStrip } from "@/components/content/PartnerStrip"
 import { HomeConvictionBand } from "@/components/home/HomeConvictionBand"
-import { HomeFinalCta } from "@/components/home/HomeFinalCta"
 import { HomeMediaSection } from "@/components/home/HomeMediaSection"
 import { HomePublicationsSection } from "@/components/home/HomePublicationsSection"
 import { HomeSegmentsSection } from "@/components/home/HomeSegmentsSection"
@@ -26,7 +24,7 @@ export function HomePage() {
   return (
     <div>
       <section className="bg-indigo text-white">
-        <div className="mx-auto flex min-h-[640px] w-full max-w-[1440px] items-center px-6 py-16 md:px-20">
+        <div className="mx-auto flex min-h-[max(640px,calc(100dvh-88px-env(safe-area-inset-top,0px)))] w-full max-w-[1440px] items-center px-6 py-16 md:px-20">
           <div className="max-w-[640px]">
             <h1 className="font-display text-6xl leading-none font-normal tracking-[-1.76px] md:text-[88px] md:leading-[92px]">
               Conectar vozes,
@@ -37,14 +35,17 @@ export function HomePage() {
               </span>
               a educação
             </h1>
-            <p className="mt-8 max-w-xl text-[22px] leading-[34px]">
-              Transformamos conhecimento de ponta em soluções personalizadas para quem lidera escolas, redes e organizações.
+            <p className="mt-8 text-pretty text-[22px] leading-[34px]">
+              Transformamos conhecimento de ponta em soluções personalizadas para quem lidera escolas, redes e{"\u00A0"}organizações.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
               <MorphPillButton to="/contato" surface="dark" pill="orange" size="compact" />
-              <BrandButton tone="link" asChild className="shrink-0">
-                <Link to="/o-que-fazemos">Conheça o que fazemos →</Link>
-              </BrandButton>
+              <Link
+                to="/o-que-fazemos"
+                className="shrink-0 text-sm font-medium tracking-wide uppercase whitespace-nowrap leading-none text-white outline-none hover:text-white/90 focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                Conheça o que fazemos →
+              </Link>
             </div>
           </div>
         </div>
@@ -71,7 +72,6 @@ export function HomePage() {
       <HomeMediaSection items={featured} />
       <HomeVoiceBand />
       <HomePublicationsSection items={books} />
-      <HomeFinalCta />
     </div>
   )
 }

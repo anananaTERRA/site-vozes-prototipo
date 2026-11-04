@@ -5,6 +5,7 @@ import school from "@/assets/photo-servicos.png"
 import transicao from "@/assets/photo-transicao.png"
 import portrait from "@/assets/photo-vozes.png"
 import type { ThemeId } from "@/content/themes"
+import { matchesThemeFilter, parseThemeFilter } from "@/lib/theme-filter"
 import type { Block, EventArticle, NewsArticle, PressItem, Publication, PublicationType } from "@/content/types"
 
 const photos = [classroom, school, portrait, porque, impacto, transicao]
@@ -149,6 +150,30 @@ export const eventos: EventArticle[] = [
     caption: "Plateia, imagem provisória.",
     place: "São Paulo",
     format: "Presencial",
+    ficha: [
+      { label: "Quando", value: "22 de outubro de 2026, 9h" },
+      { label: "Onde", value: "São Paulo" },
+      { label: "Formato", value: "Presencial" },
+      { label: "Para quem", value: "Gestores de rede e coordenadores pedagógicos" },
+    ],
+    body: story(
+      "O seminário junta redes que já começaram a recompor a aprendizagem e ainda precisam decidir o que sustentar no ano seguinte.",
+      photos[0],
+    ),
+  },
+  {
+    kind: "evento",
+    slug: "seminario-recomposicao-inscricao",
+    title: "Seminário Recomposição das aprendizagens — inscrições abertas",
+    excerpt: "Cópia de validação: mesmo conteúdo do seminário principal, com link externo de inscrição na ficha.",
+    date: "2026-10-22",
+    themes: ["recomposicao"],
+    image: photos[1],
+    imagePosition: "center top",
+    caption: "Plateia, imagem provisória.",
+    place: "São Paulo",
+    format: "Presencial",
+    registrationUrl: "https://example.com/inscricao-seminario-recomposicao",
     ficha: [
       { label: "Quando", value: "22 de outubro de 2026, 9h" },
       { label: "Onde", value: "São Paulo" },
@@ -404,18 +429,16 @@ export function filterFeed(
   source: { noticias: NewsArticle[]; eventos: EventArticle[]; midia: PressItem[] },
   input: { tipo: FeedKind; tema: string; q: string; ordem: string },
 ) {
-  const { noticias, eventos, midia } = source
+  const { noticias, eventos } = source
   const query = input.q.trim().toLocaleLowerCase("pt-BR")
   const featured = noticias.find((item) => item.featured)
-  let items = [
-    ...noticias.filter((item) => item.slug !== featured?.slug),
-    ...eventos,
-    ...midia,
-  ]
+  let items = [...noticias.filter((item) => item.slug !== featured?.slug), ...eventos]
   if (input.tipo === "noticias") items = items.filter((item) => item.kind === "noticia")
   if (input.tipo === "eventos") items = items.filter((item) => item.kind === "evento")
-  if (input.tipo === "midia") items = items.filter((item) => item.kind === "midia")
-  if (input.tema) items = items.filter((item) => item.themes.includes(input.tema as ThemeId))
+  const selectedTemas = parseThemeFilter(input.tema)
+  if (selectedTemas.length) {
+    items = items.filter((item) => matchesThemeFilter(item.themes, selectedTemas))
+  }
   if (query) {
     items = items.filter((item) =>
       `${item.title} ${item.excerpt}`.toLocaleLowerCase("pt-BR").includes(query),
@@ -427,7 +450,7 @@ export function filterFeed(
   const destaque =
     featured &&
     (input.tipo === "tudo" || input.tipo === "noticias") &&
-    (!input.tema || featured.themes.includes(input.tema as ThemeId)) &&
+    matchesThemeFilter(featured.themes, selectedTemas) &&
     (!query || `${featured.title} ${featured.excerpt}`.toLocaleLowerCase("pt-BR").includes(query))
       ? featured
       : undefined
@@ -448,7 +471,10 @@ export function filterPublications(
   let items = [...publications]
   if (input.tipo) items = items.filter((item) => item.type === input.tipo)
   if (input.ano) items = items.filter((item) => String(item.year) === input.ano)
-  if (input.tema) items = items.filter((item) => item.themes.includes(input.tema as ThemeId))
+  const selectedTemas = parseThemeFilter(input.tema)
+  if (selectedTemas.length) {
+    items = items.filter((item) => matchesThemeFilter(item.themes, selectedTemas))
+  }
   if (query) {
     items = items.filter((item) =>
       `${item.title} ${item.excerpt} ${item.type}`.toLocaleLowerCase("pt-BR").includes(query),

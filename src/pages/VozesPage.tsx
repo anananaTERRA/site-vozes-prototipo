@@ -1,31 +1,33 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { Link, useSearchParams } from "react-router"
 import photo from "@/assets/photo-vozes.png"
 import { BrandButton } from "@/components/brand/BrandButton"
-import { EventCard, NewsCard, PressCard } from "@/components/content/Cards"
+import { EventCard, FeaturedNewsCard, NewsCard } from "@/components/content/Cards"
+import { ListingFilterSelect } from "@/components/content/ListingFilterSelect"
 import { ListingState } from "@/components/content/ListingState"
-import { ThemeTag } from "@/components/content/ThemeTag"
+import { ThemeFilterChip } from "@/components/content/ThemeFilterChip"
 import { PageHero } from "@/components/layout/PageHero"
 import { useSiteContent } from "@/content/provider"
 import { filterFeed, type FeedKind } from "@/content/posts"
 import { themes } from "@/content/themes"
-import type { EventArticle, NewsArticle, PressItem } from "@/content/types"
-import { formatDate } from "@/lib/format"
-import { roundFilterInput, roundFilterPill } from "@/lib/round-control"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import type { EventArticle, NewsArticle } from "@/content/types"
+import { cn } from "cn"
+import { roundFilterInput } from "@/lib/round-control"
+import { parseThemeFilter, serializeThemeFilter, toggleThemeFilter } from "@/lib/theme-filter"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-const tabs: { id: FeedKind; label: string }[] = [
+const sortOptions = [
+  { value: "recentes", label: "Mais recentes" },
+  { value: "antigas", label: "Mais antigas" },
+] as const
+
+type VozesTab = Exclude<FeedKind, "midia">
+
+const tabs: { id: VozesTab; label: string }[] = [
   { id: "tudo", label: "Tudo" },
   { id: "noticias", label: "Notícias" },
   { id: "eventos", label: "Eventos" },
-  { id: "midia", label: "Na mídia" },
 ]
 
 const pageSize = 6
@@ -33,23 +35,35 @@ const pageSize = 6
 export function VozesPage() {
   const [params, setParams] = useSearchParams()
   const content = useSiteContent()
-  const tipo = (params.get("tipo") as FeedKind | null) ?? "tudo"
+  const rawTipo = params.get("tipo")
+  const tipo: VozesTab =
+    rawTipo === "noticias" || rawTipo === "eventos" ? rawTipo : "tudo"
   const tema = params.get("tema") ?? ""
   const q = params.get("q") ?? ""
   const ordem = params.get("ordem") ?? "recentes"
   const forceError = params.get("estado") === "erro"
   const [visible, setVisible] = useState(pageSize)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const scrollLockY = useRef<number | null>(null)
+
+  useEffect(() => {
+    setVisible(pageSize)
+  }, [tipo, tema, q, ordem])
 
   useEffect(() => {
     setLoading(true)
-    setVisible(pageSize)
     const timer = window.setTimeout(() => setLoading(false), 350)
     return () => window.clearTimeout(timer)
-  }, [tipo, tema, q, ordem])
+  }, [tema, q, ordem])
+
+  useLayoutEffect(() => {
+    if (scrollLockY.current === null) return
+    window.scrollTo({ top: scrollLockY.current, left: 0, behavior: "instant" })
+    scrollLockY.current = null
+  }, [tipo])
 
   const { items, destaque } = useMemo(
-    () => filterFeed(content, { tipo: tabs.some((tab) => tab.id === tipo) ? tipo : "tudo", tema, q, ordem }),
+    () => filterFeed(content, { tipo, tema, q, ordem }),
     [content, tipo, tema, q, ordem],
   )
 
@@ -59,15 +73,27 @@ export function VozesPage() {
       if (value) draft.set(key, value)
       else draft.delete(key)
     }
-    setParams(draft)
+    if (draft.get("tipo") === "midia") draft.delete("tipo")
+    setParams(draft, { preventScrollReset: true })
   }
 
   function clearFilters() {
-    setParams(new URLSearchParams())
+    setParams(new URLSearchParams(), { preventScrollReset: true })
   }
 
   const shown = items.slice(0, visible)
-  const activeTheme = themes.find((item) => item.id === tema)
+  const selectedTemas = parseThemeFilter(tema)
+  const sortValue = ordem === "antigas" ? "antigas" : "recentes"
+
+  function toggleTema(id: (typeof themes)[number]["id"]) {
+    const next = toggleThemeFilter(selectedTemas, id)
+    update({ tema: serializeThemeFilter(next) })
+  }
+
+  function setTipo(next: VozesTab) {
+    scrollLockY.current = window.scrollY
+    update({ tipo: next === "tudo" ? "" : next })
+  }
 
   return (
     <div className="bg-surface">
@@ -96,34 +122,29 @@ export function VozesPage() {
         </div>
       </section>
 
-      {destaque ? (
-        <section className="mx-auto grid w-full max-w-[1440px] items-center gap-8 px-6 pb-8 md:grid-cols-[720px_1fr] md:px-20">
-          <img src={destaque.image} alt="" className="aspect-video w-full rounded-[20px] object-cover" />
-          <div>
-            <p className="text-[13px] font-extrabold tracking-[1.04px] uppercase">Destaque · {formatDate(destaque.date)}</p>
-            <h2 className="mt-4 font-display text-4xl leading-[48px] font-medium">{destaque.title}</h2>
-            <p className="mt-4 text-lg leading-[29px]">{destaque.excerpt}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {destaque.themes.map((item) => (
-                <ThemeTag key={item} id={item} />
-              ))}
-            </div>
-            <BrandButton asChild tone="link-indigo" className="mt-4 px-0">
-              <Link to={`/vozes/noticias/${destaque.slug}`}>Ler notícia</Link>
-            </BrandButton>
-          </div>
-        </section>
-      ) : null}
-
       <section className="mx-auto w-full max-w-[1440px] px-6 py-10 md:px-20">
-        <Tabs value={tipo} onValueChange={(value) => update({ tipo: value === "tudo" ? "" : value })}>
-          <TabsList className="h-auto gap-6 bg-transparent p-0">
-            {tabs.map((tab) => (
-              <TabsTrigger key={tab.id} value={tab.id} className="rounded-none bg-transparent px-0 text-[15px] font-extrabold data-active:bg-transparent data-active:shadow-none">
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+        <Tabs value={tipo} onValueChange={(value) => setTipo(value as VozesTab)}>
+          <div className="border-b border-line">
+            <TabsList
+              variant="line"
+              className="h-auto w-full justify-start gap-6 rounded-none border-0 bg-transparent p-0"
+            >
+              {tabs.map((tab) => (
+                <TabsTrigger
+                  key={tab.id}
+                  value={tab.id}
+                  className={cn(
+                    "h-auto flex-none rounded-none border-0 bg-transparent px-0 pb-3 pt-0 text-[15px] font-extrabold",
+                    "text-violet/45 shadow-none hover:text-navy focus-visible:ring-0 focus-visible:outline-none",
+                    "after:hidden data-active:bg-transparent data-active:text-navy",
+                    "data-active:shadow-[inset_0_-2px_0_0_var(--color-violet)]",
+                  )}
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
         </Tabs>
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <Input
@@ -133,42 +154,35 @@ export function VozesPage() {
             className={roundFilterInput}
             aria-label="Buscar na listagem"
           />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button type="button" className={roundFilterPill()}>
-                {activeTheme?.label ?? "Temas"}
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => update({ tema: "" })}>Todos os temas</DropdownMenuItem>
-              {themes.map((item) => (
-                <DropdownMenuItem key={item.id} onClick={() => update({ tema: item.id })}>
-                  {item.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button type="button" className={roundFilterPill()}>
-                Ordenar: {ordem === "antigas" ? "Mais antigas" : "Mais recentes"}
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => update({ ordem: "" })}>Mais recentes</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => update({ ordem: "antigas" })}>Mais antigas</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ListingFilterSelect
+            ariaLabel="Ordenar listagem"
+            prefix="Ordenar:"
+            value={sortValue}
+            options={[...sortOptions]}
+            onValueChange={(value) => update({ ordem: value === "recentes" ? "" : "antigas" })}
+          />
           <p className="ml-auto text-[15px] font-medium text-violet">{items.length + (destaque ? 1 : 0)} resultados</p>
         </div>
-        {activeTheme ? (
-          <div className="mt-4 flex items-center gap-4">
-            <ThemeTag id={activeTheme.id} />
-            <button type="button" className="text-[15px] font-medium" onClick={clearFilters}>
+        <div className="mt-5">
+          <p className="text-[13px] font-extrabold tracking-[1.04px] text-violet uppercase">Temas</p>
+          <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Filtrar por temas">
+            {themes.map((item) => (
+              <ThemeFilterChip
+                key={item.id}
+                id={item.id}
+                selected={selectedTemas.includes(item.id)}
+                onToggle={toggleTema}
+              />
+            ))}
+          </div>
+          {selectedTemas.length > 0 || q || tipo !== "tudo" ? (
+            <button type="button" className="mt-4 text-[15px] font-medium text-navy underline-offset-2 hover:underline" onClick={clearFilters}>
               Limpar filtros
             </button>
-          </div>
-        ) : null}
+          ) : null}
+        </div>
+
+        {destaque ? <FeaturedNewsCard item={destaque} /> : null}
 
         <div className="mt-8">
           {forceError ? (
@@ -186,8 +200,7 @@ export function VozesPage() {
             <div className="grid gap-x-8 gap-y-10 md:grid-cols-3">
               {shown.map((item) => {
                 if (item.kind === "noticia") return <NewsCard key={item.slug} item={item as NewsArticle} />
-                if (item.kind === "evento") return <EventCard key={item.slug} item={item as EventArticle} />
-                return <PressCard key={item.slug} item={item as PressItem} />
+                return <EventCard key={item.slug} item={item as EventArticle} />
               })}
             </div>
           )}
@@ -200,6 +213,7 @@ export function VozesPage() {
             <BrandButton
               type="button"
               tone="outline"
+              pillSize="md"
               className="mt-3"
               onClick={() => setVisible((value) => value + pageSize)}
             >

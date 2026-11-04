@@ -1,24 +1,19 @@
 import { Link } from "react-router"
-import { MessageCircle } from "lucide-react"
 import carinha from "@/assets/carinha-canto.svg"
 import facebook from "@/assets/icon-facebook.svg"
 import instagram from "@/assets/icon-instagram.svg"
 import linkedin from "@/assets/icon-linkedin.svg"
+import whatsapp from "@/assets/icon-whatsapp.svg"
 import logo from "@/assets/logo.svg"
-import peca1 from "@/assets/peca-1.svg"
-import peca2 from "@/assets/peca-2.svg"
-import peca3 from "@/assets/peca-3.svg"
-import peca4 from "@/assets/peca-4.svg"
-import peca5 from "@/assets/peca-5.svg"
 import { MorphPillButton } from "@/components/brand/MorphPillButton"
+import { FooterCtaGrafismos } from "@/components/layout/FooterCtaGrafismos"
 import { footerColumns } from "@/content/institutional"
 
-/** Lucide 1.x não inclui ícones de marca; WhatsApp usa MessageCircle, demais mantêm SVG do design system. */
 const social = [
   { href: "https://br.linkedin.com/company/vozes-da-educação", label: "LinkedIn", icon: linkedin },
   { href: "https://www.instagram.com/vozesdaeducacao_/", label: "Instagram", icon: instagram },
   { href: "https://www.facebook.com/people/Vozes-da-Educação/100054698893381/", label: "Facebook", icon: facebook },
-  { href: "https://wa.me/5511946292212", label: "WhatsApp", lucide: true },
+  { href: "https://wa.me/5511946292212", label: "WhatsApp", icon: whatsapp },
 ] as const
 
 export function SiteFooter({ showCta = true }: { showCta?: boolean }) {
@@ -26,23 +21,28 @@ export function SiteFooter({ showCta = true }: { showCta?: boolean }) {
     <footer className="relative mr-[calc(env(safe-area-inset-right)*-1)] ml-[calc(env(safe-area-inset-left)*-1)] bg-indigo pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] text-white">
       {showCta ? (
         <div className="bg-paper px-6 py-14 md:px-20">
-          <div className="relative flex min-h-[360px] items-center overflow-hidden rounded-[40px] bg-indigo px-8 py-12 md:px-16">
-            <div className="relative z-10 max-w-[620px]">
-              <p className="text-[13px] font-extrabold tracking-[1.5px] text-lime uppercase">CONTATO</p>
-              <h2 className="mt-5 font-display text-4xl leading-[48px] font-medium">
-                Tem um desafio educacional em mente?
+          <div className="relative flex min-h-[360px] items-center overflow-hidden rounded-[40px] bg-indigo px-8 py-12 md:min-h-[400px] md:px-16">
+            <FooterCtaGrafismos />
+            <div className="relative z-10 max-w-[560px]">
+              <span className="inline-flex rounded-full border-2 border-white/90 px-4 py-1.5 text-[13px] font-extrabold tracking-[1.5px] text-white uppercase">
+                Contato
+              </span>
+              <h2 className="mt-6 font-display text-4xl leading-[48px] font-medium md:text-[44px] md:leading-[52px]">
+                Tem um desafio
+                <br />
+                em mente?
               </h2>
               <p className="mt-4 max-w-md text-base leading-6 font-normal text-white/90">
-                Vamos conversar sobre o que sua rede ou organização está enfrentando e pensar juntos em uma resposta à altura.
+                Vamos conversar sobre o que sua escola, rede ou organização está enfrentando e pensar juntos em uma
+                resposta à altura.
               </p>
-              <MorphPillButton to="/contato#inicio" surface="dark" pill="orange" className="mt-6" />
-            </div>
-            <div className="pointer-events-none absolute top-0 right-0 hidden h-full w-[460px] lg:block">
-              <img src={peca1} alt="" className="absolute top-6 left-4 w-48" />
-              <img src={peca2} alt="" className="absolute top-0 left-40 w-44" />
-              <img src={peca3} alt="" className="absolute top-28 right-4 w-36" />
-              <img src={peca4} alt="" className="absolute bottom-6 left-10 w-40" />
-              <img src={peca5} alt="" className="absolute right-10 bottom-10 w-28" />
+              <MorphPillButton
+                to="/contato#inicio"
+                label="Fale com a gente"
+                surface="dark"
+                pill="orange"
+                className="mt-8"
+              />
             </div>
           </div>
         </div>
@@ -89,17 +89,19 @@ export function SiteFooter({ showCta = true }: { showCta?: boolean }) {
               aria-label={item.label}
               className="text-white/85 transition-colors hover:text-lime"
             >
-              {"lucide" in item ? (
-                <MessageCircle className="size-7" strokeWidth={1.75} />
-              ) : (
-                <img src={item.icon} alt="" className="size-7 brightness-0 invert transition-opacity hover:opacity-90" />
-              )}
+              <img src={item.icon} alt="" className="size-7 brightness-0 invert transition-opacity hover:opacity-90" />
             </a>
           ))}
         </div>
         <p className="text-[15px] leading-[22px] font-normal text-white/75">© 2026 · Política de privacidade</p>
       </div>
-      {showCta ? <img src={carinha} alt="" className="pointer-events-none absolute right-2 bottom-6 hidden w-24 md:block" /> : null}
+      {showCta ? (
+        <img
+          src={carinha}
+          alt=""
+          className="pointer-events-none absolute right-4 bottom-4 w-[88px] sm:w-24 sm:right-6 sm:bottom-6"
+        />
+      ) : null}
     </footer>
   )
 }

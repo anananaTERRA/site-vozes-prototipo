@@ -33,6 +33,8 @@ type RawArticle = {
   place?: string | null
   format?: string | null
   ficha?: { label?: string | null; value?: string | null }[] | null
+  registrationUrl?: string | null
+  recordingUrl?: string | null
   outlet?: string | null
   url?: string | null
   type?: string | null
@@ -86,7 +88,16 @@ export function mapSanityContent(payload: SanityPayload): SiteContent {
       const article = baseArticle(item)
       const ficha = (item.ficha ?? []).flatMap((row) => (row.label && row.value ? [{ label: row.label, value: row.value }] : []))
       if (!article || !item.place || !item.format || ficha.length === 0) return []
-      const event: EventArticle = { ...article, kind: "evento", caption: item.caption ?? "", place: item.place, format: item.format, ficha }
+      const event: EventArticle = {
+        ...article,
+        kind: "evento",
+        caption: item.caption ?? "",
+        place: item.place,
+        format: item.format,
+        ficha,
+        ...(item.registrationUrl ? { registrationUrl: item.registrationUrl } : {}),
+        ...(item.recordingUrl ? { recordingUrl: item.recordingUrl } : {}),
+      }
       return [event]
     }),
     midia: (payload.midia ?? []).flatMap((item) => {

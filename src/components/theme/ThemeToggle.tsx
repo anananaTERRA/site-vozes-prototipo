@@ -1,9 +1,24 @@
-import { useEffect, useState } from "react"
-import { Moon, Sun } from "lucide-react"
-
-const STORAGE_KEY = "vozes-theme"
+import { useEffect } from "react"
+// import { useState } from "react"
+// import { Moon, Sun } from "lucide-react"
 
 type ThemeMode = "light" | "dark"
+
+export function applyTheme(theme: ThemeMode) {
+  document.documentElement.classList.toggle("dark", theme === "dark")
+  document.documentElement.style.colorScheme = theme
+}
+
+/** Garante tema claro enquanto o toggle está desligado (ver ThemeToggle abaixo). */
+export function ThemeInit() {
+  useEffect(() => {
+    applyTheme("light")
+  }, [])
+  return null
+}
+
+/*
+const STORAGE_KEY = "vozes-theme"
 
 function readStoredTheme(): ThemeMode | null {
   try {
@@ -12,11 +27,6 @@ function readStoredTheme(): ThemeMode | null {
   } catch {
     return null
   }
-}
-
-function applyTheme(theme: ThemeMode) {
-  document.documentElement.classList.toggle("dark", theme === "dark")
-  document.documentElement.style.colorScheme = theme
 }
 
 export function ThemeToggle() {
@@ -44,7 +54,6 @@ export function ThemeToggle() {
     try {
       localStorage.setItem(STORAGE_KEY, next)
     } catch {
-      /* preference stays for this visit */
     }
     applyTheme(next)
     setTheme(next)
@@ -64,3 +73,4 @@ export function ThemeToggle() {
     </button>
   )
 }
+*/

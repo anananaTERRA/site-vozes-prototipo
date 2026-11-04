@@ -9,7 +9,7 @@ const query = `{
     body[]{ ..., _type == "image" => { alt, caption, "url": asset->url } }
   },
   "eventos": *[_type == "evento" && defined(slug.current)] | order(date desc) {
-    title, "slug": slug.current, excerpt, date, themes, imagePosition, caption, place, format, ficha,
+    title, "slug": slug.current, excerpt, date, themes, imagePosition, caption, place, format, ficha, registrationUrl, recordingUrl,
     "imageUrl": image.asset->url, "hotspot": image.hotspot,
     body[]{ ..., _type == "image" => { alt, caption, "url": asset->url } }
   },

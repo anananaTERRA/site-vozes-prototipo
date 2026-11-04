@@ -3,6 +3,7 @@ import { Link, Navigate, useParams, useSearchParams } from "react-router"
 import photo from "@/assets/photo-impacto.png"
 import { BrandButton } from "@/components/brand/BrandButton"
 import { PublicationCard } from "@/components/content/Cards"
+import { ListingFilterSelect } from "@/components/content/ListingFilterSelect"
 import { ListingState } from "@/components/content/ListingState"
 import { ThemeTag } from "@/components/content/ThemeTag"
 import { PageHero } from "@/components/layout/PageHero"
@@ -18,15 +19,17 @@ import type { Block } from "@/content/types"
 import { cn } from "cn"
 import { formatDate } from "@/lib/format"
 import { roundFilterInput, roundFilterPill } from "@/lib/round-control"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 
 const pageSize = 4
+
+const sortOptions = [
+  { value: "recentes", label: "Mais recentes" },
+  { value: "antigas", label: "Mais antigas" },
+] as const
+
+const ALL_YEARS = "all"
+const ALL_THEMES = "all"
 
 export function PublicacoesPage() {
   const content = useSiteContent()
@@ -55,7 +58,21 @@ export function PublicacoesPage() {
     [content.publicacoes],
   )
   const shown = items.slice(0, visible)
-  const activeTheme = themes.find((item) => item.id === tema)
+  const sortValue = ordem === "antigas" ? "antigas" : "recentes"
+  const yearOptions = useMemo(
+    () => [
+      { value: ALL_YEARS, label: "Todos os anos" },
+      ...years.map((year) => ({ value: String(year), label: String(year) })),
+    ],
+    [years],
+  )
+  const themeOptions = useMemo(
+    () => [
+      { value: ALL_THEMES, label: "Todos os temas" },
+      ...themes.map((item) => ({ value: item.id, label: item.label })),
+    ],
+    [],
+  )
 
   function update(next: Record<string, string>) {
     const draft = new URLSearchParams(params)
@@ -63,7 +80,7 @@ export function PublicacoesPage() {
       if (value) draft.set(key, value)
       else draft.delete(key)
     }
-    setParams(draft)
+    setParams(draft, { preventScrollReset: true })
   }
 
   return (
@@ -79,7 +96,11 @@ export function PublicacoesPage() {
       <section className="mx-auto w-full max-w-[1440px] px-6 py-16 md:px-20">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <h2 className="font-display text-5xl leading-[54px]">Todas as publicações</h2>
-          <button type="button" className="text-[15px] font-medium" onClick={() => setParams(new URLSearchParams())}>
+          <button
+            type="button"
+            className="text-[15px] font-medium"
+            onClick={() => setParams(new URLSearchParams(), { preventScrollReset: true })}
+          >
             {items.length} resultados · Limpar filtros
           </button>
         </div>
@@ -104,45 +125,36 @@ export function PublicacoesPage() {
               {type}
             </button>
           ))}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button type="button" className={roundFilterPill()}>
-                {ano || "Ano"}
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => update({ ano: "" })}>Todos os anos</DropdownMenuItem>
-              {years.map((year) => (
-                <DropdownMenuItem key={year} onClick={() => update({ ano: String(year) })}>
-                  {year}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button type="button" className={roundFilterPill()}>
-                {activeTheme?.short ?? "Tema"}
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => update({ tema: "" })}>Todos os temas</DropdownMenuItem>
-              {themes.map((item) => (
-                <DropdownMenuItem key={item.id} onClick={() => update({ tema: item.id })}>
-                  {item.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <button type="button" className={roundFilterPill()} onClick={() => update({ ordem: ordem === "antigas" ? "" : "antigas" })}>
-            Ordenar: {ordem === "antigas" ? "Mais antigas" : "Mais recentes"}
-          </button>
+          <ListingFilterSelect
+            ariaLabel="Filtrar por ano"
+            prefix="Ano:"
+            placeholder="Todos"
+            value={ano || ALL_YEARS}
+            options={yearOptions}
+            onValueChange={(value) => update({ ano: value === ALL_YEARS ? "" : value })}
+          />
+          <ListingFilterSelect
+            ariaLabel="Filtrar por tema"
+            prefix="Tema:"
+            placeholder="Todos"
+            value={tema || ALL_THEMES}
+            options={themeOptions}
+            onValueChange={(value) => update({ tema: value === ALL_THEMES ? "" : value })}
+            triggerClassName="min-w-[14rem]"
+          />
+          <ListingFilterSelect
+            ariaLabel="Ordenar publicações"
+            prefix="Ordenar:"
+            value={sortValue}
+            options={[...sortOptions]}
+            onValueChange={(value) => update({ ordem: value === "recentes" ? "" : "antigas" })}
+          />
         </div>
         <div className="mt-8">
           {loading ? (
             <ListingState kind="loading" />
           ) : shown.length === 0 ? (
-            <ListingState kind="empty" onClear={() => setParams(new URLSearchParams())} />
+            <ListingState kind="empty" onClear={() => setParams(new URLSearchParams(), { preventScrollReset: true })} />
           ) : (
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {shown.map((item) => (
@@ -156,7 +168,13 @@ export function PublicacoesPage() {
             <p className="text-[15px] text-violet">
               Mostrando {shown.length} de {items.length}
             </p>
-            <BrandButton type="button" tone="outline" className="mt-3" onClick={() => setVisible((value) => value + pageSize)}>
+            <BrandButton
+              type="button"
+              tone="outline"
+              pillSize="md"
+              className="mt-3"
+              onClick={() => setVisible((value) => value + pageSize)}
+            >
               Carregar mais
             </BrandButton>
           </div>

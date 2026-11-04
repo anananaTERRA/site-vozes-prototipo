@@ -149,6 +149,8 @@ async function main() {
       place: item.place,
       format: item.format,
       ficha: item.ficha.map((row, index) => ({ _type: "fichaItem", _key: `f${index}`, ...row })),
+      ...(item.registrationUrl ? { registrationUrl: item.registrationUrl } : {}),
+      ...(item.recordingUrl ? { recordingUrl: item.recordingUrl } : {}),
       body: await toPortable(item.body),
     })
   }

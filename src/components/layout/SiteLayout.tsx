@@ -9,13 +9,13 @@ export function SiteLayout() {
   return (
     <ContentProvider>
       <RouteSeo />
-      <div className="min-h-dvh bg-paper text-ink">
+      <div className="bleed-x min-h-dvh bg-paper text-ink">
         <SiteHeader />
         <main>
           <Outlet />
         </main>
         <SiteFooter showCta={pathname !== "/contato"} />
-        <ScrollRestoration />
+        <ScrollRestoration getKey={(location) => location.pathname} />
       </div>
     </ContentProvider>
   )

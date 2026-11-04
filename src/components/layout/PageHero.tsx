@@ -24,7 +24,7 @@ export function PageHero({
 }) {
   return (
     <section className="overflow-hidden" style={{ background }}>
-      <div className="mx-auto grid min-h-[560px] w-full max-w-[1440px] items-center gap-10 px-6 py-16 md:grid-cols-[1.1fr_560px] md:px-20">
+      <div className="mx-auto grid min-h-[max(560px,calc(100dvh-88px-env(safe-area-inset-top,0px)))] w-full max-w-[1440px] items-center gap-10 px-6 py-16 md:grid-cols-[1.1fr_560px] md:px-20">
         <div className="max-w-[672px]" style={{ color: textColor }}>
           <h1 className="font-display text-6xl leading-[1.05] font-medium md:text-[96px] md:leading-[100px]" style={{ color: titleColor }}>
             {title}
