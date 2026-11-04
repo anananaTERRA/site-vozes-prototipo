@@ -6,12 +6,12 @@ import { PublicationCard } from "@/components/content/Cards"
 import { ListingState } from "@/components/content/ListingState"
 import { ThemeTag } from "@/components/content/ThemeTag"
 import { PageHero } from "@/components/layout/PageHero"
+import { useSiteContent } from "@/content/provider"
 import { themes } from "@/content/themes"
 import {
   filterPublications,
   publicationBySlug,
   publicationTypes,
-  publicationYears,
   relatedPublications,
 } from "@/content/posts"
 import type { Block } from "@/content/types"
@@ -29,6 +29,7 @@ import { Input } from "@/components/ui/input"
 const pageSize = 4
 
 export function PublicacoesPage() {
+  const content = useSiteContent()
   const [params, setParams] = useSearchParams()
   const tipo = params.get("tipo") ?? ""
   const ano = params.get("ano") ?? ""
@@ -45,7 +46,14 @@ export function PublicacoesPage() {
     return () => window.clearTimeout(timer)
   }, [tipo, ano, tema, q, ordem])
 
-  const items = useMemo(() => filterPublications({ tipo, ano, tema, q, ordem }), [tipo, ano, tema, q, ordem])
+  const items = useMemo(
+    () => filterPublications(content.publicacoes, { tipo, ano, tema, q, ordem }),
+    [content.publicacoes, tipo, ano, tema, q, ordem],
+  )
+  const years = useMemo(
+    () => [...new Set(content.publicacoes.map((item) => item.year))].sort((a, b) => b - a),
+    [content.publicacoes],
+  )
   const shown = items.slice(0, visible)
   const activeTheme = themes.find((item) => item.id === tema)
 
@@ -104,7 +112,7 @@ export function PublicacoesPage() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem onClick={() => update({ ano: "" })}>Todos os anos</DropdownMenuItem>
-              {publicationYears.map((year) => (
+              {years.map((year) => (
                 <DropdownMenuItem key={year} onClick={() => update({ ano: String(year) })}>
                   {year}
                 </DropdownMenuItem>
@@ -198,9 +206,11 @@ function Blocks({ blocks }: { blocks: Block[] }) {
 
 export function PostPublicacaoPage() {
   const { slug = "" } = useParams()
-  const item = publicationBySlug(slug)
+  const { ready, publicacoes } = useSiteContent()
+  const item = publicationBySlug(publicacoes, slug)
+  if (!ready) return <div className="bg-surface px-6 py-16"><ListingState kind="loading" /></div>
   if (!item) return <Navigate to="/nao-encontrada" replace />
-  const related = relatedPublications(item.slug)
+  const related = relatedPublications(publicacoes, item.slug)
   return (
     <article className="bg-surface">
       <header className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-16 md:grid-cols-[400px_1fr] md:px-20">

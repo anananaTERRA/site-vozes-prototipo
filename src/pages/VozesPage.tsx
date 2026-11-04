@@ -6,6 +6,7 @@ import { EventCard, NewsCard, PressCard } from "@/components/content/Cards"
 import { ListingState } from "@/components/content/ListingState"
 import { ThemeTag } from "@/components/content/ThemeTag"
 import { PageHero } from "@/components/layout/PageHero"
+import { useSiteContent } from "@/content/provider"
 import { filterFeed, type FeedKind } from "@/content/posts"
 import { themes } from "@/content/themes"
 import type { EventArticle, NewsArticle, PressItem } from "@/content/types"
@@ -31,6 +32,7 @@ const pageSize = 6
 
 export function VozesPage() {
   const [params, setParams] = useSearchParams()
+  const content = useSiteContent()
   const tipo = (params.get("tipo") as FeedKind | null) ?? "tudo"
   const tema = params.get("tema") ?? ""
   const q = params.get("q") ?? ""
@@ -47,8 +49,8 @@ export function VozesPage() {
   }, [tipo, tema, q, ordem])
 
   const { items, destaque } = useMemo(
-    () => filterFeed({ tipo: tabs.some((tab) => tab.id === tipo) ? tipo : "tudo", tema, q, ordem }),
-    [tipo, tema, q, ordem],
+    () => filterFeed(content, { tipo: tabs.some((tab) => tab.id === tipo) ? tipo : "tudo", tema, q, ordem }),
+    [content, tipo, tema, q, ordem],
   )
 
   function update(next: Record<string, string>) {

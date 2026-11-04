@@ -7,11 +7,14 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "studio": "npm run dev --prefix studio",
+    "seed:sanity": "node --env-file=.env.local --experimental-strip-types --import ./scripts/register-assets.mjs scripts/seed-sanity.ts"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",
     "@hookform/resolvers": "^7.0.2",
+    "@sanity/client": "^8.14.1",
     "@tailwindcss/vite": "^4.3.4",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.2",

@@ -3,9 +3,10 @@ import { MorphPillButton } from "@/components/brand/MorphPillButton"
 import { PartnerStrip } from "@/components/content/PartnerStrip"
 import { ServiceIndex } from "@/components/content/ServiceIndex"
 import { PageHero } from "@/components/layout/PageHero"
-import { segments } from "@/content/institutional"
+import { useSiteContent } from "@/content/provider"
 
 export function OQueFazemosPage() {
+  const { segments } = useSiteContent()
   return (
     <div className="bg-surface">
       <PageHero

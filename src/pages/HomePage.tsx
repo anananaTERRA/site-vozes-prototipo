@@ -14,8 +14,7 @@ import { StatsBand } from "@/components/home/StatsBand"
 import { WhyWeExist } from "@/components/home/WhyWeExist"
 import { NewsCard, PublicationCard } from "@/components/content/Cards"
 import { PartnerStrip } from "@/components/content/PartnerStrip"
-import { segments, testimonials } from "@/content/institutional"
-import { noticias, publicacoes } from "@/content/posts"
+import { useSiteContent } from "@/content/provider"
 import {
   Carousel,
   CarouselContent,
@@ -25,6 +24,7 @@ import {
 } from "@/components/ui/carousel"
 
 export function HomePage() {
+  const { testimonials, segments, noticias, publicacoes } = useSiteContent()
   const parallaxRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: parallaxRef,

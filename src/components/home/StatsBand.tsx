@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { animate, useInView, useReducedMotion } from "motion/react"
-import { stats } from "@/content/institutional"
+import { useSiteContent } from "@/content/provider"
 
 const COUNT_SECONDS = 1.2
 
@@ -63,6 +63,7 @@ function StatItem({ value, label, divided }: { value: string; label: string; div
 }
 
 export function StatsBand() {
+  const { stats } = useSiteContent()
   return (
     <section className="bg-surface">
       <div className="mx-auto grid w-full max-w-[1440px] grid-cols-2 gap-y-10 px-6 py-14 md:px-20 xl:grid-cols-4 xl:gap-y-0">

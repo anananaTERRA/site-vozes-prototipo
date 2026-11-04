@@ -10,7 +10,8 @@ import peca3 from "@/assets/peca-3.svg"
 import { BrandButton } from "@/components/brand/BrandButton"
 import { MorphPillButton } from "@/components/brand/MorphPillButton"
 import { ContactRouteCards } from "@/components/contato/ContactRouteCards"
-import { faq, subjects } from "@/content/institutional"
+import { useSiteContent } from "@/content/provider"
+import { subjects } from "@/content/institutional"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -31,6 +32,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>
 
 export function ContatoPage() {
+  const { faq } = useSiteContent()
   const [params] = useSearchParams()
   const [sent, setSent] = useState(false)
   const form = useForm<FormValues>({

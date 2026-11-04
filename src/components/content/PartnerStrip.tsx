@@ -1,4 +1,4 @@
-import { partners } from "@/content/institutional"
+import { useSiteContent } from "@/content/provider"
 
 const BELT_CSS = `
 .partner-belt {
@@ -51,24 +51,26 @@ type EmptySlot = {
 
 type StripSlot = LogoSlot | EmptySlot
 
-const sequence: StripSlot[] = [
-  ...partners.flatMap((partner, index) => {
-    const logo: LogoSlot = {
-      id: partner.name,
-      kind: "logo",
-      name: partner.name,
-      src: partner.src,
-      invert: "invertOnDark" in partner && partner.invertOnDark === true,
-      height: logoHeight[partner.name] ?? 40,
-    }
-    const slot: EmptySlot = { id: `slot-${index + 1}`, kind: "slot" }
-    return [logo, slot]
-  }),
-  ...Array.from({ length: PLACEHOLDER_COUNT - partners.length }, (_, index): EmptySlot => ({
-    id: `slot-${partners.length + index + 1}`,
-    kind: "slot",
-  })),
-]
+function beltSequence(partners: { name: string; src: string; invertOnDark?: boolean }[]): StripSlot[] {
+  return [
+    ...partners.flatMap((partner, index) => {
+      const logo: LogoSlot = {
+        id: partner.name,
+        kind: "logo",
+        name: partner.name,
+        src: partner.src,
+        invert: partner.invertOnDark === true,
+        height: logoHeight[partner.name] ?? 40,
+      }
+      const slot: EmptySlot = { id: `slot-${index + 1}`, kind: "slot" }
+      return [logo, slot]
+    }),
+    ...Array.from({ length: Math.max(0, PLACEHOLDER_COUNT - partners.length) }, (_, index): EmptySlot => ({
+      id: `slot-${partners.length + index + 1}`,
+      kind: "slot",
+    })),
+  ]
+}
 
 function PlaceholderSlot() {
   return (
@@ -93,7 +95,7 @@ function PlaceholderSlot() {
   )
 }
 
-function StripCopy({ duplicate = false }: { duplicate?: boolean }) {
+function StripCopy({ sequence, duplicate = false }: { sequence: StripSlot[]; duplicate?: boolean }) {
   return (
     <ul
       aria-hidden={duplicate || undefined}
@@ -120,13 +122,15 @@ function StripCopy({ duplicate = false }: { duplicate?: boolean }) {
 }
 
 export function PartnerStrip() {
+  const { partners } = useSiteContent()
+  const sequence = beltSequence(partners)
   return (
     <div>
       <p className="text-[13px] font-extrabold tracking-[1.04px]">PARCEIROS</p>
       <div className="partner-belt-viewport mt-5 overflow-hidden">
         <div className="partner-belt flex w-max items-center">
-          <StripCopy />
-          <StripCopy duplicate />
+          <StripCopy sequence={sequence} />
+          <StripCopy sequence={sequence} duplicate />
         </div>
       </div>
       <style>{BELT_CSS}</style>

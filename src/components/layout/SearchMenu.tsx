@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { Link, useNavigate } from "react-router"
+import { useSiteContent } from "@/content/provider"
 import { recentSearches, searchContent } from "@/content/posts"
 import { themes } from "@/content/themes"
 import { Input } from "@/components/ui/input"
@@ -15,9 +16,10 @@ export function SearchMenu({
   onOpenChange: (open: boolean) => void
 }) {
   const navigate = useNavigate()
+  const content = useSiteContent()
   const [query, setQuery] = useState("")
   const [expanded, setExpanded] = useState(false)
-  const results = useMemo(() => searchContent(query), [query])
+  const results = useMemo(() => searchContent(content, query), [content, query])
   const visible = expanded ? results : results.slice(0, 6)
 
   function go(href: string, external?: boolean) {
@@ -90,7 +92,7 @@ export function SearchMenu({
               <div>
                 <p className="text-[13px] font-extrabold tracking-[1.04px] text-violet uppercase">Recentes</p>
                 <ul className="mt-2">
-                  {recentSearches().map((item) => (
+                  {recentSearches(content).map((item) => (
                     <li key={item.href}>
                       <button
                         type="button"

@@ -3,26 +3,23 @@ import { Link, useLocation } from "react-router"
 import { Minus, Plus } from "lucide-react"
 import { BrandButton } from "@/components/brand/BrandButton"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { services, servicesIntro } from "@/content/institutional"
+import { useSiteContent } from "@/content/provider"
 import { cn } from "cn"
 
-const serviceIds = new Set<string>(services.map((service) => service.id))
-
-function serviceFromHash() {
-  const hash = window.location.hash.replace("#", "")
-  return serviceIds.has(hash) ? hash : services[0].id
-}
-
 export function ServiceIndex() {
+  const { services, servicesIntro } = useSiteContent()
   const location = useLocation()
-  const [open, setOpen] = useState(serviceFromHash)
+  const [open, setOpen] = useState(() => {
+    const hash = window.location.hash.replace("#", "")
+    return services.some((service) => service.id === hash) ? hash : (services[0]?.id ?? "")
+  })
 
   useEffect(() => {
     const hash = location.hash.replace("#", "")
-    if (!serviceIds.has(hash)) return
+    if (!services.some((service) => service.id === hash)) return
     setOpen(hash)
     document.getElementById(hash)?.scrollIntoView({ block: "start" })
-  }, [location.hash])
+  }, [location.hash, services])
 
   function onValueChange(next: string) {
     setOpen(next)

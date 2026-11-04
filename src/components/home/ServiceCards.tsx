@@ -7,16 +7,17 @@ import face3 from "@/assets/carinha-3.svg"
 import face4 from "@/assets/carinha-4.svg"
 import face5 from "@/assets/carinha-5.svg"
 import face6 from "@/assets/carinha-6.svg"
-import { services } from "@/content/institutional"
+import { useSiteContent } from "@/content/provider"
+import type { Service } from "@/content/site"
 
-const faceByName = {
+const faceByName: Record<string, string> = {
   "carinha-1": face1,
   "carinha-2": face2,
   "carinha-3": face3,
   "carinha-4": face4,
   "carinha-5": face5,
   "carinha-6": face6,
-} as const
+}
 
 const faces = [face1, face2, face3, face4, face5, face6]
 const ease = [0.22, 1, 0.36, 1] as const
@@ -53,7 +54,7 @@ function ServiceCard({
   service,
   index,
 }: {
-  service: (typeof services)[number]
+  service: Service
   index: number
 }) {
   const reduce = useReducedMotion()
@@ -134,6 +135,7 @@ function ServiceCard({
 }
 
 export function ServiceCards() {
+  const { services } = useSiteContent()
   return (
     <section className="mx-auto mt-16 w-full max-w-[1280px]" aria-labelledby="nossos-servicos">
       <h2 id="nossos-servicos" className="font-display text-5xl leading-[54px]">
