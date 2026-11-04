@@ -165,7 +165,7 @@ export const eventos: EventArticle[] = [
     slug: "seminario-recomposicao-inscricao",
     title: "Seminário Recomposição das aprendizagens — inscrições abertas",
     excerpt: "Cópia de validação: mesmo conteúdo do seminário principal, com link externo de inscrição na ficha.",
-    date: "2026-10-22",
+    date: "2027-03-18",
     themes: ["recomposicao"],
     image: photos[1],
     imagePosition: "center top",
@@ -174,7 +174,7 @@ export const eventos: EventArticle[] = [
     format: "Presencial",
     registrationUrl: "https://example.com/inscricao-seminario-recomposicao",
     ficha: [
-      { label: "Quando", value: "22 de outubro de 2026, 9h" },
+      { label: "Quando", value: "18 de março de 2027, 9h" },
       { label: "Onde", value: "São Paulo" },
       { label: "Formato", value: "Presencial" },
       { label: "Para quem", value: "Gestores de rede e coordenadores pedagógicos" },

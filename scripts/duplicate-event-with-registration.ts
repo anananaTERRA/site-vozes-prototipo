@@ -52,6 +52,7 @@ const doc = {
   title,
   slug: { _type: "slug", current: targetSlug },
   registrationUrl,
+  recordingUrl: undefined,
 }
 
 await client.createOrReplace(doc)

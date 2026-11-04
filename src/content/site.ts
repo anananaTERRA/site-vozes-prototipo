@@ -104,11 +104,24 @@ function mergeTeam(remote: TeamMember[], local: TeamMember[]): TeamMember[] {
   })
 }
 
+function mergeEventos(remote: EventArticle[], local: EventArticle[]): EventArticle[] {
+  if (remote.length === 0) return local
+  const localBySlug = new Map(local.map((item) => [item.slug, item]))
+  return remote.map((item) => {
+    const fallback = localBySlug.get(item.slug)
+    return {
+      ...item,
+      registrationUrl: item.registrationUrl ?? fallback?.registrationUrl,
+      recordingUrl: item.recordingUrl ?? fallback?.recordingUrl,
+    }
+  })
+}
+
 export function mergeContent(local: SiteContent, remote: SiteContent): SiteContent {
   const pick = <T,>(next: T[], prev: T[]) => (next.length > 0 ? next : prev)
   return {
     noticias: pick(remote.noticias, local.noticias),
-    eventos: pick(remote.eventos, local.eventos),
+    eventos: mergeEventos(remote.eventos, local.eventos),
     midia: pick(remote.midia, local.midia),
     publicacoes: pick(remote.publicacoes, local.publicacoes),
     partners: pick(remote.partners, local.partners),

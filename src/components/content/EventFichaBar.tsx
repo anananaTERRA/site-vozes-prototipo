@@ -19,10 +19,14 @@ function localLine(item: EventArticle) {
   return `${onde} · ${format}`
 }
 
-function eventCta(item: EventArticle): { href: string; label: string } | null {
+export function eventCta(item: EventArticle): { href: string; label: string } | null {
   const past = eventIsPast(item.date)
-  if (past && item.recordingUrl) return { href: item.recordingUrl, label: "Ver gravação" }
-  if (!past && item.registrationUrl) return { href: item.registrationUrl, label: "Inscreva-se" }
+  if (past && item.recordingUrl) {
+    return { href: item.recordingUrl, label: "Ver gravação" }
+  }
+  if (item.registrationUrl) {
+    return { href: item.registrationUrl, label: past ? "Ver gravação" : "Inscreva-se" }
+  }
   return null
 }
 
