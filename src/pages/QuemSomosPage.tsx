@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react"
-import photoComo from "@/assets/photo-como-trabalhamos.png"
+import photoComo from "@/assets/photo-como-trabalhamos.jpg"
 import portrait from "@/assets/photo-quem-somos.png"
 import valorAntecipacao from "@/assets/valor-antecipacao.svg"
 import valorColaboracao from "@/assets/valor-colaboracao.svg"
@@ -52,13 +52,13 @@ export function QuemSomosPage() {
         background="#0d6353"
         title="Quem somos"
         titleColor="#d0e770"
-        statement="Somos uma consultoria de inteligência educacional movida pela certeza de que a educação brasileira pode ser mais segura e afetiva."
+        statement="Vozes da Educação é uma consultoria de inteligência educacional, formada por profissionais que acreditam que a educação brasileira pode ser mais segura e afetiva."
         support="Nossa missão é ajudar a resolver os problemas da educação do Brasil de forma inteligente, didática e humana."
         image={portrait}
         imageAlt="Retrato em ambiente escolar"
       />
 
-      <section id="historia" className="overflow-x-clip bg-paper">
+      <section id="historia" className="scroll-mt-28 overflow-x-clip bg-paper">
         <div className="mx-auto w-full max-w-[1440px] px-6 py-24 md:px-20">
           <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
             <h2 className="font-display text-5xl leading-[54px] tracking-[-0.48px]">Nossa história</h2>
@@ -70,7 +70,7 @@ export function QuemSomosPage() {
 
       <Separator className="mx-auto max-w-[1280px] bg-line" />
 
-      <section id="equipe" className="bg-surface px-6 py-24 md:px-20">
+      <section id="equipe" className="scroll-mt-28 bg-surface px-6 py-24 md:px-20">
         <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-12">
           <div className="flex flex-col gap-4">
             <h2 className="font-display text-5xl leading-[54px] tracking-[-0.48px]">Nossa equipe</h2>
@@ -145,7 +145,7 @@ export function QuemSomosPage() {
         </Dialog>
       </section>
 
-      <section id="como-trabalhamos" className="bg-surface">
+      <section id="como-trabalhamos" className="scroll-mt-28 bg-surface">
         <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-16 px-6 py-24 md:px-20">
           <div className="flex flex-col gap-12 lg:flex-row lg:items-center">
             <div className="h-[400px] w-full max-w-[480px] shrink-0 overflow-hidden rounded-[20px] bg-paper">
@@ -156,7 +156,9 @@ export function QuemSomosPage() {
                 Como trabalhamos
               </h2>
               <p className="text-[22px] leading-[34px]">
-                Atuamos com linguagem acessível, escuta sensível e olhar atento às evidências mais atuais em educação. O que nos une a cada parceiro é o compromisso com o impacto real na vida de quem aprende e ensina.
+                Atuamos com linguagem acessível, escuta sensível e olhar atento às evidências mais atuais em educação. O
+                que nos une a cada parceiro é o compromisso com o impacto educacional: aquele que chega no estudante,
+                passa pelo professor e começa na decisão de quem lidera.
               </p>
             </div>
           </div>

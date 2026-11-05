@@ -19,7 +19,10 @@ export type Partner = {
 
 export type Segment = {
   title: string
+  /** Corpo curto (Home / PARA QUEM). */
   text: string
+  /** Corpo completo (página O que fazemos / COM QUEM). */
+  textComplete?: string
   background: string
   titleColor: string
   href: string
@@ -27,8 +30,8 @@ export type Segment = {
 
 export type Testimonial = {
   quote: string
-  name: string
-  role: string
+  name?: string
+  role?: string
 }
 
 export type Chapter = {

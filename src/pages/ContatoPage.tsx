@@ -65,13 +65,13 @@ export function ContatoPage() {
           <div>
             <p className="text-[13px] font-extrabold tracking-[1.5px] text-lime">CONTATO</p>
             <h1 className="mt-6 font-display text-4xl leading-[52px] font-medium md:text-[44px]">
-              Tem um desafio em mente?
+              Tem um desafio educacional em mente?
             </h1>
             <p className="mt-3 flex flex-wrap items-center gap-3 font-display text-4xl md:text-[44px]">
               Vamos <span className="rounded-3xl bg-lime px-4 py-1 font-sans text-[30px] font-extrabold text-green">conversar</span>.
             </p>
             <p className="mt-6 text-lg leading-7 text-white/90">
-              Conte o que sua instituição está enfrentando. A partir daí, construímos juntos a melhor solução.
+              Conte o que sua Instituição está enfrentando. A partir daí, construímos juntos a melhor resposta.
             </p>
             <p className="mt-6 text-[15px] font-medium text-lime">contato@…</p>
             <p className="text-[15px] font-medium">(11) 94629-2212 · WhatsApp</p>
@@ -156,7 +156,7 @@ export function ContatoPage() {
         </div>
       </section>
       <ContactRouteCards />
-      <section id="faq" className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-20 md:grid-cols-[400px_1fr] md:px-20">
+      <section id="faq" className="scroll-mt-28 mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-20 md:grid-cols-[400px_1fr] md:px-20">
         <div>
           <h2 className="font-display text-5xl leading-[54px]">Perguntas frequentes</h2>
           <MorphPillButton to="/contato#inicio" className="mt-4" />

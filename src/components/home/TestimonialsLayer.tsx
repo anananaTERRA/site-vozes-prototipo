@@ -71,12 +71,12 @@ export function TestimonialsLayer({ items, className = "" }: TestimonialsLayerPr
       )}
 
       <div className="relative mx-auto w-full max-w-[1280px] px-6 md:px-20">
-        <h2
-          id="depoimentos-home"
-          className="mb-10 text-center font-display text-5xl leading-[54px] text-white md:mb-12"
-        >
-          Depoimentos
-        </h2>
+        <div className="mb-10 text-center md:mb-12">
+          <h2 id="depoimentos-home" className="font-display text-5xl leading-[54px] text-white">
+            Vozes de quem já caminhou com a gente
+          </h2>
+          <p className="mt-3 text-lg leading-[29px] text-white/90">O que dizem nossos clientes e parceiros</p>
+        </div>
         <TestimonialsCarousel items={items} reduceMotion={!!reduce} />
       </div>
     </section>
@@ -192,10 +192,12 @@ function TestimonialsCarousel({
               <blockquote className="relative text-lg leading-[29px] text-balance">
                 {item.quote}
               </blockquote>
-              <figcaption className="relative mt-8">
-                <p className="text-xl font-extrabold">{item.name}</p>
-                <p className="text-sm font-medium text-violet">{item.role}</p>
-              </figcaption>
+              {item.name?.trim() || item.role?.trim() ? (
+                <figcaption className="relative mt-8">
+                  {item.name?.trim() ? <p className="text-xl font-extrabold">{item.name}</p> : null}
+                  {item.role?.trim() ? <p className="text-sm font-medium text-violet">{item.role}</p> : null}
+                </figcaption>
+              ) : null}
             </motion.figure>
           </AnimatePresence>
         </div>

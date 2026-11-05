@@ -5,8 +5,7 @@ import instagram from "@/assets/icon-instagram.svg"
 import linkedin from "@/assets/icon-linkedin.svg"
 import whatsapp from "@/assets/icon-whatsapp.svg"
 import logo from "@/assets/logo.svg"
-import { MorphPillButton } from "@/components/brand/MorphPillButton"
-import { FooterCtaGrafismos } from "@/components/layout/FooterCtaGrafismos"
+import { FooterContactCta, type FooterContactCtaVariant } from "@/components/layout/FooterContactCta"
 import { footerColumns } from "@/content/institutional"
 
 const social = [
@@ -16,37 +15,16 @@ const social = [
   { href: "https://wa.me/5511946292212", label: "WhatsApp", icon: whatsapp },
 ] as const
 
-export function SiteFooter({ showCta = true }: { showCta?: boolean }) {
+export function SiteFooter({
+  showCta = true,
+  ctaVariant = "default",
+}: {
+  showCta?: boolean
+  ctaVariant?: FooterContactCtaVariant
+}) {
   return (
     <footer className="relative mr-[calc(env(safe-area-inset-right)*-1)] ml-[calc(env(safe-area-inset-left)*-1)] bg-indigo pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] text-white">
-      {showCta ? (
-        <div className="bg-paper px-6 py-14 md:px-20">
-          <div className="relative flex min-h-[360px] items-center overflow-hidden rounded-[40px] bg-indigo px-8 py-12 md:min-h-[400px] md:px-16">
-            <FooterCtaGrafismos />
-            <div className="relative z-10 max-w-[560px]">
-              <span className="inline-flex rounded-full border-2 border-white/90 px-4 py-1.5 text-[13px] font-extrabold tracking-[1.5px] text-white uppercase">
-                Contato
-              </span>
-              <h2 className="mt-6 font-display text-4xl leading-[48px] font-medium md:text-[44px] md:leading-[52px]">
-                Tem um desafio
-                <br />
-                em mente?
-              </h2>
-              <p className="mt-4 max-w-md text-base leading-6 font-normal text-white/90">
-                Vamos conversar sobre o que sua escola, rede ou organização está enfrentando e pensar juntos em uma
-                resposta à altura.
-              </p>
-              <MorphPillButton
-                to="/contato#inicio"
-                label="Fale com a gente"
-                surface="dark"
-                pill="orange"
-                className="mt-8"
-              />
-            </div>
-          </div>
-        </div>
-      ) : null}
+      {showCta ? <FooterContactCta variant={ctaVariant} /> : null}
       <div className="h-px bg-violet" />
       <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 px-6 py-12 md:px-16">
         <div className="flex flex-col justify-between gap-10 lg:flex-row">

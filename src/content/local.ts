@@ -38,7 +38,14 @@ export function localContent(): SiteContent {
       delivery: service.delivery,
     })),
     servicesIntro: [...servicesIntro],
-    segments: segments.map((segment) => ({ ...segment })),
+    segments: segments.map((segment) => ({
+      title: segment.title,
+      text: segment.text,
+      textComplete: "textComplete" in segment && typeof segment.textComplete === "string" ? segment.textComplete : undefined,
+      background: segment.background,
+      titleColor: segment.titleColor,
+      href: segment.href,
+    })),
     testimonials: testimonials.map((item) => ({ ...item })),
     chapters: chapters.map((chapter) => ({
       year: chapter.year,

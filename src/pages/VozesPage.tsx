@@ -7,6 +7,7 @@ import { ListingFilterSelect } from "@/components/content/ListingFilterSelect"
 import { ListingState } from "@/components/content/ListingState"
 import { ThemeFilterChip } from "@/components/content/ThemeFilterChip"
 import { PageHero } from "@/components/layout/PageHero"
+import { pressPhone } from "@/content/institutional"
 import { useSiteContent } from "@/content/provider"
 import { filterFeed, type FeedKind } from "@/content/posts"
 import { themes } from "@/content/themes"
@@ -106,15 +107,17 @@ export function VozesPage() {
         image={photo}
         imageAlt="Entrevista, imagem provisória"
       />
-      <section id="imprensa" className="mx-auto flex w-full max-w-[1440px] flex-col justify-between gap-8 px-6 py-16 md:flex-row md:px-20">
+      <section id="imprensa" className="scroll-mt-28 mx-auto flex w-full max-w-[1440px] flex-col justify-between gap-8 px-6 py-16 md:flex-row md:px-20">
         <div className="max-w-xl">
           <p className="text-[13px] font-extrabold tracking-[1.04px] text-violet uppercase">Assessoria de imprensa</p>
           <p className="mt-3 text-lg leading-[29px]">
-            Para entrevistas, dados e posicionamentos, fale com a equipe. Respondemos com o contexto do que está em pauta.
+            Para entrevistas, pautas e participação em eventos, fale com a nossa assessoria.
           </p>
         </div>
         <div>
-          <p className="font-display text-[32px] leading-10">(11) 94629-2212</p>
+          <p className="font-display text-[32px] leading-10">
+            ({pressPhone.slice(0, 2)}) {pressPhone.slice(3)}
+          </p>
           <p className="mt-2 text-[15px]">contato@…</p>
           <BrandButton asChild tone="outline" pillSize="md" className="mt-4">
             <Link to="/contato?assunto=imprensa">Enviar mensagem</Link>

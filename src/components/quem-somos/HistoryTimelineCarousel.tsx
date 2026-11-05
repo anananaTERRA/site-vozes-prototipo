@@ -58,7 +58,10 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
   const cx = (width || 960) / 2
   const cy = arcTop + radius
   const sweep = compact ? 74 : 90
-  const frameHeight = arcTop + radius * (1 - Math.cos((sweep * Math.PI) / 180)) + (compact ? 20 : 16)
+  const arcDepth = radius * (1 - Math.cos((sweep * Math.PI) / 180))
+  const frameHeight = arcTop + arcDepth + (compact ? 20 : 16)
+  const copyTop = arcTop + (compact ? 72 : 88)
+  const arrowsTop = arcTop + Math.round(radius * (compact ? 0.5 : 0.56))
   const ticks = gaugeTicks(cx, cy, radius)
   const travel = reduceMotion ? { duration: 0 } : { duration: 0.78, ease: EASE }
   const copyTravel = reduceMotion ? { duration: 0 } : { duration: 0.4, ease: EASE }
@@ -134,20 +137,20 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
         {!compact ? (
           <>
             <div
-              className="pointer-events-none absolute flex justify-center overflow-hidden"
+              className="pointer-events-none absolute z-20 flex justify-center overflow-hidden"
               style={{
                 left: "50%",
-                top: arcTop + 108,
+                top: copyTop,
                 width: Math.min(540, (width || 960) * 0.44),
-                bottom: ARROW_ZONE + 12,
+                maxHeight: Math.max(120, arrowsTop - copyTop - 12),
                 transform: "translateX(-50%)",
               }}
             >
               <div className="pointer-events-auto w-full">{copyBody}</div>
             </div>
             <div
-              className="pointer-events-none absolute inset-x-0 flex justify-center"
-              style={{ bottom: 12 }}
+              className="pointer-events-none absolute inset-x-0 z-20 flex justify-center"
+              style={{ top: arrowsTop }}
             >
               {arrows}
             </div>
@@ -211,9 +214,11 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
       </div>
 
       {compact ? (
-        <div className="relative mx-auto mt-8 max-w-3xl" style={{ height: COMPACT_COPY_HEIGHT }}>
-          <div className="absolute inset-x-0 top-0 overflow-y-auto pb-2">{copyBody}</div>
-          <div className="absolute inset-x-0 bottom-0 flex justify-center">{arrows}</div>
+        <div className="relative mx-auto mt-6 max-w-3xl">
+          <div className="overflow-y-auto pb-2" style={{ maxHeight: COMPACT_COPY_HEIGHT - ARROW_ZONE }}>
+            {copyBody}
+          </div>
+          <div className="mt-6 flex justify-center">{arrows}</div>
         </div>
       ) : null}
     </div>

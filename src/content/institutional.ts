@@ -9,6 +9,19 @@ import b3 from "@/assets/partners/b3-social.png"
 import mpb from "@/assets/partners/movimento-pela-base.png"
 import type { ThemeId } from "@/content/themes"
 
+/** Assessoria de imprensa (Copy.docx · FAQ). */
+export const pressPhone = "11 98072-7211"
+
+export const segmentsHomeHeader = {
+  title: "Conhecimento de ponta, traduzido para a sua realidade",
+  support:
+    "Para que cada decisão faça sentido, cada ação tenha respaldo e nenhuma crise te pegue de surpresa.",
+} as const
+
+export const segmentsPageHeader = {
+  title: "Com quem trabalhamos",
+} as const
+
 export const servicesIntro = [
   "Violência, bullying, racismo, emergências climáticas, saúde mental: gestores e educadores enfrentam questões complexas e precisam de ferramentas para respondê-las com eficiência, profundidade e segurança.",
   "Atuamos em seis frentes complementares, que podem ser contratadas separadamente ou combinadas conforme a necessidade da sua escola, rede ou organização.",
@@ -19,7 +32,7 @@ export const services = [
     id: "levantamentos",
     title: "Levantamentos",
     face: "carinha-1",
-    accent: "#153792",
+    accent: "#01c689",
     text: "Evidências nacionais e internacionais organizadas para apoiar decisões.",
     body: "Os levantamentos reúnem, comparam e sistematizam o que redes de ensino no Brasil e em outros países já fizeram diante de um mesmo desafio. Partimos de uma dor ou pergunta concreta e, a partir dela, fazemos a curadoria de políticas, protocolos e resultados disponíveis. Ao final, a instituição recebe um relatório estruturado, com casos comparados, lições aprendidas e recomendações adaptadas à sua realidade, pronto para orientar decisões e apoiar o diálogo com equipes e parceiros institucionais.",
     audience: "Redes de ensino, fundações, organizações do terceiro setor e mandatos parlamentares.",
@@ -29,7 +42,7 @@ export const services = [
     id: "facilitacao",
     title: "Facilitação",
     face: "carinha-2",
-    accent: "#1157f3",
+    accent: "#ef5ca1",
     text: "Encontros e oficinas que transformam diferentes vozes em decisões compartilhadas.",
     body: "A facilitação desenha e conduz encontros em que gestores, educadores e parceiros chegam a uma decisão compartilhada. A pauta nasce do desafio da instituição. Cuidamos da escuta entre vozes diferentes e devolvemos o que foi combinado em linguagem que a equipe consegue usar na sequência.",
     audience: "Equipes de secretarias, redes e organizações que precisam decidir juntas.",
@@ -39,7 +52,7 @@ export const services = [
     id: "imersoes",
     title: "Imersões",
     face: "carinha-3",
-    accent: "#493975",
+    accent: "#153792",
     text: "Experiências intensivas para conhecer de perto práticas que funcionam.",
     body: "As imersões levam equipes a ver de perto uma prática que já funciona em outro contexto. O percurso junta visita, conversa com quem implementa e tempo para traduzir o que foi observado à realidade de quem volta para a própria rede, escola ou organização.",
     audience: "Lideranças e equipes que precisam alinhar um desafio em comum.",
@@ -49,7 +62,7 @@ export const services = [
     id: "materiais",
     title: "Materiais Orientadores",
     face: "carinha-4",
-    accent: "#9ca7ef",
+    accent: "#ff8327",
     text: "Guias e protocolos que traduzem evidências em orientações práticas.",
     body: "Os materiais orientadores traduzem evidências em guias e protocolos que cabem na rotina de quem implementa. O texto é didático, o formato é o que a equipe realmente abre, e o conteúdo parte do contexto de uso, não de um modelo genérico para arquivar.",
     audience: "Educadores, equipes técnicas e quem implementa a política no dia a dia.",
@@ -69,7 +82,7 @@ export const services = [
     id: "cursos",
     title: "Cursos",
     face: "carinha-6",
-    accent: "#01c689",
+    accent: "#d0e770",
     text: "Formações que conectam evidências à prática de educadores.",
     body: "Os cursos formam educadores e gestores a partir do contexto em que eles trabalham. A evidência entra como ferramenta de aula e de gestão, conectada à prática, e não como leitura separada do dia a dia da escola.",
     audience: "Educadores e gestores de escolas, redes e organizações.",
@@ -88,41 +101,41 @@ export const segments = [
   {
     title: "Escolas e redes públicas",
     text: "Apoio educacional customizado para quem busca segurança na tomada de decisões ou implementa políticas educacionais.",
+    textComplete:
+      "Gestores e educadores tomam decisões que afetam milhares de estudantes e precisam de apoio técnico qualificado para agir com consistência, segurança e base em evidências. O Vozes sabe o que funciona e o que não funciona em contextos como o seu.",
     background: "#0d6353",
     titleColor: "#d0e770",
-    href: "/o-que-fazemos",
+    href: "/o-que-fazemos#segmentos",
   },
   {
     title: "Terceiro setor",
     text: "Institutos, fundações e organizações que precisam de parceiros para que cada recurso gere o impacto que merece.",
+    textComplete:
+      "Institutos, fundações e organizações de impacto que investem recursos significativos em educação e precisam de parceiros com rigor metodológico. Para pesquisar com profundidade, formar com consistência e propor soluções com a seriedade que o investimento social exige.",
     background: "#153792",
     titleColor: "#9ca7ef",
-    href: "/o-que-fazemos",
+    href: "/o-que-fazemos#segmentos",
   },
   {
     title: "Escolas e sistemas de ensino",
     text: "Soluções baseadas em evidências nacionais e internacionais, no que há de mais promissor e inovador em educação para instituições que buscam segurança e excelência.",
+    textComplete:
+      "Instituições que sabem que um erro de gestão pedagógica custa caro: em reputação, em famílias e em resultados. O Vozes trabalha para que cada decisão tenha sentido, cada ação tenha respaldo e nenhum investimento seja desperdiçado.",
     background: "#8146cb",
     titleColor: "#faa4ff",
-    href: "/o-que-fazemos",
+    href: "/o-que-fazemos#segmentos",
   },
 ]
 
 export const testimonials = [
   {
     quote: "A parceria trouxe clareza para a nossa rede e segurança para decidir o próximo passo.",
-    name: "Nome a confirmar",
-    role: "Cargo · Instituição",
   },
   {
     quote: "O material chegou em linguagem de quem implementa. A equipe usou na semana seguinte.",
-    name: "Nome a confirmar",
-    role: "Cargo · Instituição",
   },
   {
     quote: "Saímos da escuta com uma decisão, não com mais um diagnóstico parado.",
-    name: "Nome a confirmar",
-    role: "Cargo · Instituição",
   },
 ]
 
@@ -256,23 +269,23 @@ export const faq = [
   },
   {
     q: "Como funciona o trabalho do Vozes?",
-    a: "Cada projeto começa pela escuta do contexto e dos desafios de quem vai implementar. A solução vem depois, desenhada sob medida.",
+    a: "Tudo começa por uma conversa. Entendemos o contexto, os desafios e o que sua instituição precisa antes de propor qualquer solução. A partir daí, desenvolvemos uma proposta personalizada, sem soluções prontas.",
   },
   {
     q: "O Vozes atende organizações de todo o Brasil?",
-    a: "Trabalhamos com escolas, redes públicas, terceiro setor e sistemas de ensino. Os projetos já passaram por estados diferentes e também por outros países.",
+    a: "Sim. Já atuamos em mais de doze estados, dois mil municípios e já impactamos mais de 2 mil escolas. Também já trabalhamos com instituições de diversos países, incluindo Estados Unidos, Suíça, Colômbia, África do Sul, Austrália e Sierra Leoa. Nossos projetos acontecem de forma presencial, remota ou híbrida, conforme a necessidade de cada projeto.",
   },
   {
     q: "Como entrar em contato para entrevistas ou matérias?",
-    a: "Pelo bloco de assessoria em Vozes na mídia, ou pelo formulário com o assunto Imprensa. Telefone (11) 94629-2212.",
+    a: `Você pode entrar em contato direto com nossa assessoria de imprensa pelo número: ${pressPhone}.`,
   },
   {
     q: "Como trabalhar no Vozes?",
-    a: "Envie uma mensagem pelo formulário com o assunto Trabalhe conosco e conte em que frente você quer contribuir.",
+    a: "Você pode se candidatar por meio do nosso banco de talentos: https://forms.gle/6fpMJBtqiRQ2PTg58",
   },
   {
     q: "Como posso saber se o Vozes é o parceiro certo para o meu projeto?",
-    a: "Conte o que sua instituição está enfrentando. A partir daí, construímos juntos a melhor solução — e também dizemos se não formos o parceiro certo.",
+    a: "A melhor forma é conversar. Nossa equipe está disponível para entender o que você precisa e avaliar como podemos te atender.",
   },
 ]
 
@@ -297,9 +310,9 @@ export const footerColumns: { title: string; links: { label: string; to: string 
     links: [
       { label: "Levantamentos", to: "/o-que-fazemos#levantamentos" },
       { label: "Facilitação", to: "/o-que-fazemos#facilitacao" },
-      { label: "Documentos", to: "/o-que-fazemos#materiais" },
+      { label: "Materiais orientadores", to: "/o-que-fazemos#materiais" },
       { label: "Consultorias", to: "/o-que-fazemos#consultorias" },
-      { label: "Advocacy", to: "/o-que-fazemos#imersoes" },
+      { label: "Imersões", to: "/o-que-fazemos#imersoes" },
       { label: "Cursos", to: "/o-que-fazemos#cursos" },
     ],
   },

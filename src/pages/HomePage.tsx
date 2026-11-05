@@ -58,7 +58,7 @@ export function HomePage() {
       <section className="bg-paper px-6 py-24 md:px-20">
         <SolutionsIntro />
         <div className={`mx-auto w-full max-w-[1280px] ${SOLUTIONS_PAPER_SPACING.introToPartners}`}>
-          <PartnerStrip heading="PARCEIROS" />
+          <PartnerStrip heading="Clientes e parceiros" />
         </div>
         <div className={SOLUTIONS_PAPER_SPACING.partnersToServices}>
           <ServiceCards />

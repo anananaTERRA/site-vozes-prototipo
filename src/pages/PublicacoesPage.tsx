@@ -88,7 +88,7 @@ export function PublicacoesPage() {
         background="#493975"
         title="Publicações"
         titleColor="#d0e770"
-        statement="Pesquisas, levantamentos e artigos do Vozes — para quem decide com informação de qualidade."
+        statement="Pesquisas, levantamentos e artigos desenvolvidos pelo Vozes. Disponíveis para gestores, educadores, familiares, pesquisadores e todos que acreditam que decisões melhores começam com informação de qualidade."
         image={photo}
         imageAlt="Leitura, imagem provisória"
       />

@@ -3,6 +3,7 @@ import { Link } from "react-router"
 import { ArrowRight } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 import { BrandButton } from "@/components/brand/BrandButton"
+import { segmentsHomeHeader } from "@/content/institutional"
 import type { Segment } from "@/content/site"
 
 type HomeSegmentsSectionProps = {
@@ -61,7 +62,8 @@ export function HomeSegmentsSection({ segments }: HomeSegmentsSectionProps) {
   return (
     <section className="bg-surface px-6 py-24 md:px-20">
       <div className="mx-auto w-full max-w-[1280px]">
-        <h2 className="font-display text-5xl leading-[54px]">Com quem trabalhamos</h2>
+        <h2 className="font-display text-5xl leading-[54px]">{segmentsHomeHeader.title}</h2>
+        <p className="mt-4 max-w-3xl text-lg leading-[29px]">{segmentsHomeHeader.support}</p>
         <div
           className="mt-10 grid overflow-hidden rounded-[20px] md:grid-cols-3 md:items-stretch"
           style={{ ["--segment-row-min" as string]: `${SEGMENT_ROW_MIN_PX}px`, minHeight: SEGMENT_ROW_MIN_PX }}

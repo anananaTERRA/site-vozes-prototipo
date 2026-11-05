@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "motion/react"
 import { cn } from "cn"
 
 const MotionLink = motion.create(Link)
+const MotionButton = motion.create("button")
 
 const spring = { type: "spring" as const, stiffness: 400, damping: 30 }
 const pillEndPad = 28
@@ -75,8 +76,7 @@ function MorphPillIcon({ expanded, size }: { expanded: boolean; size: number }) 
   )
 }
 
-type MorphPillButtonProps = {
-  to: string
+type MorphPillButtonBaseProps = {
   className?: string
   label?: string
   /** Repouso: texto claro ao lado do círculo (hero, footer). */
@@ -85,14 +85,29 @@ type MorphPillButtonProps = {
   size?: keyof typeof sizes
 }
 
-export function MorphPillButton({
-  to,
-  className,
-  label = "Fale conosco",
-  surface = "light",
-  pill = "ink",
-  size = "default",
-}: MorphPillButtonProps) {
+type MorphPillButtonLinkProps = MorphPillButtonBaseProps & {
+  to: string
+  onClick?: never
+}
+
+type MorphPillButtonActionProps = MorphPillButtonBaseProps & {
+  to?: never
+  onClick: () => void
+}
+
+type MorphPillButtonProps = MorphPillButtonLinkProps | MorphPillButtonActionProps
+
+export function MorphPillButton(props: MorphPillButtonProps) {
+  const {
+    className,
+    label = "Fale com a gente",
+    surface = "light",
+    pill = "ink",
+    size = "default",
+  } = props
+  const to = "to" in props ? props.to : undefined
+  const onClick = "onClick" in props ? props.onClick : undefined
+  const MotionRoot = to ? MotionLink : MotionButton
   const reducedMotion = useReducedMotion()
   const [hovered, setHovered] = useState(false)
   const labelRef = useRef<HTMLSpanElement>(null)
@@ -113,12 +128,12 @@ export function MorphPillButton({
   const pillWidth = textWidth > 0 ? (expanded ? expandedWidth : circleSize) : circleSize
 
   return (
-    <MotionLink
-      to={to}
+    <MotionRoot
+      {...(to ? { to } : { type: "button" as const, onClick })}
       aria-label={label}
       style={textWidth > 0 ? { width: expandedWidth, height: metrics.height } : { height: metrics.height }}
       className={cn(
-        "relative block shrink-0 cursor-pointer outline-none select-none focus-visible:ring-3 focus-visible:ring-ring/50",
+        "relative block shrink-0 cursor-pointer border-0 bg-transparent p-0 outline-none select-none focus-visible:ring-3 focus-visible:ring-ring/50",
         className
       )}
       onMouseEnter={() => setHovered(true)}
@@ -177,6 +192,6 @@ export function MorphPillButton({
           {label}
         </span>
       </motion.span>
-    </MotionLink>
+    </MotionRoot>
   )
 }

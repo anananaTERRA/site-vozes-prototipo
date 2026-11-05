@@ -73,7 +73,7 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     background: var(--paper);
     overflow-x: clip;
     min-height: 100vh;

@@ -1,4 +1,8 @@
+import { useState } from "react"
+import { MorphPillButton } from "@/components/brand/MorphPillButton"
 import { useSiteContent } from "@/content/provider"
+
+type PartnerItem = { name: string; src: string; invertOnDark?: boolean }
 
 const BELT_CSS = `
 .partner-belt {
@@ -51,7 +55,37 @@ type EmptySlot = {
 
 type StripSlot = LogoSlot | EmptySlot
 
-function beltSequence(partners: { name: string; src: string; invertOnDark?: boolean }[]): StripSlot[] {
+function PartnerLogo({
+  partner,
+  height,
+}: {
+  partner: PartnerItem
+  height: number
+}) {
+  return (
+    <img
+      src={partner.src}
+      alt={partner.name}
+      draggable={false}
+      style={{ height }}
+      className={`w-auto max-w-full object-contain ${partner.invertOnDark ? "dark:brightness-0 dark:invert" : ""}`}
+    />
+  )
+}
+
+function PartnersLogoGrid({ partners }: { partners: PartnerItem[] }) {
+  return (
+    <ul className="grid grid-cols-2 place-items-center gap-x-10 gap-y-14 sm:grid-cols-3 md:grid-cols-4">
+      {partners.map((partner) => (
+        <li key={partner.name} className="flex w-full max-w-[200px] items-center justify-center px-2">
+          <PartnerLogo partner={partner} height={logoHeight[partner.name] ?? 48} />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function beltSequence(partners: PartnerItem[]): StripSlot[] {
   return [
     ...partners.flatMap((partner, index) => {
       const logo: LogoSlot = {
@@ -124,23 +158,45 @@ function StripCopy({ sequence, duplicate = false }: { sequence: StripSlot[]; dup
 type PartnerStripProps = {
   heading?: string
   showTitle?: boolean
+  /** Exibe CTA "ver todos" e alterna para grade estática na mesma página. */
+  showViewAll?: boolean
 }
 
-export function PartnerStrip({ heading = "PARCEIROS", showTitle = true }: PartnerStripProps) {
+export function PartnerStrip({
+  heading = "PARCEIROS",
+  showTitle = true,
+  showViewAll = false,
+}: PartnerStripProps) {
   const { partners } = useSiteContent()
   const sequence = beltSequence(partners)
+  const [showAll, setShowAll] = useState(false)
+
   return (
     <div>
       {showTitle ? (
         <p className="text-[13px] font-extrabold tracking-[1.04px] uppercase">{heading}</p>
       ) : null}
-      <div className="partner-belt-viewport mt-5 overflow-hidden">
-        <div className="partner-belt flex w-max items-center">
-          <StripCopy sequence={sequence} />
-          <StripCopy sequence={sequence} duplicate />
+      {showAll ? (
+        <div className="mt-5">
+          <PartnersLogoGrid partners={partners} />
         </div>
-      </div>
-      <style>{BELT_CSS}</style>
+      ) : (
+        <div className="partner-belt-viewport mt-5 overflow-hidden">
+          <div className="partner-belt flex w-max items-center">
+            <StripCopy sequence={sequence} />
+            <StripCopy sequence={sequence} duplicate />
+          </div>
+        </div>
+      )}
+      {showViewAll ? (
+        <div className="mt-10">
+          <MorphPillButton
+            label={showAll ? "ver menos" : "ver todos"}
+            onClick={() => setShowAll((open) => !open)}
+          />
+        </div>
+      ) : null}
+      {!showAll ? <style>{BELT_CSS}</style> : null}
     </div>
   )
 }

@@ -20,8 +20,12 @@ export function HomeConvictionBand() {
           <p className="font-display text-4xl leading-[48px]">
             Nascemos da convicção de que a educação brasileira pode ser muito melhor.
           </p>
+          <p className="mt-6 text-lg leading-[29px] text-white/95">
+            Acreditamos que isso só acontece quando quem está no chão da escola recebe apoio e tem acesso a conhecimento
+            de ponta, contextualizado e aplicável.
+          </p>
           <BrandButton asChild className="mt-8">
-            <Link to="/contato">Vamos construir juntos</Link>
+            <Link to="/contato">Fale com a gente</Link>
           </BrandButton>
         </div>
       </div>

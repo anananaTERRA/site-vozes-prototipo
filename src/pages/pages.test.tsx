@@ -17,7 +17,12 @@ describe("Páginas principais (smoke)", () => {
   it("O que fazemos — título e seção de segmentos", async () => {
     renderApp("/o-que-fazemos")
     expect(await screen.findByRole("heading", { level: 1, name: "O que fazemos" })).toBeInTheDocument()
-    expect(screen.getByRole("heading", { level: 2, name: "Com quem trabalhamos" })).toBeInTheDocument()
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: "Com quem trabalhamos",
+      }),
+    ).toBeInTheDocument()
   })
 
   it("Vozes na mídia — hero após carregar listagem", async () => {
@@ -40,7 +45,7 @@ describe("Páginas principais (smoke)", () => {
 
   it("Contato — formulário e FAQ", async () => {
     renderApp("/contato")
-    expect(await screen.findByRole("heading", { level: 1, name: /Tem um desafio em mente/i })).toBeInTheDocument()
+    expect(await screen.findByRole("heading", { level: 1, name: /Tem um desafio educacional em mente/i })).toBeInTheDocument()
     expect(screen.getByRole("button", { name: "Enviar" })).toBeInTheDocument()
   })
 
