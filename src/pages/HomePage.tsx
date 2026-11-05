@@ -1,7 +1,5 @@
-import { Link } from "react-router"
-import { MorphPillButton } from "@/components/brand/MorphPillButton"
-import { WordBalloon } from "@/components/brand/WordBalloon"
 import { PartnerStrip } from "@/components/content/PartnerStrip"
+import { HomeHero } from "@/components/home/HomeHero"
 import { HomeConvictionBand } from "@/components/home/HomeConvictionBand"
 import { HomeMediaSection } from "@/components/home/HomeMediaSection"
 import { HomePublicationsSection } from "@/components/home/HomePublicationsSection"
@@ -23,33 +21,7 @@ export function HomePage() {
 
   return (
     <div>
-      <section className="bg-indigo text-white">
-        <div className="mx-auto flex min-h-[max(640px,calc(100dvh-88px-env(safe-area-inset-top,0px)))] w-full max-w-[1440px] items-center px-6 py-16 md:px-20">
-          <div className="max-w-[640px]">
-            <h1 className="font-display text-6xl leading-none font-normal tracking-[-1.76px] md:text-[88px] md:leading-[92px]">
-              Conectar vozes,
-              <span className="block">
-                <WordBalloon color="#ff8327" className="text-[56px] leading-none md:text-[88px] md:leading-[92px]">
-                  transformar
-                </WordBalloon>
-              </span>
-              a educação
-            </h1>
-            <p className="mt-8 text-pretty text-[22px] leading-[34px]">
-              Transformamos conhecimento de ponta em soluções personalizadas para quem lidera escolas, redes e{"\u00A0"}organizações.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <MorphPillButton to="/contato" surface="dark" pill="orange" size="compact" />
-              <Link
-                to="/o-que-fazemos"
-                className="shrink-0 text-sm font-medium tracking-wide uppercase whitespace-nowrap leading-none text-white outline-none hover:text-white/90 focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                Conheça o que fazemos →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeHero />
 
       <StatsBand />
       <WhyWeExist />

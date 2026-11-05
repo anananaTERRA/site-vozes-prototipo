@@ -60,8 +60,7 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
   const sweep = compact ? 74 : 90
   const arcDepth = radius * (1 - Math.cos((sweep * Math.PI) / 180))
   const frameHeight = arcTop + arcDepth + (compact ? 20 : 16)
-  const copyTop = arcTop + (compact ? 72 : 88)
-  const arrowsTop = arcTop + Math.round(radius * (compact ? 0.5 : 0.56))
+  const copyTop = arcTop + (compact ? 72 : 108)
   const ticks = gaugeTicks(cx, cy, radius)
   const travel = reduceMotion ? { duration: 0 } : { duration: 0.78, ease: EASE }
   const copyTravel = reduceMotion ? { duration: 0 } : { duration: 0.4, ease: EASE }
@@ -142,7 +141,7 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
                 left: "50%",
                 top: copyTop,
                 width: Math.min(540, (width || 960) * 0.44),
-                maxHeight: Math.max(120, arrowsTop - copyTop - 12),
+                bottom: ARROW_ZONE + 12,
                 transform: "translateX(-50%)",
               }}
             >
@@ -150,7 +149,7 @@ export function HistoryTimelineCarousel({ chapters }: HistoryTimelineCarouselPro
             </div>
             <div
               className="pointer-events-none absolute inset-x-0 z-20 flex justify-center"
-              style={{ top: arrowsTop }}
+              style={{ bottom: 12 }}
             >
               {arrows}
             </div>

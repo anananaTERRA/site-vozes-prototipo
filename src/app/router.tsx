@@ -7,11 +7,13 @@ import { OQueFazemosPage } from "@/pages/OQueFazemosPage"
 import { PostEventoPage, PostNoticiaPage } from "@/pages/PostPages"
 import { PostPublicacaoPage, PublicacoesPage } from "@/pages/PublicacoesPage"
 import { QuemSomosPage } from "@/pages/QuemSomosPage"
+import { OgHeroPreviewPage } from "@/pages/OgHeroPreviewPage"
 import { VozesPage } from "@/pages/VozesPage"
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, "")
 
 export const appRoutes = [
+  { path: "__og-hero", element: <OgHeroPreviewPage /> },
   {
     element: <SiteLayout />,
     children: [
