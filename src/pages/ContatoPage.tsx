@@ -3,7 +3,7 @@ import { useEffect, useState, type ReactNode } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useSearchParams } from "react-router"
 import { z } from "zod"
-import photo from "@/assets/photo-quem-somos.png"
+import { heroPhotos } from "@/content/hero-photos"
 import peca1 from "@/assets/peca-1.svg"
 import peca2 from "@/assets/peca-2.svg"
 import peca3 from "@/assets/peca-3.svg"
@@ -80,7 +80,7 @@ export function ContatoPage() {
             <img src={peca1} alt="" className="absolute top-0 right-6 w-36" />
             <img src={peca2} alt="" className="absolute bottom-6 left-0 w-40" />
             <img src={peca3} alt="" className="absolute top-24 right-0 w-24" />
-            <img src={photo} alt="" className="absolute top-10 left-10 h-[440px] w-[320px] rounded-[20px] object-cover" />
+            <img src={heroPhotos.contatoDecor} alt="" className="absolute top-10 left-10 h-[440px] w-[320px] rounded-[20px] object-cover" />
           </div>
           <div className="rounded-[28px] bg-surface p-6 text-ink">
             {sent ? (

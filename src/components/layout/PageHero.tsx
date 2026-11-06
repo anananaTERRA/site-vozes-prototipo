@@ -1,7 +1,6 @@
 import type { ReactNode } from "react"
-import grafismo1 from "@/assets/grafismo-1.svg"
-import grafismo2 from "@/assets/grafismo-2.svg"
-import grafismo3 from "@/assets/grafismo-3.svg"
+import { cn } from "cn"
+import { PageHeroDecorations } from "@/components/layout/PageHeroDecorations"
 
 export function PageHero({
   background,
@@ -12,6 +11,7 @@ export function PageHero({
   support,
   image,
   imageAlt,
+  imageObjectPosition = "50% 42%",
 }: {
   background: string
   title: string
@@ -21,22 +21,44 @@ export function PageHero({
   support?: string
   image: string
   imageAlt: string
+  /** `object-position` da foto (imagens de banco costumam precisar de ajuste fino). */
+  imageObjectPosition?: string
 }) {
   return (
     <section className="overflow-hidden" style={{ background }}>
-      <div className="mx-auto grid min-h-[max(560px,calc(100dvh-88px-env(safe-area-inset-top,0px)))] w-full max-w-[1440px] items-center gap-10 px-6 py-16 md:grid-cols-[1.1fr_560px] md:px-20">
-        <div className="max-w-[672px]" style={{ color: textColor }}>
-          <h1 className="font-display text-6xl leading-[1.05] font-medium md:text-[96px] md:leading-[100px]" style={{ color: titleColor }}>
+      <div
+        className={cn(
+          "relative mx-auto flex w-full max-w-[1440px] flex-col",
+          "min-h-[max(560px,calc(100dvh-88px-env(safe-area-inset-top,0px)))]",
+          "gap-10 px-6 py-12 lg:flex-row lg:items-stretch lg:gap-x-12 lg:gap-y-0 lg:px-12 lg:py-0 xl:gap-x-20 xl:px-20",
+        )}
+      >
+        <div
+          className="relative z-10 flex w-full shrink-0 flex-col justify-center lg:w-[42%] lg:max-w-[560px] lg:py-16 lg:pr-2 xl:pr-8 xl:py-20"
+          style={{ color: textColor }}
+        >
+          <h1 className="font-display text-5xl leading-[1.05] font-medium tracking-[-1.76px] md:text-[72px] md:leading-[76px] lg:text-[80px] lg:leading-[84px] xl:text-[88px] xl:leading-[92px]" style={{ color: titleColor }}>
             {title}
           </h1>
-          <p className="mt-6 font-display text-[28px] leading-10 font-medium md:text-[32px]">{statement}</p>
-          {support ? <p className="mt-6 text-[22px] leading-[34px]">{support}</p> : null}
+          <p className="mt-6 text-pretty font-display text-[28px] leading-10 font-medium md:text-[32px]">{statement}</p>
+          {support ? (
+            <p className="mt-6 text-[22px] leading-[34px] opacity-[0.92]" style={{ color: textColor }}>
+              {support}
+            </p>
+          ) : null}
         </div>
-        <div className="relative mx-auto h-[420px] w-full max-w-[560px] md:h-[560px]">
-          <img src={image} alt={imageAlt} className="absolute top-0 left-10 h-full w-[86%] rounded-[20px] object-cover" />
-          <img src={grafismo1} alt="" className="absolute top-8 left-0 w-24" />
-          <img src={grafismo2} alt="" className="absolute right-2 bottom-4 w-32" />
-          <img src={grafismo3} alt="" className="absolute top-16 right-0 w-16" />
+
+        <div className="relative min-h-[300px] w-full min-w-0 flex-1 overflow-hidden sm:min-h-[380px] lg:min-h-0 lg:pl-2">
+          <PageHeroDecorations />
+          <img
+            src={image}
+            alt={imageAlt}
+            decoding="async"
+            fetchPriority="high"
+            className="relative z-[1] h-full w-full select-none object-cover lg:absolute lg:inset-0"
+            style={{ objectPosition: imageObjectPosition }}
+            sizes="(min-width: 1024px) 52vw, 100vw"
+          />
         </div>
       </div>
     </section>

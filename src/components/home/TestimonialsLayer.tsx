@@ -22,6 +22,10 @@ const GRAFISMOS_Y: [string, string] = ["-36%", "36%"]
 const GRAFISMOS_SCALE: [number, number] = [1.16, 1]
 const GRAFISMOS_OVERSCAN = 1.32
 
+/** Mesmo tratamento que `HomeHero` e `WhyWeExist` (foto + overlay): contraste e leitura. */
+const testimonialsPhotoOverlay =
+  "bg-gradient-to-r from-indigo/88 via-indigo/55 to-indigo/15"
+
 function grafismosOverscanStyle(overscan: number) {
   const bleed = ((overscan - 1) / 2) * 100
   return {
@@ -70,7 +74,9 @@ export function TestimonialsLayer({ items, className = "" }: TestimonialsLayerPr
         </motion.div>
       )}
 
-      <div className="relative mx-auto w-full max-w-[1280px] px-6 md:px-20">
+      <div aria-hidden className={cn("pointer-events-none absolute inset-0", testimonialsPhotoOverlay)} />
+
+      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 md:px-20">
         <div className="mb-10 text-center md:mb-12">
           <h2 id="depoimentos-home" className="font-display text-5xl leading-[54px] text-white">
             Vozes de quem já caminhou com a gente

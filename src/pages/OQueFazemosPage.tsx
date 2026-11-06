@@ -1,4 +1,4 @@
-import photo from "@/assets/photo-servicos.png"
+import { heroPhotos } from "@/content/hero-photos"
 import { PartnerStrip } from "@/components/content/PartnerStrip"
 import { ServiceIndex } from "@/components/content/ServiceIndex"
 import { PageHero } from "@/components/layout/PageHero"
@@ -15,8 +15,9 @@ export function OQueFazemosPage() {
         titleColor="#d0e770"
         statement="Transformamos conhecimento de ponta em soluções personalizadas para quem lidera escolas, redes e organizações."
         support="Trabalhamos sistematizando o que há de melhor no mundo e comunicando isso em soluções que fazem sentido para a realidade de quem está no chão da escola."
-        image={photo}
-        imageAlt="Ambiente escolar"
+        image={heroPhotos.oQueFazemos}
+        imageAlt="Estudante em sala de aula com identidade visual em verde"
+        imageObjectPosition="50% 32%"
       />
       <ServiceIndex />
       <section id="segmentos" className="scroll-mt-28 bg-paper px-6 py-24 md:px-20">

@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react"
 import photoComo from "@/assets/photo-como-trabalhamos.jpg"
-import portrait from "@/assets/photo-quem-somos.png"
+import { heroPhotos } from "@/content/hero-photos"
 import valorAntecipacao from "@/assets/valor-antecipacao.svg"
 import valorColaboracao from "@/assets/valor-colaboracao.svg"
 import valorFundamentacao from "@/assets/valor-fundamentacao.svg"
@@ -54,8 +54,9 @@ export function QuemSomosPage() {
         titleColor="#d0e770"
         statement="Vozes da Educação é uma consultoria de inteligência educacional, formada por profissionais que acreditam que a educação brasileira pode ser mais segura e afetiva."
         support="Nossa missão é ajudar a resolver os problemas da educação do Brasil de forma inteligente, didática e humana."
-        image={portrait}
+        image={heroPhotos.quemSomos}
         imageAlt="Retrato em ambiente escolar"
+        imageObjectPosition="55% 35%"
       />
 
       <section id="historia" className="scroll-mt-28 overflow-x-clip bg-paper">

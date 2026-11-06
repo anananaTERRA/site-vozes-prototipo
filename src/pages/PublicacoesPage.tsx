@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { Navigate, useParams, useSearchParams } from "react-router"
-import photo from "@/assets/photo-impacto.png"
+import { heroPhotos } from "@/content/hero-photos"
 import { BrandButton } from "@/components/brand/BrandButton"
 import { PublicationCard } from "@/components/content/Cards"
 import { ListingFilterSelect } from "@/components/content/ListingFilterSelect"
@@ -89,8 +89,9 @@ export function PublicacoesPage() {
         title="Publicações"
         titleColor="#d0e770"
         statement="Pesquisas, levantamentos e artigos desenvolvidos pelo Vozes. Disponíveis para gestores, educadores, familiares, pesquisadores e todos que acreditam que decisões melhores começam com informação de qualidade."
-        image={photo}
-        imageAlt="Leitura, imagem provisória"
+        image={heroPhotos.publicacoes}
+        imageAlt="Leitura em ambiente escolar, imagem do hero"
+        imageObjectPosition="48% 42%"
       />
       <section className="mx-auto w-full max-w-[1440px] px-6 py-16 md:px-20">
         <div className="flex flex-wrap items-end justify-between gap-4">

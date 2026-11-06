@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { Link, useSearchParams } from "react-router"
-import photo from "@/assets/photo-vozes.png"
+import { heroPhotos } from "@/content/hero-photos"
 import { BrandButton } from "@/components/brand/BrandButton"
 import { EventCard, FeaturedNewsCard, NewsCard } from "@/components/content/Cards"
 import { ListingFilterSelect } from "@/components/content/ListingFilterSelect"
@@ -104,8 +104,9 @@ export function VozesPage() {
         titleColor="#0d6353"
         statement="Aqui você acompanha nossas aparições na mídia: em entrevistas, debates e eventos sobre educação."
         textColor="#0d6353"
-        image={photo}
-        imageAlt="Entrevista, imagem provisória"
+        image={heroPhotos.vozesMidia}
+        imageAlt="Entrevista ou evento: palestrante com microfone"
+        imageObjectPosition="50% 28%"
       />
       <section id="imprensa" className="scroll-mt-28 mx-auto flex w-full max-w-[1440px] flex-col justify-between gap-8 px-6 py-16 md:flex-row md:px-20">
         <div className="max-w-xl">

@@ -2,6 +2,11 @@ import { Link } from "react-router"
 import { MorphPillButton } from "@/components/brand/MorphPillButton"
 import { WordBalloon } from "@/components/brand/WordBalloon"
 import { cn } from "cn"
+import { heroPhotos } from "@/content/hero-photos"
+
+/** Mesmo tratamento de cor que `WhyWeExist` (ParallaxPhotoSection). */
+const homeHeroOverlay =
+  "bg-gradient-to-r from-indigo/88 via-indigo/55 to-indigo/15"
 
 type HomeHeroProps = {
   /** Layout fixo 1200×630 para captura da imagem Open Graph. */
@@ -10,22 +15,45 @@ type HomeHeroProps = {
 
 export function HomeHero({ forOpenGraph = false }: HomeHeroProps) {
   return (
-    <section className={cn("bg-indigo text-white", forOpenGraph && "size-full")}>
+    <section
+      className={cn(
+        "relative overflow-hidden text-white",
+        forOpenGraph ? "h-full" : "min-h-[max(560px,calc(100dvh-88px-env(safe-area-inset-top,0px)))]",
+      )}
+    >
+      {/* Plano de fundo: foto original + overlay roxo (como "Por que existimos") */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <img
+          src={heroPhotos.home}
+          alt=""
+          width={1024}
+          height={684}
+          decoding="async"
+          fetchPriority="high"
+          className="h-full w-full object-cover"
+          style={{ objectPosition: "58% 32%" }}
+        />
+        <div className={cn("absolute inset-0", homeHeroOverlay)} />
+      </div>
+
       <div
         className={cn(
-          "mx-auto flex w-full max-w-[1440px] items-center px-6 py-16 md:px-20",
-          forOpenGraph
-            ? "h-full max-w-none justify-center px-20 py-0"
-            : "min-h-[max(640px,calc(100dvh-88px-env(safe-area-inset-top,0px)))]",
+          "relative z-10 mx-auto flex w-full max-w-[1440px] flex-col justify-center px-6 py-12",
+          forOpenGraph ? "h-full px-10 py-8" : "min-h-[inherit] lg:px-12 lg:py-16 xl:px-20 xl:py-20",
         )}
       >
-        <div className={cn("max-w-[640px]", forOpenGraph && "max-w-[720px]")}>
+        <div
+          className={cn(
+            "max-w-[640px]",
+            forOpenGraph && "max-w-[720px]",
+          )}
+        >
           <h1
             className={cn(
               "font-display font-normal leading-none tracking-[-1.76px]",
               forOpenGraph
-                ? "text-[72px] leading-[76px]"
-                : "text-6xl md:text-[88px] md:leading-[92px]",
+                ? "text-[56px] leading-[60px]"
+                : "text-5xl sm:text-6xl md:text-[72px] md:leading-[76px] lg:text-[80px] lg:leading-[84px] xl:text-[88px] xl:leading-[92px]",
             )}
           >
             Conectar vozes,
@@ -34,8 +62,8 @@ export function HomeHero({ forOpenGraph = false }: HomeHeroProps) {
                 color="#ff8327"
                 className={
                   forOpenGraph
-                    ? "text-[72px] leading-[76px]"
-                    : "text-[56px] leading-none md:text-[88px] md:leading-[92px]"
+                    ? "text-[56px] leading-[60px]"
+                    : "text-[44px] leading-none sm:text-[52px] md:text-[72px] md:leading-[76px] lg:text-[80px] lg:leading-[84px] xl:text-[88px] xl:leading-[92px]"
                 }
               >
                 transformar
@@ -45,8 +73,8 @@ export function HomeHero({ forOpenGraph = false }: HomeHeroProps) {
           </h1>
           <p
             className={cn(
-              "text-pretty leading-[34px]",
-              forOpenGraph ? "mt-6 text-[20px] leading-[30px]" : "mt-8 text-[22px] leading-[34px]",
+              "text-pretty text-white/95",
+              forOpenGraph ? "mt-5 text-[16px] leading-[24px]" : "mt-6 text-lg leading-[30px] md:mt-8 md:text-[22px] md:leading-[34px]",
             )}
           >
             Transformamos conhecimento de ponta em soluções personalizadas para quem lidera escolas, redes e{"\u00A0"}
